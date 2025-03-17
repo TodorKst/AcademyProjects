@@ -83,6 +83,7 @@ public class Main {
 
         System.out.println("Total Costs: " + shop.calculateTotalCosts());
         System.out.println("Total Income: " + shop.calculateTotalIncome());
+//      profit is negative because the shop has made only one sale and the costs are higher than the income mainly from wages of cashiers
         System.out.println("Profit: " + shop.calculateProfit());
     }
 }
