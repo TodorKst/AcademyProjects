@@ -65,6 +65,8 @@ public class Main {
             receipt.serializeReceipt("receipts"); // this method saves the receipt to a file
             receipt.printReceipt(); //this method prints the receipt to a file that a human can read
 
+//          to disable saving the receipt to a file just comment out the 2 lines above
+
 //          in a normal use case only one of these methods would be used but i wanted to show both
 
 //          I spent a good amount of time trying to serialize to json without using and external library so i can keep the scope of the project in control
