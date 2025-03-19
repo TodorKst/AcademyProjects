@@ -1,4 +1,4 @@
-package contracts;
+package models.contracts;
 
 import enums.ProductCategory;
 import exceptions.ProductExpiredException;

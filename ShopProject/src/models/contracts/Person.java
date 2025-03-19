@@ -1,4 +1,4 @@
-package contracts;
+package models.contracts;
 
 public interface Person {
     String getId();

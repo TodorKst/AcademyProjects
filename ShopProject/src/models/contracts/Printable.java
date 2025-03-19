@@ -1,4 +1,4 @@
-package contracts;
+package models.contracts;
 
 import java.io.IOException;
 //allows for future proofing the code, as we can have printing of other types of receipts like invoices, reports, etc. (фактури)

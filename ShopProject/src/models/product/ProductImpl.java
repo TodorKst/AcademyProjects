@@ -1,6 +1,6 @@
 package models.product;
 
-import contracts.Product;
+import models.contracts.Product;
 import enums.ProductCategory;
 import exceptions.ProductExpiredException;
 import models.Shop;

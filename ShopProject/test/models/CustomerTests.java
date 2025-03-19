@@ -1,6 +1,6 @@
 package models;
 
-import contracts.Product;
+import models.contracts.Product;
 import enums.ProductCategory;
 import models.person.Customer;
 import models.product.ProductImpl;

@@ -1,4 +1,4 @@
-import contracts.Product;
+import models.contracts.Product;
 import enums.ProductCategory;
 import exceptions.InsufficientFundsException;
 import exceptions.InsufficientStockException;
@@ -10,6 +10,8 @@ import models.person.Customer;
 import models.product.NonPerishableProduct;
 import models.product.PerishableProduct;
 import models.receipt.Receipt;
+import services.ShopServiceImpl;
+import services.contracts.ShopService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -43,6 +45,8 @@ public class Main {
 
         System.out.println();
 
+        ShopService shopService = new ShopServiceImpl();
+
         LocalDate milkExpiry = LocalDate.now().plusDays(10);
         Product milk = new PerishableProduct("P001", "Milk", ProductCategory.FOOD, new BigDecimal("2.00"), milkExpiry);
 
@@ -61,9 +65,9 @@ public class Main {
         customer.addToShoppingCart(soap, 3);
 
         try {
-            Receipt receipt = shop.processSale(cashier, customer, LocalDate.now());
-            receipt.serializeReceipt("receipts"); // this method saves the receipt to a file
-            receipt.printReceipt(); //this method prints the receipt to a file that a human can read
+            Receipt receipt = shopService.processSale(shop, cashier, customer, LocalDate.now());
+//            receipt.serializeReceipt("receipts"); // this method saves the receipt to a file
+//            receipt.printReceipt(); //this method prints the receipt to a file that a human can read
 
 //          to disable saving the receipt to a file just comment out the 2 lines above
 
@@ -77,13 +81,14 @@ public class Main {
             System.out.println("Remaining Customer Balance: " + customer.getBalance());
         } catch (InsufficientStockException | InsufficientFundsException | ProductExpiredException e) {
             System.out.println("Sale failed: " + e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
+//        catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        System.out.println("Total Costs: " + shop.calculateTotalCosts());
-        System.out.println("Total Income: " + shop.calculateTotalIncome());
+        System.out.println("Total Costs: " + shopService.calculateTotalCosts(shop));
+        System.out.println("Total Income: " + shopService.calculateTotalIncome(shop));
 //      profit is negative because the shop has made only one sale and the costs are higher than the income mainly from wages of cashiers
-        System.out.println("Profit: " + shop.calculateProfit());
+        System.out.println("Profit: " + shopService.calculateProfit(shop));
     }
 }

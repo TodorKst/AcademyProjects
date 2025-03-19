@@ -1,6 +1,6 @@
 package models;
 
-import contracts.Product;
+import models.contracts.Product;
 import exceptions.InvalidInputException;
 
 import java.math.BigDecimal;

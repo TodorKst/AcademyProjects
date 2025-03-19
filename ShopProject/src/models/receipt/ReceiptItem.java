@@ -1,7 +1,6 @@
 package models.receipt;
 
-import contracts.Product;
-import models.product.ProductImpl;
+import models.contracts.Product;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

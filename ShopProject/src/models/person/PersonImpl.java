@@ -1,6 +1,8 @@
 package models.person;
 
-public abstract class PersonImpl implements contracts.Person {
+import models.contracts.Person;
+
+public abstract class PersonImpl implements Person {
     private final String id;
     private String name;
 

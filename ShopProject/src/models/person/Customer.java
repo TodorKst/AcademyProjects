@@ -1,6 +1,6 @@
 package models.person;
 
-import contracts.Product;
+import models.contracts.Product;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

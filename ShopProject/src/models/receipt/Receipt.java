@@ -1,6 +1,6 @@
 package models.receipt;
 
-import contracts.Printable;
+import models.contracts.Printable;
 import models.person.Cashier;
 
 import java.io.*;
