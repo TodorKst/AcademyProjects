@@ -1,0 +1,13 @@
+Receipt ID: 1b89986f
+Cashier: John Doe (C001)
+Purchase Date: 2025-03-20
+Items:
+  Product: Milk
+    Quantity: 2
+    Unit Price: 2.4000
+    Total Price: 4.8000
+  Product: Soap
+    Quantity: 3
+    Unit Price: 1.9500
+    Total Price: 5.8500
+Total Amount: 10.65

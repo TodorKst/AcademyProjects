@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2c56cc35-f1e5-4ee0-a302-662446d45c05" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../ShopProject/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../ShopProject/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/ShopProject.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/human-readable-receipts/8fe7f46d.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/receipts/8fe7f46d.ser" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/enums/ProductCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/exceptions/InsufficientFundsException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/exceptions/InsufficientStockException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/exceptions/InvalidInputException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/exceptions/ProductExpiredException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/CashDesk.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/Shop.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/StockItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/contracts/Person.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/contracts/Printable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/contracts/Product.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/person/Cashier.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/person/Customer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/person/PersonImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/product/NonPerishableProduct.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/product/PerishableProduct.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/product/ProductImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/receipt/Receipt.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/models/receipt/ReceiptItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/services/ReceiptServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/services/ShopServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/services/contracts/ReceiptService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/src/services/contracts/ShopService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/test/models/CashDeskTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/test/models/CustomerTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/test/models/NonPerishableProductTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/test/models/PerishableProductTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/test/models/ProductTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/test/models/ShopTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ShopProject/test/models/StockItemTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2uYNsqqdzGys9nd5F50PRQGnzOS" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.ShopProject2 [:org.example.Main.main()].executor": "Run",
+    "Gradle.Tests in 'ShopProject2.test'.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Tests in 'ShopProject2.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.Tests in 'ShopProject2.test'" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2c56cc35-f1e5-4ee0-a302-662446d45c05" name="Changes" comment="" />
+      <created>1742421760527</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742421760527</updated>
+      <workItem from="1742421761497" duration="1488000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
