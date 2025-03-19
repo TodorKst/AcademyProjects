@@ -10,7 +10,9 @@ import models.person.Customer;
 import models.product.NonPerishableProduct;
 import models.product.PerishableProduct;
 import models.receipt.Receipt;
+import services.ReceiptServiceImpl;
 import services.ShopServiceImpl;
+import services.contracts.ReceiptService;
 import services.contracts.ShopService;
 
 import java.io.IOException;
@@ -29,8 +31,11 @@ public class Main {
                 new BigDecimal("0.10")
         );
 
+        ShopService shopService = new ShopServiceImpl();
+        ReceiptService receiptService = new ReceiptServiceImpl();
+
         System.out.println("Loading previous receipts...");
-        List<Receipt> previousReceipts = Receipt.deserializeReceipts("receipts");
+        List<Receipt> previousReceipts = receiptService.deserializeReceipts("receipts");
         System.out.println("Total previous receipts loaded: " + previousReceipts.size());
         System.out.println();
         System.out.println("====================================");
@@ -45,7 +50,6 @@ public class Main {
 
         System.out.println();
 
-        ShopService shopService = new ShopServiceImpl();
 
         LocalDate milkExpiry = LocalDate.now().plusDays(10);
         Product milk = new PerishableProduct("P001", "Milk", ProductCategory.FOOD, new BigDecimal("2.00"), milkExpiry);
@@ -66,8 +70,8 @@ public class Main {
 
         try {
             Receipt receipt = shopService.processSale(shop, cashier, customer, LocalDate.now());
-//            receipt.serializeReceipt("receipts"); // this method saves the receipt to a file
-//            receipt.printReceipt(); //this method prints the receipt to a file that a human can read
+//            receiptService.serializeReceipt(receipt, "receipts"); // this method saves the receipt to a file
+//            receiptService.printReceipt(receipt); //this method prints the receipt to a file that a human can read
 
 //          to disable saving the receipt to a file just comment out the 2 lines above
 

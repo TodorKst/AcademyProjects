@@ -11,6 +11,8 @@ import models.product.PerishableProduct;
 import models.receipt.Receipt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import services.ShopServiceImpl;
+import services.contracts.ShopService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,9 +26,12 @@ class ShopTests {
     private PerishableProduct milk;
     private NonPerishableProduct soap;
     private CashDesk cashDesk;
+    private ShopService shopService;
 
     @BeforeEach
     void setUp() {
+        shopService = new ShopServiceImpl();
+
         shop = new Shop(
                 "Test Shop",
                 new BigDecimal("1.20"),
@@ -53,7 +58,7 @@ class ShopTests {
         customer.addToShoppingCart(milk, 2);  // 2 Milk @ 2.00 each
         customer.addToShoppingCart(soap, 3);  // 3 Soap @ 1.50 each
 
-        Receipt receipt = shop.processSale(cashier, customer, LocalDate.now());
+        Receipt receipt = shopService.processSale(shop, cashier, customer, LocalDate.now());
 
         assertNotNull(receipt);
         assertEquals(new BigDecimal("10.65"), receipt.getTotalAmount());
@@ -66,7 +71,7 @@ class ShopTests {
         customer.addToShoppingCart(milk, 2);
 
         assertThrows(InsufficientFundsException.class, () -> {
-            shop.processSale(cashier, customer, LocalDate.now());
+            shopService.processSale(shop, cashier, customer, LocalDate.now());
         });
     }
 
@@ -75,7 +80,7 @@ class ShopTests {
         customer.addToShoppingCart(milk, 20); // Trying to buy 20, but only 10 in stock
 
         assertThrows(InsufficientStockException.class, () -> {
-            shop.processSale(cashier, customer, LocalDate.now());
+            shopService.processSale(shop, cashier, customer, LocalDate.now());
         });
     }
 
@@ -87,7 +92,7 @@ class ShopTests {
         customer.addToShoppingCart(expiredMilk, 1);
 
         assertThrows(ProductExpiredException.class, () -> {
-            shop.processSale(cashier, customer, LocalDate.now());
+            shopService.processSale(shop, cashier, customer, LocalDate.now());
         });
     }
 
@@ -95,10 +100,10 @@ class ShopTests {
     void calculateProfit_Should_Calculate_Profit() throws InsufficientFundsException, InsufficientStockException, ProductExpiredException {
         customer.addToShoppingCart(milk, 2);
         customer.addToShoppingCart(soap, 3);
-        shop.processSale(cashier, customer, LocalDate.now());
+        shopService.processSale(shop, cashier, customer, LocalDate.now());
 
-        BigDecimal expectedProfit = shop.calculateTotalIncome().subtract(shop.calculateTotalCosts());
-        assertEquals(expectedProfit, shop.calculateProfit());
+        BigDecimal expectedProfit = shopService.calculateTotalIncome(shop).subtract(shopService.calculateTotalCosts(shop));
+        assertEquals(expectedProfit, shopService.calculateProfit(shop));
     }
 
     @Test
@@ -107,13 +112,13 @@ class ShopTests {
         customer.addToShoppingCart(milk, 2);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            shop.processSale(fakeCashier, customer, LocalDate.now());
+            shopService.processSale(shop, fakeCashier, customer, LocalDate.now());
         });
     }
 
     @Test
     void processSale_Should_Handle_Zero_Quantity_Sale() throws InsufficientFundsException, InsufficientStockException, ProductExpiredException {
-        Receipt receipt = shop.processSale(cashier, customer, LocalDate.now());
+        Receipt receipt = shopService.processSale(shop, cashier, customer, LocalDate.now());
 
         assertNotNull(receipt);
         assertEquals(BigDecimal.ZERO.setScale(2), receipt.getTotalAmount());
@@ -130,18 +135,18 @@ class ShopTests {
 
     @Test
     void calculateTotalCosts_Should_Include_Cashier_Salaries() {
-        BigDecimal totalCosts = shop.calculateTotalCosts();
+        BigDecimal totalCosts = shopService.calculateTotalCosts(shop);
         assertTrue(totalCosts.compareTo(cashier.getSalary()) >= 0);
     }
 
     @Test
     void calculateTotalIncome_Should_Be_Zero_Initially() {
-        assertEquals(BigDecimal.ZERO.setScale(0), shop.calculateTotalIncome());
+        assertEquals(BigDecimal.ZERO.setScale(0), shopService.calculateTotalIncome(shop));
     }
 
     @Test
     void calculateProfit_Should_Be_Negative_If_No_Sales() {
-        assertTrue(shop.calculateProfit().compareTo(BigDecimal.ZERO) < 0);
+        assertTrue(shopService.calculateProfit(shop).compareTo(BigDecimal.ZERO) < 0);
     }
 
 }

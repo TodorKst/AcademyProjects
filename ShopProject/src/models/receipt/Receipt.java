@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class Receipt implements Serializable, Printable {
+public class Receipt implements Serializable {
 
     //    all fields are final, as the receipt serves as a record and should not be modified
     private final String receiptId;
@@ -49,61 +49,8 @@ public class Receipt implements Serializable, Printable {
         return totalAmount;
     }
 
-    public void printReceipt() throws IOException {
-        File dir = new File("human-readable-receipts");
-        if (!dir.exists()) {
-            dir.mkdirs(); // Create directory if it doesn't exist
-        }
-        try (PrintWriter writer = new PrintWriter(new FileWriter(dir + File.separator + getReceiptId() + ".txt"))) {
-            writer.println("Receipt ID: " + getReceiptId());
-            writer.println("Cashier: " + getCashier().getName() + " (" + getCashier().getId() + ")");
-            writer.println("Purchase Date: " + getPurchaseDate());
-            writer.println("Items:");
-            for (ReceiptItem item : getItems()) {
-                writer.println("  Product: " + item.getProduct().getName());
-                writer.println("    Quantity: " + item.getQuantity());
-                writer.println("    Unit Price: " + item.getUnitPrice());
-                writer.println("    Total Price: " + item.getTotalPrice());
-            }
-            writer.println("Total Amount: " + getTotalAmount());
-        }
-    }
 
-    public void serializeReceipt(String directoryPath) {
-        File dir = new File(directoryPath);
-        if (!dir.exists()) {
-            dir.mkdirs(); // Create directory if it doesn't exist
-        }
-        File file = new File(dir, receiptId + ".ser");
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
-            oos.writeObject(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public static List<Receipt> deserializeReceipts(String directoryPath) {
-        List<Receipt> receipts = new ArrayList<>();
-        File dir = new File(directoryPath);
-
-        if (!dir.exists() || !dir.isDirectory()) {
-            return receipts; // Return empty list if directory doesn't exist
-        }
-
-        File[] files = dir.listFiles((d, name) -> name.endsWith(".ser"));
-        if (files != null) {
-            for (File file : files) {
-                try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-                    Receipt receipt = (Receipt) ois.readObject();
-                    receipts.add(receipt);
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return receipts;
-    }
 
 }
