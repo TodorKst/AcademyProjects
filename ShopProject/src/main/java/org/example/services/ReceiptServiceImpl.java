@@ -10,6 +10,18 @@ import java.util.List;
 
 public class ReceiptServiceImpl implements ReceiptService {
 
+    private static ReceiptServiceImpl instance;
+
+    private ReceiptServiceImpl() {
+    }
+
+    public static ReceiptServiceImpl getInstance() {
+        if (instance == null) {
+            instance = new ReceiptServiceImpl();
+        }
+        return instance;
+    }
+
     @Override
     public List<Receipt> deserializeReceipts(String directoryPath) {
         List<Receipt> receipts = new ArrayList<>();

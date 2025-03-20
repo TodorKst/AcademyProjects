@@ -14,10 +14,4 @@ import java.time.LocalDate;
 public interface ShopService {
     Receipt processSale(Shop shop, Cashier cashier, Customer customer, LocalDate currentDate)
             throws InsufficientStockException, InsufficientFundsException, ProductExpiredException;
-
-    BigDecimal calculateTotalCosts(Shop shop);
-
-    BigDecimal calculateTotalIncome(Shop shop);
-
-    BigDecimal calculateProfit(Shop shop);
 }

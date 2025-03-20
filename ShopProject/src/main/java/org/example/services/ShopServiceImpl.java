@@ -21,6 +21,18 @@ import java.util.Map;
 
 public class ShopServiceImpl implements ShopService {
 
+    private static ShopServiceImpl instance;
+
+    private ShopServiceImpl() {
+    }
+
+    public static ShopServiceImpl getInstance() {
+        if (instance == null) {
+            instance = new ShopServiceImpl();
+        }
+        return instance;
+    }
+
     @Override
     public Receipt processSale(Shop shop, Cashier cashier, Customer customer, LocalDate currentDate)
             throws InsufficientStockException, InsufficientFundsException, ProductExpiredException {
@@ -67,38 +79,6 @@ public class ShopServiceImpl implements ShopService {
         shop.addReceipt(receipt);
 
         return receipt;
-    }
-
-    @Override
-    public BigDecimal calculateTotalCosts(Shop shop) {
-        BigDecimal totalCosts = BigDecimal.ZERO;
-
-        for (Cashier cashier : shop.getCashiers()) {
-            totalCosts = totalCosts.add(cashier.getSalary());
-        }
-
-        for (StockItem stockItem : shop.getInventory().values()) {
-            BigDecimal deliveryCost = stockItem.getDeliveryCost();
-            totalCosts = totalCosts.add(deliveryCost);
-        }
-
-        return totalCosts;
-    }
-
-    @Override
-    public BigDecimal calculateTotalIncome(Shop shop) {
-        BigDecimal totalIncome = BigDecimal.ZERO;
-
-        for (Receipt receipt : shop.getReceipts()) {
-            totalIncome = totalIncome.add(receipt.getTotalAmount());
-        }
-
-        return totalIncome;
-    }
-
-    @Override
-    public BigDecimal calculateProfit(Shop shop) {
-        return calculateTotalIncome(shop).subtract(calculateTotalCosts(shop));
     }
 
 }

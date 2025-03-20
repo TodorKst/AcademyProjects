@@ -11,7 +11,9 @@ import org.example.models.person.Customer;
 import org.example.models.product.NonPerishableProduct;
 import org.example.models.product.PerishableProduct;
 import org.example.models.receipt.Receipt;
+import org.example.services.FinancialsServiceImpl;
 import org.example.services.ShopServiceImpl;
+import org.example.services.contracts.FinancialsService;
 import org.example.services.contracts.ShopService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,10 +31,12 @@ class ShopTests {
     private NonPerishableProduct soap;
     private CashDesk cashDesk;
     private ShopService shopService;
+    private FinancialsService financialsService;
 
     @BeforeEach
     void setUp() {
-        shopService = new ShopServiceImpl();
+        shopService = ShopServiceImpl.getInstance();
+        financialsService = FinancialsServiceImpl.getInstance();
 
         shop = new Shop(
                 "Test Shop",
@@ -104,8 +108,8 @@ class ShopTests {
         customer.addToShoppingCart(soap, 3);
         shopService.processSale(shop, cashier, customer, LocalDate.now());
 
-        BigDecimal expectedProfit = shopService.calculateTotalIncome(shop).subtract(shopService.calculateTotalCosts(shop));
-        assertEquals(expectedProfit, shopService.calculateProfit(shop));
+        BigDecimal expectedProfit = financialsService.calculateTotalIncome(shop).subtract(financialsService.calculateTotalCosts(shop));
+        assertEquals(expectedProfit, financialsService.calculateProfit(shop));
     }
 
     @Test
@@ -137,18 +141,18 @@ class ShopTests {
 
     @Test
     void calculateTotalCosts_Should_Include_Cashier_Salaries() {
-        BigDecimal totalCosts = shopService.calculateTotalCosts(shop);
+        BigDecimal totalCosts = financialsService.calculateTotalCosts(shop);
         assertTrue(totalCosts.compareTo(cashier.getSalary()) >= 0);
     }
 
     @Test
     void calculateTotalIncome_Should_Be_Zero_Initially() {
-        assertEquals(BigDecimal.ZERO.setScale(0), shopService.calculateTotalIncome(shop));
+        assertEquals(BigDecimal.ZERO.setScale(0), financialsService.calculateTotalIncome(shop));
     }
 
     @Test
     void calculateProfit_Should_Be_Negative_If_No_Sales() {
-        assertTrue(shopService.calculateProfit(shop).compareTo(BigDecimal.ZERO) < 0);
+        assertTrue(financialsService.calculateProfit(shop).compareTo(BigDecimal.ZERO) < 0);
     }
 
 }

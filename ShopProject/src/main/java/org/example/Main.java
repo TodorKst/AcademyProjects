@@ -12,8 +12,10 @@ import org.example.models.person.Customer;
 import org.example.models.product.NonPerishableProduct;
 import org.example.models.product.PerishableProduct;
 import org.example.models.receipt.Receipt;
+import org.example.services.FinancialsServiceImpl;
 import org.example.services.ReceiptServiceImpl;
 import org.example.services.ShopServiceImpl;
+import org.example.services.contracts.FinancialsService;
 import org.example.services.contracts.ReceiptService;
 import org.example.services.contracts.ShopService;
 
@@ -33,8 +35,9 @@ public class Main {
                 new BigDecimal("0.10")
         );
 
-        ShopService shopService = new ShopServiceImpl();
-        ReceiptService receiptService = new ReceiptServiceImpl();
+        ShopService shopService = ShopServiceImpl.getInstance();
+        ReceiptService receiptService = ReceiptServiceImpl.getInstance();
+        FinancialsService financialsService = FinancialsServiceImpl.getInstance();
 
         System.out.println("Loading previous receipts...");
         List<Receipt> previousReceipts = receiptService.deserializeReceipts("receipts");
@@ -92,9 +95,9 @@ public class Main {
 //            throw new RuntimeException(e);
 //        }
 
-        System.out.println("Total Costs: " + shopService.calculateTotalCosts(shop));
-        System.out.println("Total Income: " + shopService.calculateTotalIncome(shop));
+        System.out.println("Total Costs: " + financialsService.calculateTotalCosts(shop));
+        System.out.println("Total Income: " + financialsService.calculateTotalIncome(shop));
 //      profit is negative because the shop has made only one sale and the costs are higher than the income mainly from wages of cashiers
-        System.out.println("Profit: " + shopService.calculateProfit(shop));
+        System.out.println("Profit: " + financialsService.calculateProfit(shop));
     }
 }
