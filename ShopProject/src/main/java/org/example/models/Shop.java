@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class Shop {
     private String name;
-    private final Map<String,StockItem> inventory = new HashMap<>();
+    private final Map<String, StockItem> inventory = new HashMap<>();
     private final List<Cashier> cashiers;
     private final List<Receipt> receipts;
 
@@ -108,15 +108,6 @@ public class Shop {
     public void setDiscountPercentage(BigDecimal discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
-
-
-
-
-
-
-
-
-
 
 
 }

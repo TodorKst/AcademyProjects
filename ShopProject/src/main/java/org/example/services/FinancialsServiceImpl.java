@@ -17,8 +17,10 @@ public class FinancialsServiceImpl implements FinancialsService {
     }
 
     public static FinancialsServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new FinancialsServiceImpl();
+        synchronized (FinancialsServiceImpl.class) {
+            if (instance == null) {
+                instance = new FinancialsServiceImpl();
+            }
         }
         return instance;
     }

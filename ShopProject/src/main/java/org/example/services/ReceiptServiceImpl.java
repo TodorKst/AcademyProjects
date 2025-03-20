@@ -18,8 +18,10 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     public static ReceiptServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new ReceiptServiceImpl();
+        synchronized (ReceiptServiceImpl.class) {
+            if (instance == null) {
+                instance = new ReceiptServiceImpl();
+            }
         }
         return instance;
     }

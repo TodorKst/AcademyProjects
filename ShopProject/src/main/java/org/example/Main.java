@@ -87,17 +87,13 @@ public class Main {
 //          to disable saving the receipt to a file just comment out the 2 lines above
 
 //          in a normal use case only one of these methods would be used but i wanted to show both
-
-//          I spent a good amount of time trying to serialize to json without using and external library so i can keep the scope of the project in control
-//          but it was too much work so i had to settle for this somewhat worse option of having one method for serialization and one for printing which bugs me a bit
             System.out.println("Sale successful!");
             System.out.println("Receipt ID: " + receipt.getReceiptId());
             System.out.println("Total Amount: " + receipt.getTotalAmount());
             System.out.println("Remaining Customer Balance: " + customer.getBalance());
         } catch (InsufficientStockException | InsufficientFundsException | ProductExpiredException e) {
             System.out.println("Sale failed: " + e.getMessage());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 

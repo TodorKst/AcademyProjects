@@ -1,7 +1,6 @@
 package org.example.models.person;
 
 
-
 import org.example.exceptions.InvalidInputException;
 import org.example.models.contracts.Product;
 

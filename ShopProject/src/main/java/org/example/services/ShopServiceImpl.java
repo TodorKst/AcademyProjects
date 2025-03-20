@@ -81,7 +81,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     private static void throwIfAnyInputValueIsNull(Shop shop, Cashier cashier, Customer customer, LocalDate currentDate) {
-        if (shop == null ||cashier == null || customer == null || currentDate == null) {
+        if (shop == null || cashier == null || customer == null || currentDate == null) {
             throw new InvalidInputException("Shop, cashier, customer, and date must be provided.");
         }
     }

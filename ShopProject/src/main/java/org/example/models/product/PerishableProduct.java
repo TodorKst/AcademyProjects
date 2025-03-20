@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class PerishableProduct extends ProductImpl {
-//    expiryDate is final because it cannot change after the product is manufactured
+    //    expiryDate is final because it cannot change after the product is manufactured
     private final LocalDate expiryDate;
 
     public PerishableProduct(String id, String name, ProductCategory category, BigDecimal basePrice, LocalDate expiryDate) {

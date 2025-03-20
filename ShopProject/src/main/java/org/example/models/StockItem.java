@@ -6,7 +6,7 @@ import org.example.models.contracts.Product;
 import java.math.BigDecimal;
 
 public class StockItem {
-//    product is final because it should not be changed once it is set as if another product is added to the stock, a new StockItem should be created
+    //    product is final because it should not be changed once it is set as if another product is added to the stock, a new StockItem should be created
     private final Product product;
     private int quantity;
     private BigDecimal deliveryCost;

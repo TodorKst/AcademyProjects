@@ -1,9 +1,0 @@
-Receipt ID: receipt123
-Cashier: John Doe (id1)
-Purchase Date: 2025-03-20
-Items:
-  Product: Sample Product
-    Quantity: 2
-    Unit Price: 10.50
-    Total Price: 21.00
-Total Amount: 99.99
