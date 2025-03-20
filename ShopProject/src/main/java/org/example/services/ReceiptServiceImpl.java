@@ -30,7 +30,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         File dir = new File(directoryPath);
 
         if (!dir.exists() || !dir.isDirectory()) {
-            return receipts; // Return empty list if directory doesn't exist
+            return receipts;
         }
 
         File[] files = dir.listFiles((d, name) -> name.endsWith(".ser"));
@@ -52,7 +52,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     public void printReceipt(Receipt receipt) throws IOException {
         File dir = new File("human-readable-receipts");
         if (!dir.exists()) {
-            dir.mkdirs(); // Create directory if it doesn't exist
+            dir.mkdirs();
         }
         try (PrintWriter writer = new PrintWriter(new FileWriter(dir + File.separator + receipt.getReceiptId() + ".txt"))) {
             writer.println("Receipt ID: " + receipt.getReceiptId());
@@ -73,7 +73,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     public void serializeReceipt(Receipt receipt, String directoryPath) {
         File dir = new File(directoryPath);
         if (!dir.exists()) {
-            dir.mkdirs(); // Create directory if it doesn't exist
+            dir.mkdirs();
         }
         File file = new File(dir, receipt.getReceiptId() + ".ser");
 

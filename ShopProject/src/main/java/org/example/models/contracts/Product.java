@@ -8,8 +8,12 @@ import java.time.LocalDate;
 
 public interface Product {
     String getId();
+
     String getName();
+
     org.example.enums.ProductCategory getCategory();
+
     BigDecimal getBasePrice();
+
     BigDecimal calculateSellingPrice(Shop shop, LocalDate currentDate) throws ProductExpiredException;
 }

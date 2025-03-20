@@ -1,10 +1,10 @@
-package org.example;
+package org.example.integration;
 
 import org.example.models.CashDesk;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class CashDeskTests {
+public class CashDeskTestsImplementation {
 
     @Test
     void testGetDeskNumber_Should_Work() {

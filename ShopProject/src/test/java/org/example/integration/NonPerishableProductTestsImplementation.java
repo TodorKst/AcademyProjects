@@ -1,4 +1,4 @@
-package org.example;
+package org.example.integration;
 
 import org.example.enums.ProductCategory;
 import org.example.models.Shop;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class NonPerishableProductTests {
+class NonPerishableProductTestsImplementation {
     private NonPerishableProduct product;
     private Shop shop;
 

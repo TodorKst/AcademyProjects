@@ -1,4 +1,4 @@
-package org.example;
+package org.example.integration;
 
 import org.example.enums.ProductCategory;
 import org.example.exceptions.InvalidInputException;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CustomerTests {
+class CustomerTestsImplementation {
 
     private Customer customer;
     private ProductImpl product;

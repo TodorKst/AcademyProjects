@@ -1,5 +1,0 @@
-Receipt ID: 391ca14a
-Cashier: John Doe (id1)
-Purchase Date: 2025-03-20
-Items:
-Total Amount: null

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.integration;
 
 import org.example.enums.ProductCategory;
 import org.example.models.product.ProductImpl;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ProductTests {
+class ProductTestsImplementation {
     private ProductImpl product;
 
     @BeforeEach

@@ -2,7 +2,8 @@ package org.example.models.person;
 
 import java.io.Serializable;
 
-// There is no need for a person interface,
+// I had a Person interface, but It seemed redundant, as everything that was in the interface was in the PersonImpl class and I dont see what else could inherit the
+// Person interface, so I decided to remove it and have the PersonImpl class be an abstract class
 public abstract class PersonImpl implements Serializable {
     private final String id;
     private String name;

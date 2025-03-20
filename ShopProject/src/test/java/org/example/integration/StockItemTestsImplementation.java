@@ -1,4 +1,4 @@
-package org.example;
+package org.example.integration;
 
 import org.example.enums.ProductCategory;
 import org.example.exceptions.InvalidInputException;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class StockItemTests {
+class StockItemTestsImplementation {
     private StockItem stockItem;
     private ProductImpl mockProduct;
 

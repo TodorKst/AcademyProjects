@@ -81,8 +81,8 @@ public class Main {
 
         try {
             Receipt receipt = shopService.processSale(shop, cashier, customer, LocalDate.now());
-//            receiptService.serializeReceipt(receipt, "receipts"); // this method saves the receipt to a file
-//            receiptService.printReceipt(receipt); //this method prints the receipt to a file that a human can read
+            receiptService.serializeReceipt(receipt, "receipts"); // this method saves the receipt to a file
+            receiptService.printReceipt(receipt); //this method prints the receipt to a file that a human can read
 
 //          to disable saving the receipt to a file just comment out the 2 lines above
 
@@ -97,9 +97,9 @@ public class Main {
         } catch (InsufficientStockException | InsufficientFundsException | ProductExpiredException e) {
             System.out.println("Sale failed: " + e.getMessage());
         }
-//        catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         System.out.println("Total Costs: " + financialsService.calculateTotalCosts(shop));
         System.out.println("Total Income: " + financialsService.calculateTotalIncome(shop));

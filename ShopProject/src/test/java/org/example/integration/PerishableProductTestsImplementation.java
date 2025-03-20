@@ -1,4 +1,4 @@
-package org.example;
+package org.example.integration;
 
 import org.example.enums.ProductCategory;
 import org.example.exceptions.ProductExpiredException;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class PerishableProductTests {
+class PerishableProductTestsImplementation {
     private PerishableProduct product;
     private Shop shop;
 

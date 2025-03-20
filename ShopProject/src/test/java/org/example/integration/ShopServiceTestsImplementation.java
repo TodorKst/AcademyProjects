@@ -1,4 +1,4 @@
-package org.example;
+package org.example.integration;
 
 import org.example.enums.ProductCategory;
 import org.example.exceptions.InsufficientFundsException;
@@ -24,7 +24,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShopServiceTests {
+class ShopServiceTestsImplementation {
     private Shop shop;
     private Cashier cashier;
     private Customer customer;
@@ -54,16 +54,16 @@ class ShopServiceTests {
         milk = new PerishableProduct("P001", "Milk", ProductCategory.FOOD, new BigDecimal("2.00"), LocalDate.now().plusDays(10));
         soap = new NonPerishableProduct("NP001", "Soap", ProductCategory.NON_FOOD, new BigDecimal("1.50"));
 
-        shop.addStock(milk, 10, BigDecimal.valueOf(2));  // Cost price: 2
-        shop.addStock(soap, 20, BigDecimal.valueOf(1));  // Cost price: 1
+        shop.addStock(milk, 10, BigDecimal.valueOf(2));
+        shop.addStock(soap, 20, BigDecimal.valueOf(1));
 
         shop.addCashier(cashier);
     }
 
     @Test
     void processSale_Should_Process_Sale() throws InsufficientFundsException, InsufficientStockException, ProductExpiredException {
-        customer.addToShoppingCart(milk, 2);  // 2 Milk @ 2.00 each
-        customer.addToShoppingCart(soap, 3);  // 3 Soap @ 1.50 each
+        customer.addToShoppingCart(milk, 2);
+        customer.addToShoppingCart(soap, 3);
 
         Receipt receipt = shopService.processSale(shop, cashier, customer, LocalDate.now());
 
@@ -74,7 +74,7 @@ class ShopServiceTests {
 
     @Test
     void processSale_Should_Throw_If_Not_Enough_Balance() {
-        customer.setBalance(new BigDecimal("3.00")); // Not enough for purchase
+        customer.setBalance(new BigDecimal("3.00"));
         customer.addToShoppingCart(milk, 2);
 
         assertThrows(InsufficientFundsException.class, () -> {
@@ -84,7 +84,7 @@ class ShopServiceTests {
 
     @Test
     void processSale_Should_Throw_If_Not_Enough_Stock() {
-        customer.addToShoppingCart(milk, 20); // Trying to buy 20, but only 10 in stock
+        customer.addToShoppingCart(milk, 20);
 
         assertThrows(InsufficientStockException.class, () -> {
             shopService.processSale(shop, cashier, customer, LocalDate.now());
