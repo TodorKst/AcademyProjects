@@ -14,11 +14,9 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        // Create a PrintingHouse
         PrintingHouse printingHouse = new PrintingHouse();
         PrintingHouseService service = PrintingHouseServiceImpl.getInstance();
 
-        // Create a Book and a Newspaper
         Book book = new Book("Java Programming",
                 LocalDate.of(2023, 5, 10),
                 300,
@@ -30,15 +28,12 @@ public class Main {
                 40,
                 PaperSize.A3);
 
-        // Create Orders
         Order bookOrder = new Order(book, 100);
         Order newspaperOrder = new Order(newspaper, 500);
 
-        // Add Orders to PrintingHouse
         printingHouse.getOrders().add(bookOrder);
         printingHouse.getOrders().add(newspaperOrder);
 
-        // Display Calculation Results
         System.out.println("Total Paper Cost: " + service.calculateTotalExpenses(printingHouse));
         System.out.println("Total Income: " + service.calculateTotalIncome(printingHouse));
         System.out.println("Total Profit: " + service.calculateProfit(printingHouse));
