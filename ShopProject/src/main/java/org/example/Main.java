@@ -4,6 +4,7 @@ import org.example.enums.ProductCategory;
 import org.example.exceptions.InsufficientFundsException;
 import org.example.exceptions.InsufficientStockException;
 import org.example.exceptions.ProductExpiredException;
+import org.example.exceptions.UnsuccessfulDeserializationException;
 import org.example.models.CashDesk;
 import org.example.models.Shop;
 import org.example.models.contracts.Product;
@@ -40,7 +41,12 @@ public class Main {
         FinancialsService financialsService = FinancialsServiceImpl.getInstance();
 
         System.out.println("Loading previous receipts...");
-        List<Receipt> previousReceipts = receiptService.deserializeReceipts("receipts");
+        List<Receipt> previousReceipts = null;
+        try {
+            previousReceipts = receiptService.deserializeReceipts("receipts");
+        } catch (UnsuccessfulDeserializationException e) {
+            System.out.println("Failed to load previous receipts: " + e.getMessage());
+        }
         System.out.println("Total previous receipts loaded: " + previousReceipts.size());
         System.out.println();
         System.out.println("====================================");

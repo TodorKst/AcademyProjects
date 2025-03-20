@@ -2,6 +2,7 @@ package org.example.models.person;
 
 
 
+import org.example.exceptions.InvalidInputException;
 import org.example.models.contracts.Product;
 
 import java.math.BigDecimal;
@@ -36,10 +37,10 @@ public class Customer extends PersonImpl {
 
     public void deductBalance(BigDecimal amount) {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Deduction amount must be non-negative.");
+            throw new InvalidInputException("Deduction amount must be non-negative.");
         }
         if (this.balance.compareTo(amount) < 0) {
-            throw new IllegalArgumentException("Insufficient balance for customer " + getName());
+            throw new InvalidInputException("Insufficient balance for customer " + getName());
         }
         this.balance = this.balance.subtract(amount);
     }

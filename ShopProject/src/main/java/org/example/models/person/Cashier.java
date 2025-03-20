@@ -16,7 +16,7 @@ public class Cashier extends PersonImpl implements Serializable {
         this.salary = salary;
     }
 
-    public Cashier(String id, String name) {
+    public Cashier() {
     }
 
     public CashDesk getCashDesk() {

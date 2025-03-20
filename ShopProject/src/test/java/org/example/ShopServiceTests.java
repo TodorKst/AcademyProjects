@@ -3,6 +3,7 @@ package org.example;
 import org.example.enums.ProductCategory;
 import org.example.exceptions.InsufficientFundsException;
 import org.example.exceptions.InsufficientStockException;
+import org.example.exceptions.InvalidInputException;
 import org.example.exceptions.ProductExpiredException;
 import org.example.models.CashDesk;
 import org.example.models.Shop;
@@ -23,7 +24,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShopTests {
+class ShopServiceTests {
     private Shop shop;
     private Cashier cashier;
     private Customer customer;
@@ -117,7 +118,7 @@ class ShopTests {
         Cashier fakeCashier = new Cashier("C999", "Fake Cashier", null, new BigDecimal("1000.00"));
         customer.addToShoppingCart(milk, 2);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidInputException.class, () -> {
             shopService.processSale(shop, fakeCashier, customer, LocalDate.now());
         });
     }
@@ -146,13 +147,13 @@ class ShopTests {
     }
 
     @Test
-    void calculateTotalIncome_Should_Be_Zero_Initially() {
-        assertEquals(BigDecimal.ZERO.setScale(0), financialsService.calculateTotalIncome(shop));
+    void calculateTotalIncome_Should_Throw_When_NoReceiptsExist() {
+        assertThrows(InvalidInputException.class, () -> financialsService.calculateTotalIncome(shop));
     }
 
     @Test
-    void calculateProfit_Should_Be_Negative_If_No_Sales() {
-        assertTrue(financialsService.calculateProfit(shop).compareTo(BigDecimal.ZERO) < 0);
+    void calculateProfit_Should_ThrowIfNoSales() {
+        assertThrows(InvalidInputException.class, () -> financialsService.calculateProfit(shop));
     }
 
 }

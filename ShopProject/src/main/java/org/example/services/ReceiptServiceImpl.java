@@ -1,5 +1,7 @@
 package org.example.services;
 
+import org.example.exceptions.UnsuccessfulDeserializationException;
+import org.example.exceptions.UnsuccessfulSerializationException;
 import org.example.models.receipt.Receipt;
 import org.example.models.receipt.ReceiptItem;
 import org.example.services.contracts.ReceiptService;
@@ -38,7 +40,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                     Receipt receipt = (Receipt) ois.readObject();
                     receipts.add(receipt);
                 } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
+                    throw new UnsuccessfulDeserializationException("Failed to deserialize receipt from file: " + file.getName());
                 }
             }
         }
@@ -78,7 +80,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             oos.writeObject(receipt);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new UnsuccessfulSerializationException("Failed to serialize receipt to file: " + file.getName());
         }
     }
 

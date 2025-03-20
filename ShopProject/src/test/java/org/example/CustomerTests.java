@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.enums.ProductCategory;
+import org.example.exceptions.InvalidInputException;
 import org.example.models.contracts.Product;
 import org.example.models.person.Customer;
 import org.example.models.product.ProductImpl;
@@ -80,11 +81,11 @@ class CustomerTests {
 
     @Test
     void deductBalance_Should_ThrowException_WhenAmountIsNegative() {
-        assertThrows(IllegalArgumentException.class, () -> customer.deductBalance(BigDecimal.valueOf(-10)));
+        assertThrows(InvalidInputException.class, () -> customer.deductBalance(BigDecimal.valueOf(-10)));
     }
 
     @Test
     void deductBalance_Should_ThrowException_WhenInsufficientFunds() {
-        assertThrows(IllegalArgumentException.class, () -> customer.deductBalance(BigDecimal.valueOf(150)));
+        assertThrows(InvalidInputException.class, () -> customer.deductBalance(BigDecimal.valueOf(150)));
     }
 }

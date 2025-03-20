@@ -1,8 +1,9 @@
 package org.example.models.person;
 
-import org.example.models.contracts.Person;
+import java.io.Serializable;
 
-public abstract class PersonImpl implements Person {
+// There is no need for a person interface,
+public abstract class PersonImpl implements Serializable {
     private final String id;
     private String name;
 
@@ -16,17 +17,14 @@ public abstract class PersonImpl implements Person {
         this.name = null;
     }
 
-    @Override
     public String getId() {
         return id;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }

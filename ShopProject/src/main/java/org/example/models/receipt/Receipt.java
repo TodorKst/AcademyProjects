@@ -1,13 +1,11 @@
 package org.example.models.receipt;
 
 
-
 import org.example.models.person.Cashier;
 
-import java.io.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,9 +47,5 @@ public class Receipt implements Serializable {
     public BigDecimal getTotalAmount() {
         return totalAmount;
     }
-
-
-
-
 
 }

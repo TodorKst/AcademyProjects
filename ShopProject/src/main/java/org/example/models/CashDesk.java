@@ -12,7 +12,7 @@ public class CashDesk implements Serializable {
 
     public CashDesk(int deskNumber) {
         this.deskNumber = deskNumber;
-        this.customerQueue = new LinkedList<Customer>();
+        this.customerQueue = new LinkedList<>();
     }
 
     public int getDeskNumber() {
