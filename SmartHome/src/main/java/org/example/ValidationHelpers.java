@@ -36,8 +36,8 @@ public class ValidationHelpers {
         }
     }
 
-    public static void validateFloat(float number, String message) {
-        if (number < 0) {
+    public static void validateBatteryLevel(int batteryLevel, String message) {
+        if (batteryLevel < 0 || batteryLevel > 100) {
             throw new InvalidInputException(message);
         }
     }

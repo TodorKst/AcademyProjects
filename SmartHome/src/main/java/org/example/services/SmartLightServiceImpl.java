@@ -19,7 +19,7 @@ public class SmartLightServiceImpl implements SmartLightService {
     public static SmartLightService getInstance() {
         synchronized (SmartLightServiceImpl.class) {
             if (instance == null) {
-                return new SmartLightServiceImpl();
+                instance = new SmartLightServiceImpl();
             }
         }
         return instance;

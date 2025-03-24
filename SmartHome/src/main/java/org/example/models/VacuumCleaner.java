@@ -1,5 +1,6 @@
 package org.example.models;
 
+import org.example.ValidationHelpers;
 import org.example.enums.DeviceType;
 import org.example.exceptions.InvalidInputException;
 
@@ -30,9 +31,7 @@ public class VacuumCleaner extends Device {
     }
 
     public void setBatteryLevel(int batteryLevel) {
-        if (batteryLevel < 0 || batteryLevel > 100) {
-            throw new InvalidInputException(BATTERY_LEVEL_INPUT_ERROR_MESSAGE);
-        }
+        ValidationHelpers.validateBatteryLevel(batteryLevel, BATTERY_LEVEL_INPUT_ERROR_MESSAGE);
         this.batteryLevel = batteryLevel;
     }
 

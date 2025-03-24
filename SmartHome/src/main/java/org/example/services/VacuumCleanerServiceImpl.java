@@ -19,7 +19,7 @@ public class VacuumCleanerServiceImpl implements VacuumCleanerService {
     public static VacuumCleanerService getInstance() {
         synchronized (SmartLightServiceImpl.class) {
             if (instance == null) {
-                return new VacuumCleanerServiceImpl();
+                instance = new VacuumCleanerServiceImpl();
             }
         }
         return instance;
