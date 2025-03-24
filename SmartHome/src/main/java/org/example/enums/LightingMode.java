@@ -1,18 +1,20 @@
 package org.example.enums;
 
+import java.math.BigDecimal;
+
 public enum LightingMode {
-    DIM(0.5f),
-    MEDIUM(0.75f),
-    STRONG(1.0f);
+    DIM(BigDecimal.valueOf(0.5)),
+    MEDIUM(BigDecimal.valueOf(0.75)),
+    STRONG(BigDecimal.valueOf(1.0));
 
 
-    private final float lumenOutputFactor;
+    private final BigDecimal lumenOutputFactor;
 
-    LightingMode(float lumenOutputFactor) {
+    LightingMode(BigDecimal lumenOutputFactor) {
         this.lumenOutputFactor = lumenOutputFactor;
     }
 
-    public float getLumenOutputFactor() {
+    public BigDecimal getLumenOutputFactor() {
         return lumenOutputFactor;
     }
 

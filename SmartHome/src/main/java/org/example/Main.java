@@ -5,11 +5,19 @@ import org.example.enums.LightingMode;
 import org.example.exceptions.InvalidInputException;
 import org.example.models.SmartLight;
 import org.example.models.VacuumCleaner;
+import org.example.services.VacuumCleanerServiceImpl;
+import org.example.services.contracts.SmartLightService;
+import org.example.services.SmartLightServiceImpl;
+import org.example.services.contracts.VacuumCleanerService;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
+        SmartLightService smartLightService = SmartLightServiceImpl.getInstance();
+        VacuumCleanerService vacuumCleanerService = VacuumCleanerServiceImpl.getInstance();
+
         try {
             // Create a SmartLight with some example values
             SmartLight smartLight = new SmartLight(
@@ -18,17 +26,17 @@ public class Main {
                     10,
                     DeviceType.BUILT_IN,
                     LightingMode.DIM,
-                    800
+                    BigDecimal.valueOf(800)
             );
 
-            System.out.println("Smart Light Initial Brightness: " + smartLight.getCurrentLumenOutput());
+            System.out.println("Smart Light Initial Brightness: " + smartLightService.getCurrentLumenOutput(smartLight));
 
-            smartLight.increaseBrightness();
-            System.out.println("Brightness after increasing: " + smartLight.getCurrentLumenOutput());
+            smartLightService.increaseBrightness(smartLight);
+            System.out.println("Brightness after increasing: " + smartLightService.getCurrentLumenOutput(smartLight));
 
             // Try increasing beyond max brightness (should throw an exception)
-            smartLight.increaseBrightness();
-            smartLight.increaseBrightness(); // This should trigger the exception, and it should be caught and output in the console
+            smartLightService.increaseBrightness(smartLight);
+            smartLightService.increaseBrightness(smartLight); // This should trigger the exception, and it should be caught and output in the console
         } catch (InvalidInputException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -48,17 +56,17 @@ public class Main {
             System.out.println("Vacuum Battery Level: " + vacuum.getBatteryLevel());
 
             // Attempt to clean an area of 3m²
-            int cleaned = vacuum.clean(3);
+            int cleaned = vacuumCleanerService.clean(vacuum, 3);
             System.out.println("Cleaned area: " + cleaned + "m²");
             System.out.println("Battery after cleaning: " + vacuum.getBatteryLevel());
 
             // Try to clean area that will go beyond battery capacity
-            vacuum.clean(100); // May trigger an error depending on remaining battery
+            vacuumCleanerService.clean(vacuum, 100); // May trigger an error depending on remaining battery
 
             System.out.println("Battery: " + vacuum.getBatteryLevel());
-            vacuum.recharge();
+            vacuumCleanerService.recharge(vacuum);
             System.out.println("Battery: " + vacuum.getBatteryLevel());
-            vacuum.recharge();
+            vacuumCleanerService.recharge(vacuum);
         } catch (InvalidInputException e) {
             System.out.println("Error: " + e.getMessage());
         }

@@ -2,7 +2,6 @@ package org.example.models;
 
 import org.example.ValidationHelpers;
 import org.example.enums.DeviceType;
-import org.example.exceptions.InvalidInputException;
 
 import java.time.LocalDate;
 
@@ -49,7 +48,6 @@ public abstract class Device {
     }
 
     public void setPowerConsumption(int powerConsumption) {
-
         ValidationHelpers.validateInt(powerConsumption, POWER_CONSUMPTION_INPUT_ERROR_MESSAGE);
         this.powerConsumption = powerConsumption;
     }
