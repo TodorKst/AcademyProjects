@@ -1,7 +1,7 @@
 package org.example.medicalrecordproject.controllers;
 
 import org.example.medicalrecordproject.models.Diagnosis;
-import org.example.medicalrecordproject.services.DiagnosisService;
+import org.example.medicalrecordproject.services.DiagnosisServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +12,11 @@ import java.util.List;
 public class TestRestController {
 
     @Autowired
-    private DiagnosisService diagnosisService;
+    private DiagnosisServiceImpl diagnosisServiceImpl;
 
     @GetMapping("/api/diagnoses")
     public ResponseEntity<List<Diagnosis>> getAllDiagnoses() {
-        List<Diagnosis> diagnoses = diagnosisService.getAllDiagnoses();
+        List<Diagnosis> diagnoses = diagnosisServiceImpl.getAllDiagnoses();
         return ResponseEntity.ok(diagnoses);
     }
 }

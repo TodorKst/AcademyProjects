@@ -11,11 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SickLeave {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class SickLeave extends BaseEntity {
 
     @Column(name = "start_date", nullable = false)
     private Date startDate;
@@ -29,4 +25,5 @@ public class SickLeave {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medical_visit_id")
     private MedicalVisit medicalVisit;
+
 }

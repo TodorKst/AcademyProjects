@@ -12,15 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Diagnosis {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Diagnosis extends BaseEntity {
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
     @Column(name = "description")
     private String description;
+
 }

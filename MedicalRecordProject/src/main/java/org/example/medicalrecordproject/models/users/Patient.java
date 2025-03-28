@@ -4,6 +4,7 @@ import lombok.*;
 import jakarta.persistence.*;
 import java.sql.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "patient_profile", schema = "medical_record")
 @DiscriminatorValue("PATIENT")

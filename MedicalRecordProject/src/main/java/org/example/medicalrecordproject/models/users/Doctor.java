@@ -7,6 +7,7 @@ import org.example.medicalrecordproject.models.Specialty;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "doctor_profile", schema = "medical_record")
 @DiscriminatorValue("DOCTOR")

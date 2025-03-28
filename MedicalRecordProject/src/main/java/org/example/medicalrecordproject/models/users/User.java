@@ -2,6 +2,8 @@ package org.example.medicalrecordproject.models.users;
 
 import lombok.*;
 import jakarta.persistence.*;
+import org.example.medicalrecordproject.models.BaseEntity;
+
 import java.sql.Timestamp;
 
 @Entity
@@ -12,11 +14,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public abstract class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public abstract class User extends BaseEntity {
 
     @Column(name = "username", nullable = false, unique = true, length = 50)
     private String username;

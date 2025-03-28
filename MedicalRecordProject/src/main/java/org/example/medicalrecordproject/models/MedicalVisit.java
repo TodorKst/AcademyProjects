@@ -15,11 +15,7 @@ import org.example.medicalrecordproject.models.users.Patient;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MedicalVisit {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class MedicalVisit extends BaseEntity {
 
     @Column(name = "treatment")
     private String treatment;
@@ -47,4 +43,5 @@ public class MedicalVisit {
     )
     @Builder.Default
     private Set<Diagnosis> diagnoses = new HashSet<>();
+
 }
