@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.repositories.MedicalVisitRepository;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
@@ -40,7 +41,8 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
 
     @Override
     public void updateMedicalVisit(long id, MedicalVisit medicalVisit) {
-        MedicalVisit existingMedicalVisit = medicalVisitRepository.findById(id).orElse(null);
+        MedicalVisit existingMedicalVisit = medicalVisitRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("MedicalVisit for: " + medicalVisit.getPatient().getName()));
         if (existingMedicalVisit != null) {
             existingMedicalVisit.setDoctor(medicalVisit.getDoctor());
             existingMedicalVisit.setVisitDate(medicalVisit.getVisitDate());

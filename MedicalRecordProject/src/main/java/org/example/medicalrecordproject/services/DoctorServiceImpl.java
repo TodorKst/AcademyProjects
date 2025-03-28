@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.repositories.DoctorRepository;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
@@ -40,8 +41,8 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public void updateDoctor(long id, Doctor doctor) {
-        Doctor existingDoctor = doctorRepository.findById(id).orElse(null);
-        if (existingDoctor != null) {
+        Doctor existingDoctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(doctor.getName()));
             existingDoctor.setName(doctor.getName());
             existingDoctor.setSpecialties(doctor.getSpecialties());
             doctor.setName(doctor.getName());
@@ -49,6 +50,5 @@ public class DoctorServiceImpl implements DoctorService {
             doctor.setPassword(doctor.getPassword());
             doctor.setGp(doctor.isGp());
             doctorRepository.save(existingDoctor);
-        }
     }
 }

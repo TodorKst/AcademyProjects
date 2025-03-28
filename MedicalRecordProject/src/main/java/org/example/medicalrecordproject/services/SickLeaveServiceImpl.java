@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.SickLeave;
 import org.example.medicalrecordproject.repositories.SickLeaveRepository;
 import org.example.medicalrecordproject.services.contracts.SickLeaveService;
@@ -39,7 +40,8 @@ public class SickLeaveServiceImpl implements SickLeaveService {
 
     @Override
     public void updateSickLeave(long id, SickLeave sickLeave) {
-        SickLeave existingSickLeave = sickLeaveRepository.findById(id).orElse(null);
+        SickLeave existingSickLeave = sickLeaveRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("SickLeave for: " + sickLeave.getMedicalVisit().getPatient().getName()));
         if (existingSickLeave != null) {
             existingSickLeave.setStartDate(sickLeave.getStartDate());
             existingSickLeave.setEndDate(sickLeave.getEndDate());

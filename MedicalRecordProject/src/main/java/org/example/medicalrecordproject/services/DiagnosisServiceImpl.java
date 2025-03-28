@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.Diagnosis;
 import org.example.medicalrecordproject.repositories.DiagnosisRepository;
 import org.example.medicalrecordproject.services.contracts.DiagnosisService;
@@ -39,12 +40,11 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
     @Override
     public void updateDiagnosis(long id, Diagnosis diagnosis) {
-        Diagnosis existingDiagnosis = diagnosisRepository.findById(id).orElse(null);
-        if (existingDiagnosis != null) {
+        Diagnosis existingDiagnosis = diagnosisRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(diagnosis.getName()));
             existingDiagnosis.setName(diagnosis.getName());
             existingDiagnosis.setDescription(diagnosis.getDescription());
             diagnosisRepository.save(existingDiagnosis);
-        }
     }
 
 }

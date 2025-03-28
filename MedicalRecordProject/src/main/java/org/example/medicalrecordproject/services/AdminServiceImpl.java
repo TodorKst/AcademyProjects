@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Admin;
 import org.example.medicalrecordproject.repositories.AdminRepository;
 import org.example.medicalrecordproject.services.contracts.AdminService;
@@ -40,13 +41,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void updateAdmin(long id, Admin admin) {
-        Admin existingAdmin = adminRepository.findById(id).orElse(null);
-        if (existingAdmin != null) {
-            existingAdmin.setName(admin.getName());
-            existingAdmin.setUsername(admin.getUsername());
-            existingAdmin.setPassword(admin.getPassword());
-            adminRepository.save(existingAdmin);
-        }
+        Admin existingAdmin = adminRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(admin.getName()));
+        existingAdmin.setName(admin.getName());
+        existingAdmin.setUsername(admin.getUsername());
+        existingAdmin.setPassword(admin.getPassword());
+        adminRepository.save(existingAdmin);
     }
 
 }

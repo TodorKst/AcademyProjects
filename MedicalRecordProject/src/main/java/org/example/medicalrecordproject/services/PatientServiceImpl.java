@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Patient;
 import org.example.medicalrecordproject.repositories.PatientRepository;
 import org.example.medicalrecordproject.services.contracts.PatientService;
@@ -42,7 +43,8 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public void updateAdmin(long id, Patient patient) {
-        Patient existingPatient = patientRepository.findById(id).orElse(null);
+        Patient existingPatient = patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(patient.getName()));
         if (existingPatient != null) {
             existingPatient.setName(patient.getName());
             existingPatient.setUsername(patient.getUsername());
@@ -55,7 +57,8 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public void payInsurance(long id) {
-        Patient existingPatient = patientRepository.findById(id).orElse(null);
+        Patient existingPatient = patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Patient"));
         if (existingPatient != null) {
             existingPatient.setLastInsurancePayment(Date.valueOf(LocalDate.now()));
             patientRepository.save(existingPatient);
