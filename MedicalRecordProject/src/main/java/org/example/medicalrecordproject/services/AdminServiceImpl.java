@@ -25,8 +25,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin getAdminById(long id) {
-        return adminRepository.findById(id).orElse(null);
+    public Admin getAdminById(long id) throws EntityNotFoundException {
+        return adminRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Admin"));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateAdmin(long id, Admin admin) {
+    public void updateAdmin(long id, Admin admin) throws EntityNotFoundException {
         Admin existingAdmin = adminRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(admin.getName()));
         existingAdmin.setName(admin.getName());

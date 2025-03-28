@@ -24,8 +24,9 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public Diagnosis getDiagnosisById(long id) {
-        return diagnosisRepository.findById(id).orElse(null);
+    public Diagnosis getDiagnosisById(long id) throws EntityNotFoundException {
+        return diagnosisRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Diagnosis"));
     }
 
     @Override
@@ -39,7 +40,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public void updateDiagnosis(long id, Diagnosis diagnosis) {
+    public void updateDiagnosis(long id, Diagnosis diagnosis) throws EntityNotFoundException {
         Diagnosis existingDiagnosis = diagnosisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(diagnosis.getName()));
             existingDiagnosis.setName(diagnosis.getName());

@@ -25,8 +25,9 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
     }
 
     @Override
-    public MedicalVisit getMedicalVisitById(long id) {
-        return medicalVisitRepository.findById(id).orElse(null);
+    public MedicalVisit getMedicalVisitById(long id) throws EntityNotFoundException {
+        return medicalVisitRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("MedicalVisit"));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
     }
 
     @Override
-    public void updateMedicalVisit(long id, MedicalVisit medicalVisit) {
+    public void updateMedicalVisit(long id, MedicalVisit medicalVisit) throws EntityNotFoundException {
         MedicalVisit existingMedicalVisit = medicalVisitRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("MedicalVisit for: " + medicalVisit.getPatient().getName()));
         if (existingMedicalVisit != null) {

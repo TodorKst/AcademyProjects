@@ -24,8 +24,9 @@ public class SickLeaveServiceImpl implements SickLeaveService {
     }
 
     @Override
-    public SickLeave getSickLeaveById(long id) {
-        return sickLeaveRepository.findById(id).orElse(null);
+    public SickLeave getSickLeaveById(long id) throws EntityNotFoundException {
+        return sickLeaveRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("SickLeave"));
     }
 
     @Override
@@ -39,7 +40,7 @@ public class SickLeaveServiceImpl implements SickLeaveService {
     }
 
     @Override
-    public void updateSickLeave(long id, SickLeave sickLeave) {
+    public void updateSickLeave(long id, SickLeave sickLeave) throws EntityNotFoundException {
         SickLeave existingSickLeave = sickLeaveRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SickLeave for: " + sickLeave.getMedicalVisit().getPatient().getName()));
         if (existingSickLeave != null) {

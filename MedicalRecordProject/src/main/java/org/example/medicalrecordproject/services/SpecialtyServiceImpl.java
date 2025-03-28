@@ -24,8 +24,9 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     }
 
     @Override
-    public Specialty getSpecialtyById(long id) {
-        return specialtyRepository.findById(id).orElse(null);
+    public Specialty getSpecialtyById(long id) throws EntityNotFoundException {
+        return specialtyRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Specialty"));
     }
 
     @Override
@@ -39,7 +40,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     }
 
     @Override
-    public void updateSpecialty(long id, Specialty specialty) {
+    public void updateSpecialty(long id, Specialty specialty) throws EntityNotFoundException {
         Specialty existingSpecialty = specialtyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(specialty.getName()));
         if (existingSpecialty != null) {

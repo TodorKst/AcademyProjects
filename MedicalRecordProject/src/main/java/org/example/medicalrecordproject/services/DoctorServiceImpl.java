@@ -25,8 +25,9 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public Doctor getDoctorById(long id) {
-        return doctorRepository.findById(id).orElse(null);
+    public Doctor getDoctorById(long id) throws EntityNotFoundException {
+        return doctorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Doctor"));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public void updateDoctor(long id, Doctor doctor) {
+    public void updateDoctor(long id, Doctor doctor) throws EntityNotFoundException {
         Doctor existingDoctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(doctor.getName()));
             existingDoctor.setName(doctor.getName());
