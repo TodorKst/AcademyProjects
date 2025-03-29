@@ -5,6 +5,7 @@ import org.example.medicalrecordproject.models.users.Patient;
 import org.example.medicalrecordproject.repositories.PatientRepository;
 import org.example.medicalrecordproject.services.contracts.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -21,6 +22,7 @@ public class PatientServiceImpl implements PatientService {
         this.patientRepository = patientRepository;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public List<Patient> getAllPatients() {
         return patientRepository.findAll();
