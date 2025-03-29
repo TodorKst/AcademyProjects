@@ -2,6 +2,7 @@ package org.example.medicalrecordproject.models.users;
 
 import lombok.*;
 import jakarta.persistence.*;
+import org.example.medicalrecordproject.enums.UserRole;
 import org.example.medicalrecordproject.models.BaseEntity;
 
 import java.sql.Timestamp;
@@ -27,4 +28,8 @@ public abstract class User extends BaseEntity {
 
     @Column(name = "name", length = 100)
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", insertable = false, updatable = false) // Prevents conflicts with DiscriminatorColumn
+    private UserRole role;
 }

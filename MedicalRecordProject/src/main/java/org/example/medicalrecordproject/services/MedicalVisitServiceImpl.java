@@ -7,6 +7,10 @@ import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -52,5 +56,26 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
             existingMedicalVisit.setDiagnoses(medicalVisit.getDiagnoses());
             medicalVisitRepository.save(existingMedicalVisit);
         }
+    }
+
+    @Override
+    public List<MedicalVisit> getByPatientId(long id) {
+        return medicalVisitRepository.findByPatientId(id);
+    }
+
+    @Override
+    public List<MedicalVisit> getByDoctorId(long id) {
+        return medicalVisitRepository.findByDoctorId(id);
+    }
+
+    @Override
+    public List<MedicalVisit> getByVisitDate(String date) {
+        LocalDateTime date1 = LocalDateTime.from(Instant.parse(date));
+        return medicalVisitRepository.findByVisitDate(date1);
+    }
+
+    @Override
+    public List<MedicalVisit> getByVisitDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        return medicalVisitRepository.findByVisitDateBetween(startDate, endDate);
     }
 }

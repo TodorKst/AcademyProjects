@@ -1,6 +1,7 @@
 package org.example.medicalrecordproject.services;
 
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.repositories.DoctorRepository;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
@@ -55,5 +56,17 @@ public class DoctorServiceImpl implements DoctorService {
             doctor.setPassword(doctor.getPassword());
             doctor.setIsGp(doctor.getIsGp());
             doctorRepository.save(existingDoctor);
+    }
+
+    @Override
+    public Doctor getAllWithSpeciality(String specialty) {
+        Specialty specialty1 = new Specialty();
+        specialty1.setName(specialty);
+        return doctorRepository.findBySpecialtiesContains(specialty1);
+    }
+
+    @Override
+    public List<Doctor> getAllGps() {
+        return doctorRepository.findAllByIsGp(true);
     }
 }

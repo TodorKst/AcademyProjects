@@ -1,6 +1,7 @@
 package org.example.medicalrecordproject.services.contracts;
 
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
 
 import java.util.List;
@@ -15,4 +16,8 @@ public interface DoctorService {
     void deleteDoctor(long id);
 
     void updateDoctor(long id, Doctor doctor) throws EntityNotFoundException;
+
+    public Doctor getAllWithSpeciality(String specialty);
+
+    public List<Doctor> getAllGps();
 }

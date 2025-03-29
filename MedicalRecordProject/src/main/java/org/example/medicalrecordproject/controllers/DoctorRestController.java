@@ -1,8 +1,10 @@
 package org.example.medicalrecordproject.controllers;
 
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
+import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +17,13 @@ import java.util.List;
 public class DoctorRestController {
 
     private final DoctorService doctorService;
+    private final MedicalVisitService medicalVisitService;
 
     @Autowired
-    public DoctorRestController(DoctorService doctorService) {
+    public DoctorRestController(DoctorService doctorService,
+                                MedicalVisitService medicalVisitService) {
         this.doctorService = doctorService;
+        this.medicalVisitService = medicalVisitService;
     }
 
     @GetMapping()
@@ -56,5 +61,20 @@ public class DoctorRestController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+
+    @GetMapping("/{id}/medical-visits")
+    public List<MedicalVisit> getMedicalVisitsByDoctorId(@PathVariable long id) {
+        return medicalVisitService.getByDoctorId(id);
+    }
+
+//    @GetMapping
+//    public Doctor getAllWithSpeciality(@RequestParam String specialty) {
+//        return doctorService.getAllWithSpeciality(specialty);
+//    }
+
+    @GetMapping("/gps")
+    public List<Doctor> getAllGps() {
+        return doctorService.getAllGps();
     }
 }

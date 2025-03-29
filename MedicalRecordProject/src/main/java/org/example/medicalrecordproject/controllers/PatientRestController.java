@@ -1,7 +1,9 @@
 package org.example.medicalrecordproject.controllers;
 
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.users.Patient;
+import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.example.medicalrecordproject.services.contracts.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +17,13 @@ import java.util.List;
 public class PatientRestController {
 
     private final PatientService patientService;
+    private final MedicalVisitService medicalVisitService;
 
     @Autowired
-    public PatientRestController(PatientService patientService) {
+    public PatientRestController(PatientService patientService,
+                                 MedicalVisitService medicalVisitService) {
         this.patientService = patientService;
+        this.medicalVisitService = medicalVisitService;
     }
 
     @GetMapping()
@@ -56,5 +61,10 @@ public class PatientRestController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+
+    @GetMapping("/{id}/medical-visits")
+    public List<MedicalVisit> getMedicalVisitsByPatientId(@PathVariable long id) {
+        return medicalVisitService.getByPatientId(id);
     }
 }
