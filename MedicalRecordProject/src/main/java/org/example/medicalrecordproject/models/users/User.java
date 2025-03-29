@@ -6,6 +6,7 @@ import org.example.medicalrecordproject.models.BaseEntity;
 
 import java.sql.Timestamp;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "users", schema = "medical_record")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -13,7 +14,6 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public abstract class User extends BaseEntity {
 
     @Column(name = "username", nullable = false, unique = true, length = 50)

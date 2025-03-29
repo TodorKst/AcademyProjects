@@ -32,7 +32,11 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Doctor saveDoctor(Doctor doctor) {
-        return doctorRepository.save(doctor);
+        try {
+            return doctorRepository.save(doctor);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
@@ -49,7 +53,7 @@ public class DoctorServiceImpl implements DoctorService {
             doctor.setName(doctor.getName());
             doctor.setUsername(doctor.getUsername());
             doctor.setPassword(doctor.getPassword());
-            doctor.setGp(doctor.isGp());
+            doctor.setIsGp(doctor.getIsGp());
             doctorRepository.save(existingDoctor);
     }
 }

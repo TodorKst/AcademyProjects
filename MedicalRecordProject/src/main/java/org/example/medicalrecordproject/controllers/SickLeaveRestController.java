@@ -36,7 +36,7 @@ public class SickLeaveRestController {
     }
 
     @PostMapping()
-    public SickLeave saveSickLeave(SickLeave sickLeave) {
+    public SickLeave saveSickLeave(@RequestBody SickLeave sickLeave) {
         return sickLeaveService.saveSickLeave(sickLeave);
     }
 

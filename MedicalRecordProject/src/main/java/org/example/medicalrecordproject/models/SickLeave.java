@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "sick_leave_records", schema = "medical_record")
 @Data

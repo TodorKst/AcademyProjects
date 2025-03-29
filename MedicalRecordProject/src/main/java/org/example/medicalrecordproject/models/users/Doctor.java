@@ -18,7 +18,7 @@ import java.util.Set;
 public class Doctor extends User {
 
     @Column(name = "is_gp")
-    private boolean isGp;
+    private Boolean isGp;
 
     @ManyToMany
     @JoinTable(

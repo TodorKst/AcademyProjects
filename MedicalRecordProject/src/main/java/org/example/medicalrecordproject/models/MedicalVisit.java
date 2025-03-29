@@ -10,6 +10,7 @@ import lombok.*;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.models.users.Patient;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "medical_visits", schema = "medical_record")
 @Data

@@ -27,7 +27,7 @@ public class DoctorRestController {
     }
 
     @GetMapping("/{id}")
-    public Doctor getDoctorById(long id) {
+    public Doctor getDoctorById(@PathVariable long id) {
         try {
             return doctorService.getDoctorById(id);
         } catch (EntityNotFoundException e) {
@@ -36,7 +36,7 @@ public class DoctorRestController {
     }
 
     @PostMapping()
-    public Doctor saveDoctor(Doctor doctor) {
+    public Doctor saveDoctor(@RequestBody Doctor doctor) {
         return doctorService.saveDoctor(doctor);
     }
 
