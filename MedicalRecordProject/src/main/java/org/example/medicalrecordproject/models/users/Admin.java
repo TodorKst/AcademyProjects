@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 @DiscriminatorValue("ADMIN")
 @Data
 @NoArgsConstructor
-@MappedSuperclass
 public class Admin extends User {
     // No additional fields for Admin
 }

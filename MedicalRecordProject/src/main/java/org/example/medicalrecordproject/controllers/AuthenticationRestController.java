@@ -9,27 +9,24 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/login")
 public class AuthenticationRestController {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider tokenProvider;
+
 
     @Autowired
-    public AuthenticationRestController(AuthenticationManager authenticationManager) {
+    public AuthenticationRestController(AuthenticationManager authenticationManager,
+                                        JwtTokenProvider tokenProvider) {
         this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
     }
 
-    // A service to generate JWT tokens
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-
-    @PostMapping("/login")
+    @PostMapping()
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -41,5 +38,10 @@ public class AuthenticationRestController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenProvider.generateToken(authentication);
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+    }
+
+    @GetMapping
+    public String getHello() {
+        return "Hello";
     }
 }
