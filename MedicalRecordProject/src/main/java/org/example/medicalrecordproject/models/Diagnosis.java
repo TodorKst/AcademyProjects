@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "diagnoses", schema = "medical_record")
@@ -23,4 +25,7 @@ public class Diagnosis extends BaseEntity {
 
     @Column(name = "description")
     private String description;
+
+    @ManyToMany(mappedBy = "diagnoses")
+    private List<MedicalVisit> medicalVisits;
 }

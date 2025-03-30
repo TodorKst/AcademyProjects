@@ -2,9 +2,11 @@ package org.example.medicalrecordproject.models.users;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.Specialty;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -29,4 +31,11 @@ public class Doctor extends User {
     )
     @Builder.Default
     private Set<Specialty> specialties = new HashSet<>();
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MedicalVisit> medicalVisits;
+
+    @OneToMany(mappedBy = "gp", fetch = FetchType.LAZY)
+    private List<Patient> patients;
+
 }

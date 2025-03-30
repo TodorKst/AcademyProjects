@@ -2,6 +2,7 @@ package org.example.medicalrecordproject.controllers;
 
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Admin;
+import org.example.medicalrecordproject.models.users.User;
 import org.example.medicalrecordproject.services.contracts.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,12 +23,12 @@ public class AdminRestController {
     }
 
     @GetMapping()
-    public List<Admin> getAllAdmins() {
+    public List<User> getAllAdmins() {
         return adminService.getAllAdmins();
     }
 
     @GetMapping("/{id}")
-    public Admin getAdminById(@PathVariable long id) {
+    public User getAdminById(@PathVariable long id) {
         try {
             return adminService.getAdminById(id);
         } catch (EntityNotFoundException e) {
@@ -36,7 +37,7 @@ public class AdminRestController {
     }
 
     @PostMapping()
-    public Admin saveAdmin(@RequestBody Admin admin) {
+    public User saveAdmin(@RequestBody Admin admin) {
         return adminService.saveAdmin(admin);
     }
 

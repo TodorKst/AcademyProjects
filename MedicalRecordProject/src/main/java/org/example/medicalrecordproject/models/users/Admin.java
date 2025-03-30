@@ -1,13 +1,20 @@
 package org.example.medicalrecordproject.models.users;
 
-import lombok.*;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @DiscriminatorValue("ADMIN")
-@Data
+@Table(name = "admin")
+@AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Admin extends User {
-    // No additional fields for Admin
+
+    @Column(name = "contact_info")
+    private String contactInfo;
 }

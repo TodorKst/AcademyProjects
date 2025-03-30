@@ -2,17 +2,18 @@ package org.example.medicalrecordproject.services.contracts;
 
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Admin;
+import org.example.medicalrecordproject.models.users.User;
 
 import java.util.List;
 
 public interface AdminService {
-    List<Admin> getAllAdmins();
+    List<User> getAllAdmins();
 
-    Admin getAdminById(long id) throws EntityNotFoundException;
+    User getAdminById(long id) throws EntityNotFoundException;
 
-    Admin saveAdmin(Admin admin);
+    User saveAdmin(User admin);
 
     void deleteAdmin(long id);
 
-    void updateAdmin(long id, Admin admin) throws EntityNotFoundException;
+    void updateAdmin(long id, User admin) throws EntityNotFoundException;
 }

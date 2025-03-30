@@ -3,7 +3,10 @@ package org.example.medicalrecordproject.models.users;
 import lombok.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.example.medicalrecordproject.models.MedicalVisit;
+
 import java.sql.Date;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -22,4 +25,8 @@ public class Patient extends User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gp_id")
     private Doctor gp;
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<MedicalVisit> medicalVisits;
+
 }

@@ -19,14 +19,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        org.example.medicalrecordproject.models.users.User user =
-                userRepository.findByUsername(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        System.out.println("Trying to load user: " + username);
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()))
-        );
+        try {
+            org.example.medicalrecordproject.models.users.User user =
+                    userRepository.findByUsername(username)
+                            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+            System.out.println("Loaded user from DB:");
+            System.out.println(" - username: " + user.getUsername());
+            System.out.println(" - password: " + user.getPassword());
+            System.out.println(" - role: " + user.getRole());
+
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(),
+                    user.getPassword(),
+                    Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()))
+            );
+
+        } catch (Exception e) {
+            System.out.println("❌ Exception in loadUserByUsername:");
+            e.printStackTrace();
+            throw e;
+        }
     }
+
+
 }
