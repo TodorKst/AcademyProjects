@@ -33,15 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-        System.out.println("🛡️ JwtAuthenticationFilter running...");
-        String token = getJwtFromRequest(request);
-        System.out.println("➡️ Token from request: " + token);
 
-        if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
-            System.out.println("✅ Token is valid!");
-        } else {
-            System.out.println("❌ Token is missing or invalid!");
-        }
+        String token = getJwtFromRequest(request);
+
         if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
             String username = tokenProvider.getUsernameFromJWT(token);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
