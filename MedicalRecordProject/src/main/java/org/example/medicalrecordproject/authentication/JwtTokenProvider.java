@@ -1,48 +1,43 @@
 package org.example.medicalrecordproject.authentication;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
 
-    @Value("${app.jwtSecret}")
-    private String jwtSecret;
+    private final SecretKey jwtKey;
+    private final int jwtExpirationMs;
 
-    @Value("${app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+    public JwtTokenProvider(@Value("${app.jwtSecret}") String jwtSecret,
+                            @Value("${app.jwtExpirationMs}") int jwtExpirationMs) {
+        this.jwtKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        this.jwtExpirationMs = jwtExpirationMs;
+    }
 
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
 
-        Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(jwtKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String getUsernameFromJWT(String token) {
-        Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(jwtKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -50,18 +45,16 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    public boolean validateToken(String authToken) {
+    public boolean validateToken(String token) {
         try {
-            Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-
             Jwts.parserBuilder()
-                    .setSigningKey(key)
+                    .setSigningKey(jwtKey)
                     .build()
-                    .parseClaimsJws(authToken);
+                    .parseClaimsJws(token);
             return true;
-        } catch (JwtException ex) {
-            // Log the exception or handle it as needed
+        } catch (JwtException | IllegalArgumentException ex) {
+            System.out.println("❌ JWT validation failed: " + ex.getMessage());
+            return false;
         }
-        return false;
     }
 }

@@ -10,12 +10,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-@Service
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider tokenProvider;
@@ -33,7 +33,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+        System.out.println("🛡️ JwtAuthenticationFilter running...");
         String token = getJwtFromRequest(request);
+        System.out.println("➡️ Token from request: " + token);
+
+        if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+            System.out.println("✅ Token is valid!");
+        } else {
+            System.out.println("❌ Token is missing or invalid!");
+        }
         if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
             String username = tokenProvider.getUsernameFromJWT(token);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
