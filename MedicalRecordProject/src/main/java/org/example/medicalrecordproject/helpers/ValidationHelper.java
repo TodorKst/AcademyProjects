@@ -125,4 +125,10 @@ public final class ValidationHelper {
             throw new InvalidDiagnosisReferenceException("Diagnosis with name already exists.");
         }
     }
+
+    public static void validateNameLength(String name) {
+        if (name == null || name.length() < 2 || name.length() > 100) {
+            throw new InvalidUserCredentialException("Name must be at least 2 characters long and at most 100 characters long.");
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package org.example.medicalrecordproject.services;
 
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.repositories.SpecialtyRepository;
 import org.example.medicalrecordproject.services.contracts.SpecialtyService;
@@ -31,6 +32,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Override
     public Specialty saveSpecialty(Specialty specialty) {
+        ValidationHelper.validateNameLength(specialty.getName());
         return specialtyRepository.save(specialty);
     }
 
@@ -43,6 +45,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     public void updateSpecialty(long id, Specialty specialty) throws EntityNotFoundException {
         Specialty existingSpecialty = specialtyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(specialty.getName()));
+        ValidationHelper.validateNameLength(specialty.getName());
         if (existingSpecialty != null) {
             existingSpecialty.setName(specialty.getName());
             specialtyRepository.save(existingSpecialty);

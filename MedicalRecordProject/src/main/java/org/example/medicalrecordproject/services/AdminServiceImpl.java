@@ -39,6 +39,8 @@ public class AdminServiceImpl implements AdminService {
     public User saveAdmin(User admin) {
         admin.setRole(UserRole.ADMIN);
         ValidationHelper.checkUsernameUniqueness(userRepository.findByUsername(admin.getUsername()));
+        ValidationHelper.validatePassword(admin.getPassword());
+        ValidationHelper.validateNameLength(admin.getName());
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         return userRepository.save(admin);
     }
@@ -54,6 +56,8 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new EntityNotFoundException("Admin with ID " + id + " not found."));
         ValidationHelper.validateUsernameChange(existingAdmin.getUsername(), updatedAdmin.getUsername(),
                 userRepository.findByUsername(updatedAdmin.getUsername()));
+        ValidationHelper.validatePassword(updatedAdmin.getPassword());
+        ValidationHelper.validateNameLength(updatedAdmin.getName());
         existingAdmin.setName(updatedAdmin.getName());
         existingAdmin.setUsername(updatedAdmin.getUsername());
         ValidationHelper.validatePassword(updatedAdmin.getPassword());

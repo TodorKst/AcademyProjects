@@ -44,6 +44,8 @@ public class DoctorServiceImpl implements DoctorService {
     public Doctor saveDoctor(Doctor doctor) {
         ValidationHelper.validateDoctorSpecialties(doctor);
         ValidationHelper.checkUsernameUniqueness(doctorRepository.findByUsername(doctor.getUsername()));
+        ValidationHelper.validateNameLength(doctor.getName());
+        ValidationHelper.validatePassword(doctor.getPassword());
         try {
             return doctorRepository.save(doctor);
         } catch (Exception e) {
@@ -60,6 +62,8 @@ public class DoctorServiceImpl implements DoctorService {
     public void updateDoctor(long id, Doctor doctor) throws EntityNotFoundException {
         Doctor existingDoctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor"));
+        ValidationHelper.validateNameLength(doctor.getName());
+        ValidationHelper.validatePassword(doctor.getPassword());
         ValidationHelper.validateDoctorSpecialties(doctor);
         existingDoctor.setSpecialties(doctor.getSpecialties());
         ValidationHelper.validateUsernameChange(existingDoctor.getUsername(), doctor.getUsername(),
