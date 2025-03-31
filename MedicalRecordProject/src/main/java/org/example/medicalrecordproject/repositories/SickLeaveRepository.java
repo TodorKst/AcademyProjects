@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface SickLeaveRepository extends JpaRepository<SickLeave, Long> {
 
+    boolean existsByMedicalVisitId(long medicalVisitId);
+
     @Query("""
             SELECT FUNCTION('MONTH', s.startDate), COUNT(s)
             FROM SickLeave s

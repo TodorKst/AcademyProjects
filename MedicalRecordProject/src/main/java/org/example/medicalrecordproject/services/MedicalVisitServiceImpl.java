@@ -1,16 +1,14 @@
 package org.example.medicalrecordproject.services;
 
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.repositories.MedicalVisitRepository;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,6 +34,10 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
 
     @Override
     public MedicalVisit saveMedicalVisit(MedicalVisit medicalVisit) {
+        ValidationHelper.validateMedicalVisitEntities(medicalVisit);
+        ValidationHelper.validateVisitDate(medicalVisit.getVisitDate());
+        ValidationHelper.validateDiagnosesExist(medicalVisit.getDiagnoses());
+        ValidationHelper.validateInsurancePayment(medicalVisit.getPatient());
         return medicalVisitRepository.save(medicalVisit);
     }
 
@@ -48,14 +50,16 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
     public void updateMedicalVisit(long id, MedicalVisit medicalVisit) throws EntityNotFoundException {
         MedicalVisit existingMedicalVisit = medicalVisitRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("MedicalVisit for: " + medicalVisit.getPatient().getName()));
-        if (existingMedicalVisit != null) {
-            existingMedicalVisit.setDoctor(medicalVisit.getDoctor());
-            existingMedicalVisit.setVisitDate(medicalVisit.getVisitDate());
-            existingMedicalVisit.setPatient(medicalVisit.getPatient());
-            existingMedicalVisit.setTreatment(medicalVisit.getTreatment());
-            existingMedicalVisit.setDiagnoses(medicalVisit.getDiagnoses());
-            medicalVisitRepository.save(existingMedicalVisit);
-        }
+        ValidationHelper.validateMedicalVisitEntities(medicalVisit);
+        ValidationHelper.validateVisitDate(medicalVisit.getVisitDate());
+        ValidationHelper.validateDiagnosesExist(medicalVisit.getDiagnoses());
+        ValidationHelper.validateInsurancePayment(medicalVisit.getPatient());
+        existingMedicalVisit.setDoctor(medicalVisit.getDoctor());
+        existingMedicalVisit.setVisitDate(medicalVisit.getVisitDate());
+        existingMedicalVisit.setPatient(medicalVisit.getPatient());
+        existingMedicalVisit.setTreatment(medicalVisit.getTreatment());
+        existingMedicalVisit.setDiagnoses(medicalVisit.getDiagnoses());
+        medicalVisitRepository.save(existingMedicalVisit);
     }
 
     @Override
@@ -70,8 +74,8 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
 
     @Override
     public List<MedicalVisit> getByVisitDate(String date) {
-        LocalDateTime date1 = LocalDateTime.from(Instant.parse(date));
-        return medicalVisitRepository.findByVisitDate(date1);
+        LocalDateTime dateTime = LocalDateTime.from(java.time.Instant.parse(date));
+        return medicalVisitRepository.findByVisitDate(dateTime);
     }
 
     @Override
@@ -83,5 +87,4 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
     public List<MedicalVisit> getByDateRangeAndDoctor(LocalDateTime start, LocalDateTime end, Long doctorId) {
         return medicalVisitRepository.findByDateRangeAndOptionalDoctor(start, end, doctorId);
     }
-
 }

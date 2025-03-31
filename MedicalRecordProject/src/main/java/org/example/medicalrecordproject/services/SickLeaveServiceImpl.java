@@ -3,6 +3,7 @@ package org.example.medicalrecordproject.services;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.dtos.out.MonthAndCountOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.models.SickLeave;
 import org.example.medicalrecordproject.repositories.DoctorRepository;
 import org.example.medicalrecordproject.repositories.SickLeaveRepository;
@@ -38,6 +39,9 @@ public class SickLeaveServiceImpl implements SickLeaveService {
 
     @Override
     public SickLeave saveSickLeave(SickLeave sickLeave) {
+        ValidationHelper.validateSickLeaveMedicalVisit(sickLeave.getMedicalVisit());
+        ValidationHelper.validateSickLeaveDates(sickLeave.getStartDate(), sickLeave.getEndDate());
+        ValidationHelper.validateSickLeaveUniqueness(sickLeaveRepository.existsByMedicalVisitId(sickLeave.getMedicalVisit().getId()));
         return sickLeaveRepository.save(sickLeave);
     }
 
@@ -50,11 +54,10 @@ public class SickLeaveServiceImpl implements SickLeaveService {
     public void updateSickLeave(long id, SickLeave sickLeave) throws EntityNotFoundException {
         SickLeave existingSickLeave = sickLeaveRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SickLeave for: " + sickLeave.getMedicalVisit().getPatient().getName()));
-        if (existingSickLeave != null) {
-            existingSickLeave.setStartDate(sickLeave.getStartDate());
-            existingSickLeave.setEndDate(sickLeave.getEndDate());
-            sickLeaveRepository.save(existingSickLeave);
-        }
+        ValidationHelper.validateSickLeaveDates(sickLeave.getStartDate(), sickLeave.getEndDate());
+        existingSickLeave.setStartDate(sickLeave.getStartDate());
+        existingSickLeave.setEndDate(sickLeave.getEndDate());
+        sickLeaveRepository.save(existingSickLeave);
     }
 
     @Override
@@ -76,6 +79,4 @@ public class SickLeaveServiceImpl implements SickLeaveService {
                 })
                 .collect(Collectors.toList());
     }
-
-
 }

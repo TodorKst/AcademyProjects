@@ -2,6 +2,7 @@ package org.example.medicalrecordproject.services;
 
 import org.example.medicalrecordproject.enums.UserRole;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.models.users.User;
 import org.example.medicalrecordproject.repositories.UserRepository;
 import org.example.medicalrecordproject.services.contracts.AdminService;
@@ -10,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -38,27 +38,26 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public User saveAdmin(User admin) {
         admin.setRole(UserRole.ADMIN);
-        admin.setPassword(passwordEncoder.encode(admin.getPassword())); // Ensure password is encoded
+        ValidationHelper.checkUsernameUniqueness(userRepository.findByUsername(admin.getUsername()));
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         return userRepository.save(admin);
     }
 
     @Override
     public void deleteAdmin(long id) {
-        Optional<User> adminOpt = userRepository.findByIdAndRole(id, UserRole.ADMIN);
-        adminOpt.ifPresent(userRepository::delete);
+        userRepository.findByIdAndRole(id, UserRole.ADMIN).ifPresent(userRepository::delete);
     }
 
     @Override
     public void updateAdmin(long id, User updatedAdmin) throws EntityNotFoundException {
         User existingAdmin = userRepository.findByIdAndRole(id, UserRole.ADMIN)
                 .orElseThrow(() -> new EntityNotFoundException("Admin with ID " + id + " not found."));
-
+        ValidationHelper.validateUsernameChange(existingAdmin.getUsername(), updatedAdmin.getUsername(),
+                userRepository.findByUsername(updatedAdmin.getUsername()));
         existingAdmin.setName(updatedAdmin.getName());
         existingAdmin.setUsername(updatedAdmin.getUsername());
-
-        if (!updatedAdmin.getPassword().isBlank()) {
-            existingAdmin.setPassword(passwordEncoder.encode(updatedAdmin.getPassword()));
-        }
+        ValidationHelper.validatePassword(updatedAdmin.getPassword());
+        existingAdmin.setPassword(passwordEncoder.encode(updatedAdmin.getPassword()));
 
         userRepository.save(existingAdmin);
     }

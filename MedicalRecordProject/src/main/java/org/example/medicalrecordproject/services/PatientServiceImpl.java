@@ -3,6 +3,7 @@ package org.example.medicalrecordproject.services;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
 import org.example.medicalrecordproject.dtos.out.PatientOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.models.users.Patient;
 import org.example.medicalrecordproject.repositories.PatientRepository;
 import org.example.medicalrecordproject.services.contracts.PatientService;
@@ -32,13 +33,15 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient getPatientById(long id) throws EntityNotFoundException{
+    public Patient getPatientById(long id) throws EntityNotFoundException {
         return patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient"));
     }
 
     @Override
     public Patient savePatient(Patient patient) {
+        ValidationHelper.validateAssignedGp(patient);
+        ValidationHelper.checkUsernameUniqueness(patientRepository.findByUsername(patient.getUsername()));
         return patientRepository.save(patient);
     }
 
@@ -51,22 +54,23 @@ public class PatientServiceImpl implements PatientService {
     public void updatePatient(long id, Patient patient) throws EntityNotFoundException {
         Patient existingPatient = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(patient.getName()));
-            existingPatient.setName(patient.getName());
-            existingPatient.setUsername(patient.getUsername());
-            existingPatient.setPassword(patient.getPassword());
-            existingPatient.setGp(patient.getGp());
-            existingPatient.setLastInsurancePayment(patient.getLastInsurancePayment());
-            patientRepository.save(existingPatient);
+        ValidationHelper.validateAssignedGp(patient);
+        ValidationHelper.validateUsernameChange(existingPatient.getUsername(), patient.getUsername(),
+                patientRepository.findByUsername(patient.getUsername()));
+        existingPatient.setName(patient.getName());
+        existingPatient.setUsername(patient.getUsername());
+        existingPatient.setPassword(patient.getPassword());
+        existingPatient.setGp(patient.getGp());
+        existingPatient.setLastInsurancePayment(patient.getLastInsurancePayment());
+        patientRepository.save(existingPatient);
     }
 
     @Override
     public void payInsurance(long id) {
         Patient existingPatient = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient"));
-        if (existingPatient != null) {
-            existingPatient.setLastInsurancePayment(Date.valueOf(LocalDate.now()));
-            patientRepository.save(existingPatient);
-        }
+        existingPatient.setLastInsurancePayment(Date.valueOf(LocalDate.now()));
+        patientRepository.save(existingPatient);
     }
 
     @Override
@@ -92,7 +96,4 @@ public class PatientServiceImpl implements PatientService {
                 .map(row -> new GpPatientCountOutDto((Long) row[0], (Long) row[1]))
                 .collect(Collectors.toList());
     }
-
-
-
 }

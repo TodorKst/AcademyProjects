@@ -7,12 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     public List<Doctor> findAllBySpecialtiesContains(Specialty specialty);
 
     public List<Doctor> findAllByIsGp(boolean isGp);
+
+    Optional<Doctor> findByUsername(String username);
 
     @Query("""
             SELECT mv.doctor

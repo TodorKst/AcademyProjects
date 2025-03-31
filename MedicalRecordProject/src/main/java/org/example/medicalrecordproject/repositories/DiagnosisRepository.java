@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DiagnosisRepository extends JpaRepository<Diagnosis, Long> {
 
@@ -16,6 +17,8 @@ public interface DiagnosisRepository extends JpaRepository<Diagnosis, Long> {
             ORDER BY COUNT(mv) DESC
             """)
     List<Object[]> findMostCommonDiagnoses();
+
+    Optional<Diagnosis> findByName(String name);
 
 
 }

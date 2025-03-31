@@ -1,14 +1,15 @@
 package org.example.medicalrecordproject.services;
 
-import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
-import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
-import org.example.medicalrecordproject.helpers.DoctorMapper;
+import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.repositories.DoctorRepository;
 import org.example.medicalrecordproject.repositories.MedicalVisitRepository;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
+import org.example.medicalrecordproject.helpers.DoctorMapper;
+import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
+import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,8 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Doctor saveDoctor(Doctor doctor) {
+        ValidationHelper.validateDoctorSpecialties(doctor);
+        ValidationHelper.checkUsernameUniqueness(doctorRepository.findByUsername(doctor.getUsername()));
         try {
             return doctorRepository.save(doctor);
         } catch (Exception e) {
@@ -57,13 +60,14 @@ public class DoctorServiceImpl implements DoctorService {
     public void updateDoctor(long id, Doctor doctor) throws EntityNotFoundException {
         Doctor existingDoctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor"));
-
-        existingDoctor.setName(doctor.getName());
+        ValidationHelper.validateDoctorSpecialties(doctor);
         existingDoctor.setSpecialties(doctor.getSpecialties());
+        ValidationHelper.validateUsernameChange(existingDoctor.getUsername(), doctor.getUsername(),
+                doctorRepository.findByUsername(doctor.getUsername()));
+        existingDoctor.setName(doctor.getName());
         existingDoctor.setUsername(doctor.getUsername());
         existingDoctor.setPassword(doctor.getPassword());
         existingDoctor.setIsGp(doctor.getIsGp());
-
         doctorRepository.save(existingDoctor);
     }
 
@@ -75,7 +79,6 @@ public class DoctorServiceImpl implements DoctorService {
         List<Doctor> doctors = doctorRepository.findAllBySpecialtiesContains(specialty1);
         return DoctorMapper.toDtoList(doctors);
     }
-
 
     @Override
     public List<DoctorOutDto> getAllGps() {

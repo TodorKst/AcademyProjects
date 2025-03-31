@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
@@ -19,6 +20,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     List<Patient> findByDiagnosisName(@Param("diagnosisName") String diagnosisName);
 
     List<Patient> findByGpId(Long gpId);
+
+    Optional<Patient> findByUsername(String username);
 
     @Query("SELECT p.gp.id, COUNT(p) FROM Patient p GROUP BY p.gp.id")
     List<Object[]> countPatientsByGp();
