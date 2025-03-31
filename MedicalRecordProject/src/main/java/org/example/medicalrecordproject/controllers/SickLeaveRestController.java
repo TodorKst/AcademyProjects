@@ -55,7 +55,7 @@ public class SickLeaveRestController {
     public MonthAndCountOutDto getTopMonth() {
         return sickLeaveService.getMonthWithMostSickLeaves();
     }
-    
+
     @GetMapping("/top-doctors")
     public List<DoctorStatOutDto> getTopDoctorsBySickLeaves() {
         return sickLeaveService.getDoctorsWithMostSickLeaves();

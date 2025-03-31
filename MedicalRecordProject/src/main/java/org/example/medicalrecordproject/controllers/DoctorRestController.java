@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.MedicalVisit;
@@ -28,7 +29,7 @@ public class DoctorRestController {
     }
 
     @GetMapping()
-    public List<Doctor> getAllDoctors() {
+    public List<DoctorOutDto> getAllDoctors() {
         return doctorService.getAllDoctors();
     }
 
@@ -70,12 +71,12 @@ public class DoctorRestController {
     }
 
     @GetMapping("/by-specialty")
-    public Doctor getAllWithSpeciality(@RequestParam String specialty) {
+    public List<DoctorOutDto> getAllWithSpeciality(@RequestParam String specialty) {
         return doctorService.getAllWithSpeciality(specialty);
     }
 
     @GetMapping("/gps")
-    public List<Doctor> getAllGps() {
+    public List<DoctorOutDto> getAllGps() {
         return doctorService.getAllGps();
     }
 

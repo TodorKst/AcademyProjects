@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
-    public Doctor findBySpecialtiesContains(Specialty specialty);
+    public List<Doctor> findAllBySpecialtiesContains(Specialty specialty);
 
     public List<Doctor> findAllByIsGp(boolean isGp);
 

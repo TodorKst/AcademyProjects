@@ -1,7 +1,9 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.helpers.DoctorMapper;
 import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.repositories.DoctorRepository;
@@ -24,12 +26,11 @@ public class DoctorServiceImpl implements DoctorService {
                              MedicalVisitRepository medicalVisitRepository) {
         this.doctorRepository = doctorRepository;
         this.medicalVisitRepository = medicalVisitRepository;
-
     }
 
     @Override
-    public List<Doctor> getAllDoctors() {
-        return doctorRepository.findAll();
+    public List<DoctorOutDto> getAllDoctors() {
+        return DoctorMapper.toDtoList(doctorRepository.findAll());
     }
 
     @Override
@@ -55,26 +56,30 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public void updateDoctor(long id, Doctor doctor) throws EntityNotFoundException {
         Doctor existingDoctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(doctor.getName()));
-            existingDoctor.setName(doctor.getName());
-            existingDoctor.setSpecialties(doctor.getSpecialties());
-            doctor.setName(doctor.getName());
-            doctor.setUsername(doctor.getUsername());
-            doctor.setPassword(doctor.getPassword());
-            doctor.setIsGp(doctor.getIsGp());
-            doctorRepository.save(existingDoctor);
+                .orElseThrow(() -> new EntityNotFoundException("Doctor"));
+
+        existingDoctor.setName(doctor.getName());
+        existingDoctor.setSpecialties(doctor.getSpecialties());
+        existingDoctor.setUsername(doctor.getUsername());
+        existingDoctor.setPassword(doctor.getPassword());
+        existingDoctor.setIsGp(doctor.getIsGp());
+
+        doctorRepository.save(existingDoctor);
     }
 
     @Override
-    public Doctor getAllWithSpeciality(String specialty) {
+    public List<DoctorOutDto> getAllWithSpeciality(String specialty) {
         Specialty specialty1 = new Specialty();
         specialty1.setName(specialty);
-        return doctorRepository.findBySpecialtiesContains(specialty1);
+
+        List<Doctor> doctors = doctorRepository.findAllBySpecialtiesContains(specialty1);
+        return DoctorMapper.toDtoList(doctors);
     }
 
+
     @Override
-    public List<Doctor> getAllGps() {
-        return doctorRepository.findAllByIsGp(true);
+    public List<DoctorOutDto> getAllGps() {
+        return DoctorMapper.toDtoList(doctorRepository.findAllByIsGp(true));
     }
 
     @Override
@@ -85,10 +90,10 @@ public class DoctorServiceImpl implements DoctorService {
                     Long doctorId = (Long) row[0];
                     Long count = (Long) row[1];
                     String name = doctorRepository.findById(doctorId)
-                            .orElseThrow(() -> new EntityNotFoundException("Doctor")).getName();
+                            .orElseThrow(() -> new EntityNotFoundException("Doctor"))
+                            .getName();
                     return new DoctorStatOutDto(doctorId, name, count);
                 })
                 .collect(Collectors.toList());
     }
-
 }

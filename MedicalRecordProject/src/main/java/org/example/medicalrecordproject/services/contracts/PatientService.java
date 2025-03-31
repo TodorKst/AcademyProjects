@@ -1,6 +1,5 @@
 package org.example.medicalrecordproject.services.contracts;
 
-import org.example.medicalrecordproject.dtos.out.DoctorCountOfPatients;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
 import org.example.medicalrecordproject.dtos.out.PatientOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
