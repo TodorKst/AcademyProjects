@@ -51,4 +51,10 @@ public class SpecialtyServiceImpl implements SpecialtyService {
             specialtyRepository.save(existingSpecialty);
         }
     }
+
+    @Override
+    public Specialty getSpecialtyByName(String name) throws EntityNotFoundException {
+        return specialtyRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Specialty"));
+    }
 }

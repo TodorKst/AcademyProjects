@@ -1,5 +1,7 @@
 package org.example.medicalrecordproject.configs;
 
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.medicalrecordproject.authentication.JwtAuthenticationFilter;
 import org.example.medicalrecordproject.authentication.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
@@ -13,15 +15,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
-
-    public SecurityConfig(JwtTokenProvider tokenProvider, UserDetailsService userDetailsService) {
-        this.tokenProvider = tokenProvider;
-        this.userDetailsService = userDetailsService;
-    }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -34,7 +32,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login",
+                        .requestMatchers("/api/auth/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()

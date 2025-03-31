@@ -15,4 +15,6 @@ public interface SpecialtyService {
     void deleteSpecialty(long id);
 
     void updateSpecialty(long id, Specialty specialty) throws EntityNotFoundException;
+
+    Specialty getSpecialtyByName(String name) throws EntityNotFoundException;
 }

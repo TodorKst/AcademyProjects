@@ -108,6 +108,7 @@ public final class ValidationHelper {
         }
     }
 
+// make method take a boolean from repository
     public static void checkUsernameUniqueness(Optional<?> userOptional) {
         if (userOptional.isPresent()) {
             throw new InvalidUserCredentialException("Username already exists.");
@@ -117,6 +118,13 @@ public final class ValidationHelper {
     public static void validateUsernameChange(String oldUsername, String newUsername, Optional<?> userOptional) {
         if (!oldUsername.equals(newUsername)) {
             checkUsernameUniqueness(userOptional);
+        }
+        validateUsernameLength(newUsername);
+    }
+
+    public static void validateUsernameLength(String username) {
+        if (username == null || username.length() < 3 || username.length() > 50) {
+            throw new InvalidUserCredentialException("Username must be at least 3 characters long and at most 50 characters long.");
         }
     }
 

@@ -21,17 +21,20 @@ public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
     private final MedicalVisitRepository medicalVisitRepository;
+    private final DoctorMapper doctorMapper;
 
     @Autowired
     public DoctorServiceImpl(DoctorRepository doctorRepository,
-                             MedicalVisitRepository medicalVisitRepository) {
+                             MedicalVisitRepository medicalVisitRepository,
+                             DoctorMapper doctorMapper) {
         this.doctorRepository = doctorRepository;
         this.medicalVisitRepository = medicalVisitRepository;
+        this.doctorMapper = doctorMapper;
     }
 
     @Override
     public List<DoctorOutDto> getAllDoctors() {
-        return DoctorMapper.toDtoList(doctorRepository.findAll());
+        return doctorMapper.toDtoList(doctorRepository.findAll());
     }
 
     @Override
@@ -44,6 +47,7 @@ public class DoctorServiceImpl implements DoctorService {
     public Doctor saveDoctor(Doctor doctor) {
         ValidationHelper.validateDoctorSpecialties(doctor);
         ValidationHelper.checkUsernameUniqueness(doctorRepository.findByUsername(doctor.getUsername()));
+        ValidationHelper.validateUsernameLength(doctor.getUsername());
         ValidationHelper.validateNameLength(doctor.getName());
         ValidationHelper.validatePassword(doctor.getPassword());
         try {
@@ -81,12 +85,12 @@ public class DoctorServiceImpl implements DoctorService {
         specialty1.setName(specialty);
 
         List<Doctor> doctors = doctorRepository.findAllBySpecialtiesContains(specialty1);
-        return DoctorMapper.toDtoList(doctors);
+        return doctorMapper.toDtoList(doctors);
     }
 
     @Override
     public List<DoctorOutDto> getAllGps() {
-        return DoctorMapper.toDtoList(doctorRepository.findAllByIsGp(true));
+        return doctorMapper.toDtoList(doctorRepository.findAllByIsGp(true));
     }
 
     @Override

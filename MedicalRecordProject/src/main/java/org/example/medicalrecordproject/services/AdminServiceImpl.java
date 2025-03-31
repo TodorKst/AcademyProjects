@@ -39,6 +39,7 @@ public class AdminServiceImpl implements AdminService {
     public User saveAdmin(User admin) {
         admin.setRole(UserRole.ADMIN);
         ValidationHelper.checkUsernameUniqueness(userRepository.findByUsername(admin.getUsername()));
+        ValidationHelper.validateUsernameLength(admin.getUsername());
         ValidationHelper.validatePassword(admin.getPassword());
         ValidationHelper.validateNameLength(admin.getName());
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));

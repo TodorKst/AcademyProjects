@@ -26,7 +26,6 @@ public class PatientServiceImpl implements PatientService {
         this.patientRepository = patientRepository;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public List<Patient> getAllPatients() {
         return patientRepository.findAll();
@@ -42,6 +41,7 @@ public class PatientServiceImpl implements PatientService {
     public Patient savePatient(Patient patient) {
         ValidationHelper.validateAssignedGp(patient);
         ValidationHelper.checkUsernameUniqueness(patientRepository.findByUsername(patient.getUsername()));
+        ValidationHelper.validateUsernameLength(patient.getUsername());
         return patientRepository.save(patient);
     }
 
