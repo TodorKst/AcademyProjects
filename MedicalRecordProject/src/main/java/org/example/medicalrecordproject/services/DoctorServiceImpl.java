@@ -1,23 +1,30 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.repositories.DoctorRepository;
+import org.example.medicalrecordproject.repositories.MedicalVisitRepository;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
+    private final MedicalVisitRepository medicalVisitRepository;
 
     @Autowired
-    public DoctorServiceImpl(DoctorRepository doctorRepository) {
+    public DoctorServiceImpl(DoctorRepository doctorRepository,
+                             MedicalVisitRepository medicalVisitRepository) {
         this.doctorRepository = doctorRepository;
+        this.medicalVisitRepository = medicalVisitRepository;
+
     }
 
     @Override
@@ -69,4 +76,19 @@ public class DoctorServiceImpl implements DoctorService {
     public List<Doctor> getAllGps() {
         return doctorRepository.findAllByIsGp(true);
     }
+
+    @Override
+    public List<DoctorStatOutDto> countVisitsPerDoctor() {
+        return medicalVisitRepository.countVisitsPerDoctor()
+                .stream()
+                .map(row -> {
+                    Long doctorId = (Long) row[0];
+                    Long count = (Long) row[1];
+                    String name = doctorRepository.findById(doctorId)
+                            .orElseThrow(() -> new EntityNotFoundException("Doctor")).getName();
+                    return new DoctorStatOutDto(doctorId, name, count);
+                })
+                .collect(Collectors.toList());
+    }
+
 }

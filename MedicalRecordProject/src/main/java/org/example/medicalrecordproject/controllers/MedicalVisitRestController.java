@@ -77,4 +77,13 @@ public class MedicalVisitRestController {
         }
     }
 
+    @GetMapping("/filter")
+    public List<MedicalVisit> getVisitsByDateRange(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+            @RequestParam(required = false) Long doctorId
+    ) {
+        return medicalVisitService.getByDateRangeAndDoctor(start, end, doctorId);
+    }
+
  }

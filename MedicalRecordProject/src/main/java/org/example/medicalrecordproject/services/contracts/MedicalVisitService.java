@@ -24,4 +24,7 @@ public interface MedicalVisitService {
     List<MedicalVisit> getByVisitDate(String date);
 
     List<MedicalVisit> getByVisitDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    List<MedicalVisit> getByDateRangeAndDoctor(LocalDateTime start, LocalDateTime end, Long doctorId);
+
 }

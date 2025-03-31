@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.dtos.out.DiagnosisStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.Diagnosis;
 import org.example.medicalrecordproject.repositories.DiagnosisRepository;
@@ -7,6 +8,7 @@ import org.example.medicalrecordproject.services.contracts.DiagnosisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DiagnosisServiceImpl implements DiagnosisService {
@@ -47,5 +49,14 @@ public class DiagnosisServiceImpl implements DiagnosisService {
             existingDiagnosis.setDescription(diagnosis.getDescription());
             diagnosisRepository.save(existingDiagnosis);
     }
+
+    @Override
+    public List<DiagnosisStatOutDto> getMostCommonDiagnoses() {
+        return diagnosisRepository.findMostCommonDiagnoses()
+                .stream()
+                .map(row -> new DiagnosisStatOutDto((String) row[0], (Long) row[1]))
+                .collect(Collectors.toList());
+    }
+
 
 }

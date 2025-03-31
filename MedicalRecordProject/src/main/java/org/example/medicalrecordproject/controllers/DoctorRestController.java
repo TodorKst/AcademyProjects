@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.users.Doctor;
@@ -68,13 +69,18 @@ public class DoctorRestController {
         return medicalVisitService.getByDoctorId(id);
     }
 
-//    @GetMapping
-//    public Doctor getAllWithSpeciality(@RequestParam String specialty) {
-//        return doctorService.getAllWithSpeciality(specialty);
-//    }
+    @GetMapping("/by-specialty")
+    public Doctor getAllWithSpeciality(@RequestParam String specialty) {
+        return doctorService.getAllWithSpeciality(specialty);
+    }
 
     @GetMapping("/gps")
     public List<Doctor> getAllGps() {
         return doctorService.getAllGps();
+    }
+
+    @GetMapping("/visit-stats")
+    public List<DoctorStatOutDto> getVisitCountPerDoctor() {
+        return doctorService.countVisitsPerDoctor();
     }
 }

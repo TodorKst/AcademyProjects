@@ -1,5 +1,7 @@
 package org.example.medicalrecordproject.services.contracts;
 
+import org.example.medicalrecordproject.dtos.out.MonthAndCountOutDto;
+import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.SickLeave;
 
@@ -15,4 +17,9 @@ public interface SickLeaveService {
     void deleteSickLeave(long id);
 
     void updateSickLeave(long id, SickLeave sickLeave) throws EntityNotFoundException;
+
+    MonthAndCountOutDto getMonthWithMostSickLeaves();
+
+    List<DoctorStatOutDto> getDoctorsWithMostSickLeaves();
+
 }

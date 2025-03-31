@@ -1,5 +1,7 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
+import org.example.medicalrecordproject.dtos.out.PatientOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.users.Patient;
@@ -67,4 +69,25 @@ public class PatientRestController {
     public List<MedicalVisit> getMedicalVisitsByPatientId(@PathVariable long id) {
         return medicalVisitService.getByPatientId(id);
     }
+
+    @GetMapping("/by-diagnosis")
+    public List<PatientOutDto> getPatientsByDiagnosis(@RequestParam String diagnosis) {
+        return patientService.getPatientsByDiagnosis(diagnosis);
+    }
+
+    @GetMapping("/by-gp")
+    public List<PatientOutDto> getPatientsByGp(@RequestParam Long gpId) {
+        return patientService.getPatientsByGp(gpId);
+    }
+
+    @GetMapping("/count-by-gp")
+    public List<GpPatientCountOutDto> getPatientCountPerGp() {
+        return patientService.countPatientsPerGp();
+    }
+
+    @GetMapping("/{id}/visits")
+    public List<MedicalVisit> getVisitHistory(@PathVariable Long id) {
+        return medicalVisitService.getByPatientId(id);
+    }
+
 }

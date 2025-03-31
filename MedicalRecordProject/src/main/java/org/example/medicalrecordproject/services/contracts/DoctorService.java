@@ -1,7 +1,7 @@
 package org.example.medicalrecordproject.services.contracts;
 
+import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
-import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
 
 import java.util.List;
@@ -20,4 +20,7 @@ public interface DoctorService {
     public Doctor getAllWithSpeciality(String specialty);
 
     public List<Doctor> getAllGps();
+
+    List<DoctorStatOutDto> countVisitsPerDoctor();
+
 }

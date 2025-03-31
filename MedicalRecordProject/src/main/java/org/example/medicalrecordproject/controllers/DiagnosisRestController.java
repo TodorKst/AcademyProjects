@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.out.DiagnosisStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.Diagnosis;
 import org.example.medicalrecordproject.repositories.DiagnosisRepository;
@@ -57,5 +58,10 @@ public class DiagnosisRestController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+
+    @GetMapping("/stats")
+    public List<DiagnosisStatOutDto> getDiagnosisStats() {
+        return diagnosisService.getMostCommonDiagnoses();
     }
 }

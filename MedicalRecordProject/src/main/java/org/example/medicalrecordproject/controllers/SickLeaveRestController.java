@@ -1,5 +1,7 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
+import org.example.medicalrecordproject.dtos.out.MonthAndCountOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.SickLeave;
 import org.example.medicalrecordproject.services.contracts.SickLeaveService;
@@ -47,5 +49,15 @@ public class SickLeaveRestController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+
+    @GetMapping("/top-month")
+    public MonthAndCountOutDto getTopMonth() {
+        return sickLeaveService.getMonthWithMostSickLeaves();
+    }
+    
+    @GetMapping("/top-doctors")
+    public List<DoctorStatOutDto> getTopDoctorsBySickLeaves() {
+        return sickLeaveService.getDoctorsWithMostSickLeaves();
     }
 }

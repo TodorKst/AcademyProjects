@@ -1,5 +1,7 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
+import org.example.medicalrecordproject.dtos.out.PatientOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Patient;
 import org.example.medicalrecordproject.repositories.PatientRepository;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -65,4 +68,31 @@ public class PatientServiceImpl implements PatientService {
             patientRepository.save(existingPatient);
         }
     }
+
+    @Override
+    public List<PatientOutDto> getPatientsByDiagnosis(String diagnosisName) {
+        return patientRepository.findByDiagnosisName(diagnosisName)
+                .stream()
+                .map(p -> new PatientOutDto(p.getId(), p.getName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PatientOutDto> getPatientsByGp(Long gpId) {
+        return patientRepository.findByGpId(gpId)
+                .stream()
+                .map(p -> new PatientOutDto(p.getId(), p.getName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GpPatientCountOutDto> countPatientsPerGp() {
+        return patientRepository.countPatientsByGp()
+                .stream()
+                .map(row -> new GpPatientCountOutDto((Long) row[0], (Long) row[1]))
+                .collect(Collectors.toList());
+    }
+
+
+
 }

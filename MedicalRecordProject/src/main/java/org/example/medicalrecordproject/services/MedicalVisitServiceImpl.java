@@ -78,4 +78,10 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
     public List<MedicalVisit> getByVisitDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
         return medicalVisitRepository.findByVisitDateBetween(startDate, endDate);
     }
+
+    @Override
+    public List<MedicalVisit> getByDateRangeAndDoctor(LocalDateTime start, LocalDateTime end, Long doctorId) {
+        return medicalVisitRepository.findByDateRangeAndOptionalDoctor(start, end, doctorId);
+    }
+
 }
