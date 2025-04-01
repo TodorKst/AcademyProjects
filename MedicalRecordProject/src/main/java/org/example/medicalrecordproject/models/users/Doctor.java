@@ -34,9 +34,9 @@ public class Doctor extends User {
     private Set<Specialty> specialties = new HashSet<>();
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<MedicalVisit> medicalVisits;
+    private Set<MedicalVisit> medicalVisits;
 
     @OneToMany(mappedBy = "gp", fetch = FetchType.LAZY)
-    private List<Patient> patients;
+    private Set<Patient> patients;
 
 }

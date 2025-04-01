@@ -12,7 +12,8 @@ import java.sql.Timestamp;
 @Table(name = "users", schema = "medical_record")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class User extends BaseEntity {

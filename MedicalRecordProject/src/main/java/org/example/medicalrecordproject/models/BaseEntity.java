@@ -4,7 +4,8 @@ import lombok.*;
 import jakarta.persistence.*;
 
 @MappedSuperclass
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @PrimaryKeyJoinColumn(name = "user_id")

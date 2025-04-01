@@ -1,10 +1,7 @@
 package org.example.medicalrecordproject.models.users;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -12,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "admin")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class Admin extends User {
 
     @Column(name = "contact_info")

@@ -2,10 +2,13 @@ package org.example.medicalrecordproject.dtos.in;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class AdminRegisterDto {
     @NotBlank

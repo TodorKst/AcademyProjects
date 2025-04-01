@@ -10,10 +10,12 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "specialties", schema = "medical_record")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Specialty extends BaseEntity {
 
     @NotNull(message = "Specialty name cannot be null")

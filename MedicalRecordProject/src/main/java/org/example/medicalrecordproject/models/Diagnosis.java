@@ -6,16 +6,16 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "diagnoses", schema = "medical_record")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@Setter
 public class Diagnosis extends BaseEntity {
 
     @NotNull(message = "Name is required")
@@ -27,5 +27,5 @@ public class Diagnosis extends BaseEntity {
     private String description;
 
     @ManyToMany(mappedBy = "diagnoses")
-    private List<MedicalVisit> medicalVisits;
+    private Set<MedicalVisit> medicalVisits;
 }

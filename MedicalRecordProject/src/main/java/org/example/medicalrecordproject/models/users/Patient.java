@@ -7,12 +7,14 @@ import org.example.medicalrecordproject.models.MedicalVisit;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "patient_profile", schema = "medical_record")
 @DiscriminatorValue("PATIENT")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,6 +29,6 @@ public class Patient extends User {
     private Doctor gp;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<MedicalVisit> medicalVisits;
+    private Set<MedicalVisit> medicalVisits;
 
 }
