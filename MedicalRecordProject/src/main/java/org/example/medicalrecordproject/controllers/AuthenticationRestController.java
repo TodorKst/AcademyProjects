@@ -7,6 +7,9 @@ import org.example.medicalrecordproject.dtos.in.AdminRegisterDto;
 import org.example.medicalrecordproject.dtos.in.DoctorRegisterDto;
 import org.example.medicalrecordproject.dtos.in.LoginDto;
 import org.example.medicalrecordproject.dtos.in.PatientRegisterDto;
+import org.example.medicalrecordproject.dtos.out.AdminRegisteredDto;
+import org.example.medicalrecordproject.dtos.out.DoctorRegisteredDto;
+import org.example.medicalrecordproject.dtos.out.PatientRegisteredDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.exceptions.InvalidUserCredentialException;
 import org.example.medicalrecordproject.exceptions.WeakPasswordException;
@@ -49,28 +52,20 @@ public class AuthenticationRestController {
     private final AdminService adminService;
     private final DoctorService doctorService;
     private final PatientService patientService;
-    private final RegisterMapper registerMapper;
-    private final SpecialtyService specialtyService;
 
     @Autowired
     public AuthenticationRestController(AuthenticationManager authenticationManager,
                                         JwtTokenProvider tokenProvider,
                                         AdminService adminService,
                                         DoctorService doctorService,
-                                        PatientService patientService,
-                                        RegisterMapper registerMapper,
-                                        SpecialtyService specialtyService) {
+                                        PatientService patientService) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.adminService = adminService;
         this.doctorService = doctorService;
         this.patientService = patientService;
-        this.registerMapper = registerMapper;
-
-        this.specialtyService = specialtyService;
     }
 
-    // 🔐 LOGIN
     @PostMapping
     public ResponseEntity<?> authenticateUser(@RequestBody @Valid LoginDto loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -85,55 +80,29 @@ public class AuthenticationRestController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
     }
 
-    // 🔧 TEST
-    @GetMapping
-    public String getHello() {
-        return "Hello";
-    }
-
     @PostMapping("/register/admin")
-    public ResponseEntity<String> registerAdmin(@RequestBody @Valid AdminRegisterDto dto) {
+    public AdminRegisteredDto registerAdmin(@RequestBody @Valid AdminRegisterDto dto) {
         try {
-            Admin admin = registerMapper.toAdmin(dto);
-            admin.setCreatedAt(Timestamp.from(Instant.now()));
-            adminService.saveAdmin(admin);
-            return ResponseEntity.ok("Admin registered.");
+            return adminService.createAdmin(dto, Timestamp.from(Instant.now()));
         } catch (InvalidUserCredentialException | WeakPasswordException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
     @PostMapping("/register/doctor")
-    public Doctor registerDoctor(@RequestBody @Valid DoctorRegisterDto dto) {
-        Doctor doctor = null;
+    public DoctorRegisteredDto registerDoctor(@RequestBody @Valid DoctorRegisterDto dto) {
         try {
-            doctor = registerMapper.toDoctor(dto);
-
-            Set<Specialty> specialties = dto.getSpecialties().stream()
-                    .map(specialtyService::getSpecialtyByName)
-                    .collect(Collectors.toSet());
-
-            doctor.setSpecialties(specialties);
-            doctor.setCreatedAt(Timestamp.from(Instant.now()));
-
-            doctorService.saveDoctor(doctor);
+            return doctorService.createDoctor(dto, Timestamp.from(Instant.now()));
         } catch (EntityNotFoundException | InvalidUserCredentialException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-        return doctor;
     }
 
+//    return dto to avoid recursive calls to doctor then medical visit then doctor then medical visit....
     @PostMapping("/register/patient")
-    public Patient registerPatient(@RequestBody @Valid PatientRegisterDto dto) {
+    public PatientRegisteredDto registerPatient(@RequestBody @Valid PatientRegisterDto dto) {
         try {
-            Patient patient = registerMapper.toPatient(dto);
-
-            Doctor gp = doctorService.getDoctorById(dto.getGpId());
-            patient.setGp(gp);
-            patient.setCreatedAt(Timestamp.from(Instant.now()));
-
-            patientService.savePatient(patient);
-            return patient;
+            return patientService.createPatient(dto, Timestamp.from(Instant.now()));
         } catch (EntityNotFoundException | InvalidUserCredentialException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

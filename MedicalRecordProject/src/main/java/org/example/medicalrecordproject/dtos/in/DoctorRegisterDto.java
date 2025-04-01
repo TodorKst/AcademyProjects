@@ -21,5 +21,5 @@ public class DoctorRegisterDto {
     private String name;
     @NotNull
     private Boolean isGp;
-    private Set<String> specialties; // names
+    private Set<Long> specialties;
 }

@@ -13,7 +13,8 @@ import java.util.Set;
 @Entity
 @Table(name = "doctor_profile", schema = "medical_record")
 @DiscriminatorValue("DOCTOR")
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

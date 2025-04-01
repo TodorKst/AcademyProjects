@@ -1,34 +1,50 @@
 package org.example.medicalrecordproject.helpers;
 
 import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
+import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
-public interface DoctorMapper {
+@Component
+public class DoctorMapper {
 
-    @Mapping(target = "specialties", source = "specialties", qualifiedByName = "mapSpecialties")
-    @Mapping(target = "patientCount", source = "patients", qualifiedByName = "countPatients")
-    DoctorOutDto toDto(Doctor doctor);
+    private final ModelMapper modelMapper;
 
-    List<DoctorOutDto> toDtoList(List<Doctor> doctors);
+    public DoctorMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
 
-    @Named("mapSpecialties")
-    static List<String> mapSpecialties(Set<?> specialties) {
-        return specialties.stream()
-                .map(s -> s.toString())
+        this.modelMapper.addMappings(new PropertyMap<Doctor, DoctorOutDto>() {
+            @Override
+            protected void configure() {
+                map().setPatientCount(source.getPatients() != null ? source.getPatients().size() : 0);
+            }
+        });
+    }
+
+    public DoctorOutDto toDto(Doctor doctor) {
+        if (doctor == null) return null;
+
+        DoctorOutDto dto = modelMapper.map(doctor, DoctorOutDto.class);
+        dto.setSpecialties(mapSpecialties(doctor.getSpecialties()));
+        return dto;
+    }
+
+    public List<DoctorOutDto> toDtoList(List<Doctor> doctors) {
+        return doctors.stream()
+                .map(this::toDto)
                 .collect(Collectors.toList());
     }
 
-    @Named("countPatients")
-    static int countPatients(List<?> patients) {
-        return patients == null ? 0 : patients.size();
+    private List<String> mapSpecialties(Set<Specialty> specialties) {
+        return specialties == null ? List.of() :
+                specialties.stream()
+                        .map(Specialty::getName)
+                        .collect(Collectors.toList());
     }
 }

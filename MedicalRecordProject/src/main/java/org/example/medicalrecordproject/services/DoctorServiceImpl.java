@@ -1,6 +1,9 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.dtos.in.DoctorRegisterDto;
+import org.example.medicalrecordproject.dtos.out.DoctorRegisteredDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.helpers.RegisterMapper;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
@@ -10,10 +13,18 @@ import org.example.medicalrecordproject.services.contracts.DoctorService;
 import org.example.medicalrecordproject.helpers.DoctorMapper;
 import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
+import org.example.medicalrecordproject.services.contracts.SpecialtyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.rsocket.RSocketProperties;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.beans.Encoder;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,14 +33,22 @@ public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
     private final MedicalVisitRepository medicalVisitRepository;
     private final DoctorMapper doctorMapper;
+    private final RegisterMapper registerMapper;
+    private final SpecialtyService specialtyService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public DoctorServiceImpl(DoctorRepository doctorRepository,
                              MedicalVisitRepository medicalVisitRepository,
-                             DoctorMapper doctorMapper) {
+                             DoctorMapper doctorMapper,
+                             RegisterMapper registerMapper,
+                             SpecialtyService specialtyService, PasswordEncoder passwordEncoder) {
         this.doctorRepository = doctorRepository;
         this.medicalVisitRepository = medicalVisitRepository;
         this.doctorMapper = doctorMapper;
+        this.registerMapper = registerMapper;
+        this.specialtyService = specialtyService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -56,6 +75,21 @@ public class DoctorServiceImpl implements DoctorService {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    @Override
+    public DoctorRegisteredDto createDoctor(DoctorRegisterDto dto, Timestamp createdAt) {
+        Doctor doctor = registerMapper.toDoctor(dto);
+        doctor.setCreatedAt(createdAt);
+        doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
+        Set<Specialty> specialties = dto.getSpecialties().stream()
+                .map(specialtyService::getSpecialtyById)
+                .collect(Collectors.toSet());
+        doctor.setSpecialties(specialties);
+        this.saveDoctor(doctor);
+
+        return registerMapper.toDoctorDto(doctor);
+    }
+
 
     @Override
     public void deleteDoctor(long id) {
