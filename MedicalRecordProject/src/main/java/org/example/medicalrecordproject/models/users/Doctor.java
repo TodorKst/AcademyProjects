@@ -6,7 +6,6 @@ import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.Specialty;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)

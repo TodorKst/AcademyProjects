@@ -23,7 +23,7 @@ public class MedicalVisitRestController {
         this.medicalVisitService = medicalVisitService;
     }
 
-//    this may be too much logic for a controller
+    //    this may be too much logic for a controller
     @GetMapping
     public List<MedicalVisit> getMedicalVisits(
             @RequestParam(required = false) Long patientId,
@@ -86,4 +86,4 @@ public class MedicalVisitRestController {
         return medicalVisitService.getByDateRangeAndDoctor(start, end, doctorId);
     }
 
- }
+}

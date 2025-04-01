@@ -19,12 +19,12 @@ public interface SickLeaveRepository extends JpaRepository<SickLeave, Long> {
     List<Object[]> getMonthWithMostSickLeaves();
 
     @Query("""
-    SELECT mv.doctor.id, COUNT(sl)
-    FROM SickLeave sl
-    JOIN sl.medicalVisit mv
-    GROUP BY mv.doctor.id
-    ORDER BY COUNT(sl) DESC
-""")
+                SELECT mv.doctor.id, COUNT(sl)
+                FROM SickLeave sl
+                JOIN sl.medicalVisit mv
+                GROUP BY mv.doctor.id
+                ORDER BY COUNT(sl) DESC
+            """)
     List<Object[]> getTopDoctorsBySickLeaves();
 
 }

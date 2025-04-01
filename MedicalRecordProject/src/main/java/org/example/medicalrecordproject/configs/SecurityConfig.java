@@ -1,6 +1,5 @@
 package org.example.medicalrecordproject.configs;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.example.medicalrecordproject.authentication.JwtAuthenticationFilter;
 import org.example.medicalrecordproject.authentication.JwtTokenProvider;

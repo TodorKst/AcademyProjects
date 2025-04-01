@@ -4,7 +4,7 @@ import org.example.medicalrecordproject.models.users.User;
 
 public class AuthenticationHelper {
 
-//    method works correctly
+    //    method works correctly
     public static boolean throwIfNotAdmin(User user) {
         if (!user.getRole().equals("ADMIN")) {
             throw new RuntimeException("You are not an admin");

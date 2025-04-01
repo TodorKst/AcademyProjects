@@ -1,12 +1,11 @@
 package org.example.medicalrecordproject.models.users;
 
-import lombok.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import org.example.medicalrecordproject.models.MedicalVisit;
 
 import java.sql.Date;
-import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)

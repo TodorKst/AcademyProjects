@@ -1,15 +1,8 @@
 package org.example.medicalrecordproject.helpers;
 
-import org.example.medicalrecordproject.exceptions.InvalidDiagnosisReferenceException;
-import org.example.medicalrecordproject.exceptions.InvalidDoctorSpecialtiesException;
-import org.example.medicalrecordproject.exceptions.InvalidGpAssignmentException;
-import org.example.medicalrecordproject.exceptions.InsurancePaymentExpiredException;
-import org.example.medicalrecordproject.exceptions.InvalidMedicalVisitException;
-import org.example.medicalrecordproject.exceptions.InvalidSickLeaveException;
-import org.example.medicalrecordproject.exceptions.InvalidUserCredentialException;
-import org.example.medicalrecordproject.exceptions.WeakPasswordException;
-import org.example.medicalrecordproject.models.MedicalVisit;
+import org.example.medicalrecordproject.exceptions.*;
 import org.example.medicalrecordproject.models.Diagnosis;
+import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.models.users.Patient;
 
@@ -108,7 +101,7 @@ public final class ValidationHelper {
         }
     }
 
-// make method take a boolean from repository
+    // make method take a boolean from repository
     public static void checkUsernameUniqueness(Optional<?> userOptional) {
         if (userOptional.isPresent()) {
             throw new InvalidUserCredentialException("Username already exists.");

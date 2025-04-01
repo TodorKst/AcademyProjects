@@ -1,7 +1,7 @@
 package org.example.medicalrecordproject.models.users;
 
-import lombok.*;
 import jakarta.persistence.*;
+import lombok.*;
 import org.example.medicalrecordproject.enums.UserRole;
 import org.example.medicalrecordproject.models.BaseEntity;
 

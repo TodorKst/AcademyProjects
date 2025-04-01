@@ -13,17 +13,9 @@ import org.example.medicalrecordproject.dtos.out.PatientRegisteredDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.exceptions.InvalidUserCredentialException;
 import org.example.medicalrecordproject.exceptions.WeakPasswordException;
-import org.example.medicalrecordproject.helpers.RegisterMapper;
-import org.example.medicalrecordproject.models.Specialty;
-import org.example.medicalrecordproject.models.users.Admin;
-import org.example.medicalrecordproject.models.users.Doctor;
-import org.example.medicalrecordproject.models.users.Patient;
-import org.example.medicalrecordproject.repositories.DoctorRepository;
-import org.example.medicalrecordproject.repositories.SpecialtyRepository;
 import org.example.medicalrecordproject.services.contracts.AdminService;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
 import org.example.medicalrecordproject.services.contracts.PatientService;
-import org.example.medicalrecordproject.services.contracts.SpecialtyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,15 +24,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
 @Validated
 @RestController
@@ -98,7 +89,7 @@ public class AuthenticationRestController {
         }
     }
 
-//    return dto to avoid recursive calls to doctor then medical visit then doctor then medical visit....
+    //    return dto to avoid recursive calls to doctor then medical visit then doctor then medical visit....
     @PostMapping("/register/patient")
     public PatientRegisteredDto registerPatient(@RequestBody @Valid PatientRegisterDto dto) {
         try {

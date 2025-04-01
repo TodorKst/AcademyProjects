@@ -11,9 +11,9 @@ import java.util.Optional;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
-    public List<Doctor> findAllBySpecialtiesContains(Specialty specialty);
+    List<Doctor> findAllBySpecialtiesContains(Specialty specialty);
 
-    public List<Doctor> findAllByIsGp(boolean isGp);
+    List<Doctor> findAllByIsGp(boolean isGp);
 
     Optional<Doctor> findByUsername(String username);
 

@@ -2,13 +2,14 @@ package org.example.medicalrecordproject.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.example.medicalrecordproject.models.users.Doctor;
+import org.example.medicalrecordproject.models.users.Patient;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.*;
-import org.example.medicalrecordproject.models.users.Doctor;
-import org.example.medicalrecordproject.models.users.Patient;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

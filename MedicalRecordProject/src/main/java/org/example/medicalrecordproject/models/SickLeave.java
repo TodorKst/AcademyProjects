@@ -2,9 +2,10 @@ package org.example.medicalrecordproject.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
 import java.sql.Date;
 import java.sql.Timestamp;
-import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

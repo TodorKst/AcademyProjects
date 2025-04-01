@@ -1,11 +1,13 @@
 package org.example.medicalrecordproject.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)

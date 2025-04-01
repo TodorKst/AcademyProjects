@@ -3,7 +3,6 @@ package org.example.medicalrecordproject.controllers;
 import org.example.medicalrecordproject.dtos.out.DiagnosisStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.Diagnosis;
-import org.example.medicalrecordproject.repositories.DiagnosisRepository;
 import org.example.medicalrecordproject.services.contracts.DiagnosisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
