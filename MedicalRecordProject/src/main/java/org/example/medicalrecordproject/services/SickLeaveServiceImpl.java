@@ -51,13 +51,12 @@ public class SickLeaveServiceImpl implements SickLeaveService {
     }
 
     @Override
-    public void updateSickLeave(long id, SickLeave sickLeave) throws EntityNotFoundException {
+    public SickLeave updateSickLeave(long id, SickLeave sickLeave) throws EntityNotFoundException {
         SickLeave existingSickLeave = sickLeaveRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SickLeave for: " + sickLeave.getMedicalVisit().getPatient().getName()));
-        ValidationHelper.validateSickLeaveDates(sickLeave.getStartDate(), sickLeave.getEndDate());
         existingSickLeave.setStartDate(sickLeave.getStartDate());
         existingSickLeave.setEndDate(sickLeave.getEndDate());
-        sickLeaveRepository.save(existingSickLeave);
+        return saveSickLeave(existingSickLeave);
     }
 
     @Override

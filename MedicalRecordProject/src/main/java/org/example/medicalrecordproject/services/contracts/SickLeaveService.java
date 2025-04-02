@@ -16,7 +16,7 @@ public interface SickLeaveService {
 
     void deleteSickLeave(long id);
 
-    void updateSickLeave(long id, SickLeave sickLeave) throws EntityNotFoundException;
+    SickLeave updateSickLeave(long id, SickLeave sickLeave) throws EntityNotFoundException;
 
     MonthAndCountOutDto getMonthWithMostSickLeaves();
 
