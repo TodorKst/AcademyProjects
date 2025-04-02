@@ -6,6 +6,7 @@ import org.example.medicalrecordproject.models.users.User;
 import org.example.medicalrecordproject.services.contracts.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admins")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminRestController {
 
     private final AdminService adminService;

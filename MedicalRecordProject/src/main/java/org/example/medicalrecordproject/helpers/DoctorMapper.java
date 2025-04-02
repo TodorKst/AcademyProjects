@@ -28,11 +28,14 @@ public class DoctorMapper {
     }
 
     public DoctorOutDto toDto(Doctor doctor) {
-        if (doctor == null) return null;
-
-        DoctorOutDto dto = modelMapper.map(doctor, DoctorOutDto.class);
+        DoctorOutDto dto = new DoctorOutDto();
+        dto.setId(doctor.getId());
+        dto.setName(doctor.getName());
+        dto.setIsGp(doctor.getIsGp()); // manually set
         dto.setSpecialties(mapSpecialties(doctor.getSpecialties()));
+        dto.setPatientCount(doctor.getPatients() != null ? doctor.getPatients().size() : 0);
         return dto;
+
     }
 
     public List<DoctorOutDto> toDtoList(List<Doctor> doctors) {

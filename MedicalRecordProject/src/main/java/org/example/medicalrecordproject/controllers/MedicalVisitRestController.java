@@ -6,6 +6,7 @@ import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,6 +26,7 @@ public class MedicalVisitRestController {
 
     //    this may be too much logic for a controller
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<MedicalVisit> getMedicalVisits(
             @RequestParam(required = false) Long patientId,
             @RequestParam(required = false) Long doctorId,
@@ -46,6 +48,7 @@ public class MedicalVisitRestController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR') or @authHelper.isPatientOwner(#id, authentication.name)")
     public MedicalVisit getMedicalVisitById(@PathVariable long id) {
         try {
             return medicalVisitService.getMedicalVisitById(id);
@@ -55,11 +58,13 @@ public class MedicalVisitRestController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#id, authentication.name) or hasRole('ADMIN')")
     public MedicalVisit saveMedicalVisit(MedicalVisit medicalVisit) {
         return medicalVisitService.saveMedicalVisit(medicalVisit);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#id, authentication.name) or hasRole('ADMIN')")
     public void deleteMedicalVisit(@PathVariable long id) {
         try {
             medicalVisitService.deleteMedicalVisit(id);
@@ -69,6 +74,7 @@ public class MedicalVisitRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#id, authentication.name) or hasRole('ADMIN')")
     public void updateMedicalVisit(@PathVariable long id, @RequestBody MedicalVisit medicalVisit) {
         try {
             medicalVisitService.updateMedicalVisit(id, medicalVisit);
@@ -78,6 +84,7 @@ public class MedicalVisitRestController {
     }
 
     @GetMapping("/filter")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<MedicalVisit> getVisitsByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,

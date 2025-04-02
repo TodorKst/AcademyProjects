@@ -6,6 +6,7 @@ import org.example.medicalrecordproject.models.Diagnosis;
 import org.example.medicalrecordproject.services.contracts.DiagnosisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,11 +24,13 @@ public class DiagnosisRestController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<Diagnosis> getAllDiagnoses() {
         return diagnosisService.getAllDiagnoses();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public Diagnosis getDiagnosisById(@PathVariable long id) {
         try {
             return diagnosisService.getDiagnosisById(id);
@@ -37,11 +40,13 @@ public class DiagnosisRestController {
     }
 
     @PostMapping()
-    public Diagnosis saveDiagnosis(@RequestBody Diagnosis diagnosis) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public Diagnosis createDiagnosis(@RequestBody Diagnosis diagnosis) {
         return diagnosisService.saveDiagnosis(diagnosis);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteDiagnosis(@PathVariable long id) {
         try {
             diagnosisService.deleteDiagnosis(id);
@@ -51,6 +56,7 @@ public class DiagnosisRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateDiagnosis(@PathVariable long id, @RequestBody Diagnosis diagnosis) {
         try {
             diagnosisService.updateDiagnosis(id, diagnosis);
@@ -60,6 +66,7 @@ public class DiagnosisRestController {
     }
 
     @GetMapping("/stats")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<DiagnosisStatOutDto> getDiagnosisStats() {
         return diagnosisService.getMostCommonDiagnoses();
     }

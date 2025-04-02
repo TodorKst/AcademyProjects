@@ -7,6 +7,7 @@ import org.example.medicalrecordproject.models.SickLeave;
 import org.example.medicalrecordproject.services.contracts.SickLeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,6 +25,7 @@ public class SickLeaveRestController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
     public List<SickLeave> getAllSickLeaves() {
         return sickLeaveService.getAllSickLeaves();
     }
@@ -38,11 +40,13 @@ public class SickLeaveRestController {
     }
 
     @PostMapping()
-    public SickLeave saveSickLeave(@RequestBody SickLeave sickLeave) {
+    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#sickLeave.medicalVisit.id, authentication.name)")
+    public SickLeave createSickLeave(@RequestBody SickLeave sickLeave) {
         return sickLeaveService.saveSickLeave(sickLeave);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name)")
     public void deleteSickLeave(@PathVariable long id) {
         try {
             sickLeaveService.deleteSickLeave(id);
@@ -52,11 +56,13 @@ public class SickLeaveRestController {
     }
 
     @GetMapping("/top-month")
+    @PreAuthorize("hasRole('ADMIN')")
     public MonthAndCountOutDto getTopMonth() {
         return sickLeaveService.getMonthWithMostSickLeaves();
     }
 
     @GetMapping("/top-doctors")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<DoctorStatOutDto> getTopDoctorsBySickLeaves() {
         return sickLeaveService.getDoctorsWithMostSickLeaves();
     }

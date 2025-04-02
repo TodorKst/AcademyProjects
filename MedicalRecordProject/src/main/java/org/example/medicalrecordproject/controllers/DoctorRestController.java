@@ -9,6 +9,7 @@ import org.example.medicalrecordproject.services.contracts.DoctorService;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -29,11 +30,13 @@ public class DoctorRestController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<DoctorOutDto> getAllDoctors() {
         return doctorService.getAllDoctors();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public Doctor getDoctorById(@PathVariable long id) {
         try {
             return doctorService.getDoctorById(id);
@@ -43,11 +46,13 @@ public class DoctorRestController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public Doctor saveDoctor(@RequestBody Doctor doctor) {
         return doctorService.saveDoctor(doctor);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteDoctor(@PathVariable long id) {
         try {
             doctorService.deleteDoctor(id);
@@ -57,6 +62,7 @@ public class DoctorRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateDoctor(@PathVariable long id, @RequestBody Doctor doctor) {
         try {
             doctorService.updateDoctor(id, doctor);
@@ -66,21 +72,25 @@ public class DoctorRestController {
     }
 
     @GetMapping("/{id}/medical-visits")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<MedicalVisit> getMedicalVisitsByDoctorId(@PathVariable long id) {
         return medicalVisitService.getByDoctorId(id);
     }
 
     @GetMapping("/by-specialty")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<DoctorOutDto> getAllWithSpeciality(@RequestParam String specialty) {
         return doctorService.getAllWithSpeciality(specialty);
     }
 
     @GetMapping("/gps")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<DoctorOutDto> getAllGps() {
         return doctorService.getAllGps();
     }
 
     @GetMapping("/visit-stats")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<DoctorStatOutDto> getVisitCountPerDoctor() {
         return doctorService.countVisitsPerDoctor();
     }
