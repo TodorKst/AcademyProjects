@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -29,5 +30,6 @@ public class Diagnosis extends BaseEntity {
     private String description;
 
     @ManyToMany(mappedBy = "diagnoses")
+    @JsonManagedReference
     private Set<MedicalVisit> medicalVisits;
 }

@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.models.users;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.medicalrecordproject.models.MedicalVisit;
@@ -32,9 +33,11 @@ public class Doctor extends User {
     @Builder.Default
     private Set<Specialty> specialties = new HashSet<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<MedicalVisit> medicalVisits;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "gp", fetch = FetchType.LAZY)
     private Set<Patient> patients;
 

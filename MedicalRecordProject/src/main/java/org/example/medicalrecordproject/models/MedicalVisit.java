@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -34,11 +35,13 @@ public class MedicalVisit extends BaseEntity {
     @NotNull(message = "Patient is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
+    @JsonManagedReference
     private Patient patient;
 
     @NotNull(message = "Doctor is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
+    @JsonManagedReference
     private Doctor doctor;
 
     @ManyToMany
@@ -49,5 +52,6 @@ public class MedicalVisit extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "diagnosis_id")
     )
     @Builder.Default
+    @JsonManagedReference
     private Set<Diagnosis> diagnoses = new HashSet<>();
 }

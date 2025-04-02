@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -31,5 +32,6 @@ public class SickLeave extends BaseEntity {
     @NotNull(message = "Medical visit is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medical_visit_id")
+    @JsonManagedReference
     private MedicalVisit medicalVisit;
 }
