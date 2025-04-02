@@ -44,7 +44,7 @@ public class SickLeaveRestController {
     public SickLeave createSickLeave(@RequestBody SickLeave sickLeave) {
         return sickLeaveService.saveSickLeave(sickLeave);
     }
-    
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name)")
     public SickLeave updateSickLeave(@PathVariable long id, @RequestBody SickLeave sickLeave) {

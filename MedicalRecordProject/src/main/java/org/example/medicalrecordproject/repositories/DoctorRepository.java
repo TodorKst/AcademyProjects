@@ -18,16 +18,18 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     Optional<Doctor> findByUsername(String username);
 
     @Query("""
-            SELECT mv.doctor
-            FROM SickLeave sl
-            JOIN sl.medicalVisit mv
-            GROUP BY mv.doctor
-            ORDER BY COUNT(sl) DESC
-            """)
-    List<Doctor> findTopDoctorsBySickLeaves(Pageable pageable);
-
-//    Use like this to return top 5 doctors that have writen most sick leaves
-//    Pageable pageable = PageRequest.of(0, 5);
-//    List<Doctor> doctors = doctorRepository.findTopDoctorsBySickLeaves(pageable);
-
+    SELECT mv.doctor
+    FROM SickLeave sl
+    JOIN sl.medicalVisit mv
+    GROUP BY mv.doctor
+    HAVING COUNT(sl) = (
+        SELECT MAX(sickLeaveCount) FROM (
+            SELECT COUNT(sl2) AS sickLeaveCount
+            FROM SickLeave sl2
+            JOIN sl2.medicalVisit mv2
+            GROUP BY mv2.doctor
+        )
+    )
+    """)
+    List<Doctor> findDoctorsWithMostSickLeaves();
 }

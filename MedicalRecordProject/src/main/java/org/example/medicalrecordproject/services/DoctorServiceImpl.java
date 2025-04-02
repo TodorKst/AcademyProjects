@@ -141,4 +141,12 @@ public class DoctorServiceImpl implements DoctorService {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<DoctorOutDto> getDoctorsWithMostSickLeaves() {
+        return doctorRepository.findDoctorsWithMostSickLeaves()
+                .stream()
+                .map(doctorMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

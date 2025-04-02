@@ -26,8 +26,10 @@ public interface DoctorService {
 
     List<DoctorOutDto> getAllWithSpeciality(String specialty);
 
-    public List<DoctorOutDto> getAllGps();
+    List<DoctorOutDto> getAllGps();
 
     List<DoctorStatOutDto> countVisitsPerDoctor();
+
+    List<DoctorOutDto> getDoctorsWithMostSickLeaves();
 
 }
