@@ -15,10 +15,13 @@ import java.util.List;
 public class MedicalVisitServiceImpl implements MedicalVisitService {
 
     private final MedicalVisitRepository medicalVisitRepository;
+    private final ValidationHelper validationHelper;
 
     @Autowired
-    public MedicalVisitServiceImpl(MedicalVisitRepository medicalVisitRepository) {
+    public MedicalVisitServiceImpl(MedicalVisitRepository medicalVisitRepository,
+                                   ValidationHelper validationHelper) {
         this.medicalVisitRepository = medicalVisitRepository;
+        this.validationHelper = validationHelper;
     }
 
     @Override
@@ -34,10 +37,8 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
 
     @Override
     public MedicalVisit saveMedicalVisit(MedicalVisit medicalVisit) {
-        ValidationHelper.validateMedicalVisitEntities(medicalVisit);
-        ValidationHelper.validateVisitDate(medicalVisit.getVisitDate());
-        ValidationHelper.validateDiagnosesExist(medicalVisit.getDiagnoses());
-        ValidationHelper.validateInsurancePayment(medicalVisit.getPatient());
+        validationHelper.validateMedicalVisitCreationData(medicalVisit);
+
         return medicalVisitRepository.save(medicalVisit);
     }
 
@@ -50,16 +51,14 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
     public void updateMedicalVisit(long id, MedicalVisit medicalVisit) throws EntityNotFoundException {
         MedicalVisit existingMedicalVisit = medicalVisitRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("MedicalVisit for: " + medicalVisit.getPatient().getName()));
-        ValidationHelper.validateMedicalVisitEntities(medicalVisit);
-        ValidationHelper.validateVisitDate(medicalVisit.getVisitDate());
-        ValidationHelper.validateDiagnosesExist(medicalVisit.getDiagnoses());
-        ValidationHelper.validateInsurancePayment(medicalVisit.getPatient());
+
         existingMedicalVisit.setDoctor(medicalVisit.getDoctor());
         existingMedicalVisit.setVisitDate(medicalVisit.getVisitDate());
         existingMedicalVisit.setPatient(medicalVisit.getPatient());
         existingMedicalVisit.setTreatment(medicalVisit.getTreatment());
         existingMedicalVisit.setDiagnoses(medicalVisit.getDiagnoses());
-        medicalVisitRepository.save(existingMedicalVisit);
+
+        saveMedicalVisit(existingMedicalVisit);
     }
 
     @Override

@@ -18,12 +18,15 @@ import java.util.stream.Collectors;
 public class SickLeaveServiceImpl implements SickLeaveService {
     private final SickLeaveRepository sickLeaveRepository;
     private final DoctorRepository doctorRepository;
+    private final ValidationHelper validationHelper;
 
     @Autowired
     public SickLeaveServiceImpl(SickLeaveRepository sickLeaveRepository,
-                                DoctorRepository doctorRepository) {
+                                DoctorRepository doctorRepository,
+                                ValidationHelper validationHelper) {
         this.sickLeaveRepository = sickLeaveRepository;
         this.doctorRepository = doctorRepository;
+        this.validationHelper = validationHelper;
     }
 
     @Override
@@ -39,9 +42,8 @@ public class SickLeaveServiceImpl implements SickLeaveService {
 
     @Override
     public SickLeave saveSickLeave(SickLeave sickLeave) {
-        ValidationHelper.validateSickLeaveMedicalVisit(sickLeave.getMedicalVisit());
-        ValidationHelper.validateSickLeaveDates(sickLeave.getStartDate(), sickLeave.getEndDate());
-        ValidationHelper.validateSickLeaveUniqueness(sickLeaveRepository.existsByMedicalVisitId(sickLeave.getMedicalVisit().getId()));
+        validationHelper.validateSickLeaveCreationData(sickLeave, sickLeaveRepository.existsById(sickLeave.getId()));
+
         return sickLeaveRepository.save(sickLeave);
     }
 
@@ -56,6 +58,7 @@ public class SickLeaveServiceImpl implements SickLeaveService {
                 .orElseThrow(() -> new EntityNotFoundException("SickLeave for: " + sickLeave.getMedicalVisit().getPatient().getName()));
         existingSickLeave.setStartDate(sickLeave.getStartDate());
         existingSickLeave.setEndDate(sickLeave.getEndDate());
+
         return saveSickLeave(existingSickLeave);
     }
 

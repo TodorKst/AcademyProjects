@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PatientRegisterDto {
+public class PatientCreationDto {
     @NotBlank
     @Length(min = 3, max = 50)
     private String username;

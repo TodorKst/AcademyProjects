@@ -20,5 +20,7 @@ public interface DiagnosisRepository extends JpaRepository<Diagnosis, Long> {
 
     Optional<Diagnosis> findByName(String name);
 
+    boolean existsByName(String name);
+
 
 }

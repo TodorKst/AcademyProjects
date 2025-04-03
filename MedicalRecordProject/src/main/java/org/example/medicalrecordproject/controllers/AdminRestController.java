@@ -1,5 +1,7 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.in.AdminCreationDto;
+import org.example.medicalrecordproject.dtos.out.AdminCreationResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Admin;
 import org.example.medicalrecordproject.models.users.User;
@@ -10,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -39,8 +43,8 @@ public class AdminRestController {
     }
 
     @PostMapping()
-    public User saveAdmin(@RequestBody Admin admin) {
-        return adminService.saveAdmin(admin);
+    public AdminCreationResponseDto saveAdmin(@RequestBody AdminCreationDto admin) {
+        return adminService.createAdmin(admin, Timestamp.from(Instant.now()));
     }
 
     @DeleteMapping("/{id}")

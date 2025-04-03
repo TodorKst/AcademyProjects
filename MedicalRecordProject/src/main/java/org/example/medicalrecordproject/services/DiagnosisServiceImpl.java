@@ -16,10 +16,13 @@ import java.util.stream.Collectors;
 public class DiagnosisServiceImpl implements DiagnosisService {
 
     private final DiagnosisRepository diagnosisRepository;
+    private final ValidationHelper validationHelper;
 
     @Autowired
-    public DiagnosisServiceImpl(DiagnosisRepository diagnosisRepository) {
+    public DiagnosisServiceImpl(DiagnosisRepository diagnosisRepository,
+                                ValidationHelper validationHelper) {
         this.diagnosisRepository = diagnosisRepository;
+        this.validationHelper = validationHelper;
     }
 
     @Override
@@ -35,7 +38,8 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
     @Override
     public Diagnosis saveDiagnosis(Diagnosis diagnosis) {
-        ValidationHelper.checkDiagnosisUniqueness(diagnosisRepository.findByName(diagnosis.getName()));
+        validationHelper.checkDiagnosisUniqueness(diagnosisRepository.existsByName(diagnosis.getName()));
+
         return diagnosisRepository.save(diagnosis);
     }
 
@@ -48,8 +52,10 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     public void updateDiagnosis(long id, Diagnosis diagnosis) throws EntityNotFoundException {
         Diagnosis existingDiagnosis = diagnosisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(diagnosis.getName()));
-        ValidationHelper.validateUsernameChange(existingDiagnosis.getName(), diagnosis.getName(),
-                diagnosisRepository.findByName(diagnosis.getName()));
+
+        validationHelper.validateUsernameChange(diagnosis.getName(), existingDiagnosis.getName(),
+                diagnosisRepository.existsByName(diagnosis.getName()));
+
         existingDiagnosis.setName(diagnosis.getName());
         existingDiagnosis.setDescription(diagnosis.getDescription());
         diagnosisRepository.save(existingDiagnosis);

@@ -1,7 +1,7 @@
 package org.example.medicalrecordproject.services;
 
-import org.example.medicalrecordproject.dtos.in.AdminRegisterDto;
-import org.example.medicalrecordproject.dtos.out.AdminRegisteredDto;
+import org.example.medicalrecordproject.dtos.in.AdminCreationDto;
+import org.example.medicalrecordproject.dtos.out.AdminCreationResponseDto;
 import org.example.medicalrecordproject.enums.UserRole;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.RegisterMapper;
@@ -23,14 +23,17 @@ public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RegisterMapper registerMapper;
+    private final ValidationHelper validationHelper;
 
     @Autowired
     public AdminServiceImpl(UserRepository userRepository,
                             PasswordEncoder passwordEncoder,
-                            RegisterMapper registerMapper) {
+                            RegisterMapper registerMapper,
+                            ValidationHelper validationHelper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.registerMapper = registerMapper;
+        this.validationHelper = validationHelper;
     }
 
     @Override
@@ -45,22 +48,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminRegisteredDto createAdmin(AdminRegisterDto dto, Timestamp timestamp) {
+    public AdminCreationResponseDto createAdmin(AdminCreationDto dto, Timestamp timestamp) {
         Admin admin = registerMapper.toAdmin(dto);
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin.setCreatedAt(timestamp);
-        userRepository.save(admin);
+
+        validationHelper.validateUserCreationData(admin, userRepository.existsByUsername(admin.getUsername()));
+
+        saveAdmin(admin);
         return registerMapper.toAdminDto(admin);
     }
 
     @Override
     public User saveAdmin(User admin) {
+        validationHelper.validateUserCreationData(admin, userRepository.existsByUsername(admin.getUsername()));
+
         admin.setRole(UserRole.ADMIN);
-        ValidationHelper.checkUsernameUniqueness(userRepository.findByUsername(admin.getUsername()));
-        ValidationHelper.validateUsernameLength(admin.getUsername());
-        ValidationHelper.validatePassword(admin.getPassword());
-        ValidationHelper.validateNameLength(admin.getName());
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+
         return userRepository.save(admin);
     }
 
@@ -70,18 +75,18 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateAdmin(long id, User updatedAdmin) throws EntityNotFoundException {
+    public void updateAdmin(long id, User admin) throws EntityNotFoundException {
+        validationHelper.validateUserCreationData(admin, userRepository.existsByUsername(admin.getUsername()));
+
         User existingAdmin = userRepository.findByIdAndRole(id, UserRole.ADMIN)
                 .orElseThrow(() -> new EntityNotFoundException("Admin with ID " + id + " not found."));
-        ValidationHelper.validateUsernameChange(existingAdmin.getUsername(), updatedAdmin.getUsername(),
-                userRepository.findByUsername(updatedAdmin.getUsername()));
-        ValidationHelper.validatePassword(updatedAdmin.getPassword());
-        ValidationHelper.validateNameLength(updatedAdmin.getName());
-        existingAdmin.setName(updatedAdmin.getName());
-        existingAdmin.setUsername(updatedAdmin.getUsername());
-        ValidationHelper.validatePassword(updatedAdmin.getPassword());
-        existingAdmin.setPassword(passwordEncoder.encode(updatedAdmin.getPassword()));
 
-        userRepository.save(existingAdmin);
+        validationHelper.validateUsernameChange(admin.getUsername(), existingAdmin.getUsername(), userRepository.existsByUsername(admin.getUsername()));
+
+        existingAdmin.setName(admin.getName());
+        existingAdmin.setUsername(admin.getUsername());
+        existingAdmin.setPassword(passwordEncoder.encode(admin.getPassword()));
+
+        saveAdmin(existingAdmin);
     }
 }

@@ -1,9 +1,9 @@
 package org.example.medicalrecordproject.services.contracts;
 
-import org.example.medicalrecordproject.dtos.in.PatientRegisterDto;
+import org.example.medicalrecordproject.dtos.in.PatientCreationDto;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
 import org.example.medicalrecordproject.dtos.out.PatientOutDto;
-import org.example.medicalrecordproject.dtos.out.PatientRegisteredDto;
+import org.example.medicalrecordproject.dtos.out.PatientCreationResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Patient;
 
@@ -15,7 +15,7 @@ public interface PatientService {
 
     Patient getPatientById(long id) throws EntityNotFoundException;
 
-    PatientRegisteredDto createPatient(PatientRegisterDto patientDto, Timestamp createdAt);
+    PatientCreationResponseDto createPatient(PatientCreationDto patientDto, Timestamp createdAt);
 
     Patient savePatient(Patient patient);
 

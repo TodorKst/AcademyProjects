@@ -11,7 +11,7 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientRegisteredDto {
+public class PatientCreationResponseDto {
     private Long id;
     private String name;
     private String username;

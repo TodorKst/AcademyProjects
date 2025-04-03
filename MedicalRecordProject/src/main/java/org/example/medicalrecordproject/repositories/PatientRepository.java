@@ -26,4 +26,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query("SELECT p.gp.id, COUNT(p) FROM Patient p GROUP BY p.gp.id")
     List<Object[]> countPatientsByGp();
 
+    boolean existsByUsername(String username);
+
 }

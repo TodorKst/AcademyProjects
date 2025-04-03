@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DoctorRegisterDto {
+public class DoctorCreationDto {
     @NotBlank
     @Length(min = 3, max = 50)
     private String username;

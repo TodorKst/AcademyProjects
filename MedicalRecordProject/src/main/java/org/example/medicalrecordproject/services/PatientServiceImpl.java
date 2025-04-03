@@ -1,9 +1,9 @@
 package org.example.medicalrecordproject.services;
 
-import org.example.medicalrecordproject.dtos.in.PatientRegisterDto;
+import org.example.medicalrecordproject.dtos.in.PatientCreationDto;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
 import org.example.medicalrecordproject.dtos.out.PatientOutDto;
-import org.example.medicalrecordproject.dtos.out.PatientRegisteredDto;
+import org.example.medicalrecordproject.dtos.out.PatientCreationResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.RegisterMapper;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
@@ -29,15 +29,19 @@ public class PatientServiceImpl implements PatientService {
     private final RegisterMapper registerMapper;
     private final DoctorService doctorService;
     private final PasswordEncoder passwordEncoder;
+    private final ValidationHelper validationHelper;
 
     @Autowired
     public PatientServiceImpl(PatientRepository patientRepository,
                               RegisterMapper registerMapper,
-                              DoctorService doctorService, PasswordEncoder passwordEncoder) {
+                              DoctorService doctorService,
+                              PasswordEncoder passwordEncoder,
+                              ValidationHelper validationHelper) {
         this.patientRepository = patientRepository;
         this.registerMapper = registerMapper;
         this.doctorService = doctorService;
         this.passwordEncoder = passwordEncoder;
+        this.validationHelper = validationHelper;
     }
 
     @Override
@@ -53,21 +57,21 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient savePatient(Patient patient) {
-        ValidationHelper.validateAssignedGp(patient);
-        ValidationHelper.checkUsernameUniqueness(patientRepository.findByUsername(patient.getUsername()));
-        ValidationHelper.validateUsernameLength(patient.getUsername());
+        validationHelper.validatePatientCreationData(patient, patientRepository.existsByUsername(patient.getUsername()));
+
         return patientRepository.save(patient);
     }
 
     @Override
-    public PatientRegisteredDto createPatient(PatientRegisterDto patientDto, Timestamp createdAt) {
+    public PatientCreationResponseDto createPatient(PatientCreationDto patientDto, Timestamp createdAt) {
         Patient patient = registerMapper.toPatient(patientDto);
         Doctor gp = doctorService.getDoctorById(patientDto.getGpId());
         patient.setGp(gp);
         patient.setCreatedAt(createdAt);
         patient.setPassword(passwordEncoder.encode(patient.getPassword()));
-        patient.setId(null); // 🔒 guaranteed to avoid StaleStateException
+        patient.setId(null); // guaranteed to avoid StaleStateException, there was a problem with the id
         savePatient(patient);
+
         return registerMapper.toPatientDto(patient);
     }
 
@@ -80,14 +84,16 @@ public class PatientServiceImpl implements PatientService {
     public void updatePatient(long id, Patient patient) throws EntityNotFoundException {
         Patient existingPatient = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(patient.getName()));
-        ValidationHelper.validateAssignedGp(patient);
-        ValidationHelper.validateUsernameChange(existingPatient.getUsername(), patient.getUsername(),
-                patientRepository.findByUsername(patient.getUsername()));
+
+        validationHelper.validatePatientCreationData(patient, patientRepository.existsByUsername(patient.getUsername()));
+        validationHelper.validateUsernameChange(patient.getUsername(), existingPatient.getUsername(), patientRepository.existsByUsername(patient.getUsername()));
+
         existingPatient.setName(patient.getName());
         existingPatient.setUsername(patient.getUsername());
         existingPatient.setPassword(patient.getPassword());
         existingPatient.setGp(patient.getGp());
         existingPatient.setLastInsurancePayment(patient.getLastInsurancePayment());
+
         patientRepository.save(existingPatient);
     }
 

@@ -3,8 +3,11 @@ package org.example.medicalrecordproject.helpers;
 import org.example.medicalrecordproject.exceptions.*;
 import org.example.medicalrecordproject.models.Diagnosis;
 import org.example.medicalrecordproject.models.MedicalVisit;
+import org.example.medicalrecordproject.models.SickLeave;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.models.users.Patient;
+import org.example.medicalrecordproject.models.users.User;
+import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -12,12 +15,47 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
+@Component
 public final class ValidationHelper {
 
     private ValidationHelper() {
     }
 
-    public static void validateAssignedGp(Patient patient) {
+    public void validateUserCreationData(User user, boolean userExists) {
+        validateUsernameLength(user.getUsername());
+        checkUsernameUniqueness(userExists);
+        validateNameLength(user.getName());
+        validatePassword(user.getPassword());
+    }
+
+    public void validateDoctorCreationData(Doctor doctor, boolean userExists) {
+        validateUserCreationData(doctor, userExists);
+
+        validateDoctorSpecialties(doctor);
+
+        validateDoctorSpecialties(doctor);
+    }
+
+    public void validatePatientCreationData(Patient patient, boolean userExists) {
+        validateUserCreationData(patient, userExists);
+
+        validateAssignedGp(patient);
+    }
+
+    public void validateMedicalVisitCreationData(MedicalVisit medicalVisit) {
+        validateMedicalVisitEntities(medicalVisit);
+        validateVisitDate(medicalVisit.getVisitDate());
+        validateDiagnosesExist(medicalVisit.getDiagnoses());
+        validateInsurancePayment(medicalVisit.getPatient());
+    }
+
+    public void validateSickLeaveCreationData(SickLeave sickLeave, boolean sickLeaveExists) {
+        validateSickLeaveDates(sickLeave.getStartDate(), sickLeave.getEndDate());
+        validateSickLeaveMedicalVisit(sickLeave.getMedicalVisit());
+        validateSickLeaveUniqueness(sickLeaveExists);
+    }
+
+    public void validateAssignedGp(Patient patient) {
         if (patient.getGp() == null) {
             throw new InvalidGpAssignmentException("Patient must have a registered GP.");
         }
@@ -26,7 +64,7 @@ public final class ValidationHelper {
         }
     }
 
-    public static void validateInsurancePayment(Patient patient) {
+    public void validateInsurancePayment(Patient patient) {
         Date lastPayment = patient.getLastInsurancePayment();
         if (lastPayment == null) {
             throw new InsurancePaymentExpiredException("Patient has not made any insurance payment.");
@@ -38,13 +76,13 @@ public final class ValidationHelper {
         }
     }
 
-    public static void validateVisitDate(LocalDateTime visitDate) {
+    public void validateVisitDate(LocalDateTime visitDate) {
         if (visitDate.isAfter(LocalDateTime.now())) {
             throw new InvalidMedicalVisitException("Medical visit date cannot be in the future.");
         }
     }
 
-    public static void validateMedicalVisitEntities(MedicalVisit visit) {
+    public void validateMedicalVisitEntities(MedicalVisit visit) {
         if (visit.getDoctor() == null) {
             throw new InvalidMedicalVisitException("Medical visit must have an assigned doctor.");
         }
@@ -53,7 +91,7 @@ public final class ValidationHelper {
         }
     }
 
-    public static void validateDiagnosesExist(Set<Diagnosis> diagnoses) {
+    public void validateDiagnosesExist(Set<Diagnosis> diagnoses) {
         if (diagnoses != null) {
             for (Diagnosis d : diagnoses) {
                 if (d == null || d.getId() == null) {
@@ -63,7 +101,7 @@ public final class ValidationHelper {
         }
     }
 
-    public static void validateSickLeaveDates(Date startDate, Date endDate) {
+    public void validateSickLeaveDates(Date startDate, Date endDate) {
         if (startDate == null || endDate == null) {
             throw new InvalidSickLeaveException("Sick leave start and end dates are required.");
         }
@@ -72,19 +110,19 @@ public final class ValidationHelper {
         }
     }
 
-    public static void validateSickLeaveUniqueness(boolean hasExistingSickLeave) {
+    public void validateSickLeaveUniqueness(boolean hasExistingSickLeave) {
         if (hasExistingSickLeave) {
             throw new InvalidSickLeaveException("A sick leave record already exists for this medical visit.");
         }
     }
 
-    public static void validateSickLeaveMedicalVisit(MedicalVisit medicalVisit) {
+    public void validateSickLeaveMedicalVisit(MedicalVisit medicalVisit) {
         if (medicalVisit == null) {
             throw new InvalidSickLeaveException("Sick leave must be associated with a medical visit.");
         }
     }
 
-    public static void validateDoctorSpecialties(Doctor doctor) {
+    public void validateDoctorSpecialties(Doctor doctor) {
         if (doctor.getSpecialties() == null || doctor.getSpecialties().isEmpty()) {
             throw new InvalidDoctorSpecialtiesException("Doctor must have at least one specialty.");
         }
@@ -95,39 +133,38 @@ public final class ValidationHelper {
         });
     }
 
-    public static void validatePassword(String password) {
+    public void validatePassword(String password) {
         if (password == null || password.length() < 8) {
             throw new WeakPasswordException("Password must be at least 8 characters long.");
         }
     }
 
-    // make method take a boolean from repository
-    public static void checkUsernameUniqueness(Optional<?> userOptional) {
-        if (userOptional.isPresent()) {
+    public void checkUsernameUniqueness(boolean userExists) {
+        if (userExists) {
             throw new InvalidUserCredentialException("Username already exists.");
         }
     }
 
-    public static void validateUsernameChange(String oldUsername, String newUsername, Optional<?> userOptional) {
+    public void validateUsernameChange(String oldUsername, String newUsername, boolean userExists) {
         if (!oldUsername.equals(newUsername)) {
-            checkUsernameUniqueness(userOptional);
+            checkUsernameUniqueness(userExists);
         }
         validateUsernameLength(newUsername);
     }
 
-    public static void validateUsernameLength(String username) {
+    public void validateUsernameLength(String username) {
         if (username == null || username.length() < 3 || username.length() > 50) {
             throw new InvalidUserCredentialException("Username must be at least 3 characters long and at most 50 characters long.");
         }
     }
 
-    public static void checkDiagnosisUniqueness(Optional<?> diagnosisOptional) {
-        if (diagnosisOptional.isPresent()) {
+    public void checkDiagnosisUniqueness(boolean diagnosisExists) {
+        if (diagnosisExists) {
             throw new InvalidDiagnosisReferenceException("Diagnosis with name already exists.");
         }
     }
 
-    public static void validateNameLength(String name) {
+    public void validateNameLength(String name) {
         if (name == null || name.length() < 2 || name.length() > 100) {
             throw new InvalidUserCredentialException("Name must be at least 2 characters long and at most 100 characters long.");
         }

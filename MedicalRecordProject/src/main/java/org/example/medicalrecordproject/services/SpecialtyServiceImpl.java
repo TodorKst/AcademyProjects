@@ -13,10 +13,13 @@ import java.util.List;
 @Service
 public class SpecialtyServiceImpl implements SpecialtyService {
     private final SpecialtyRepository specialtyRepository;
+    private final ValidationHelper validationHelper;
 
     @Autowired
-    public SpecialtyServiceImpl(SpecialtyRepository specialtyRepository) {
+    public SpecialtyServiceImpl(SpecialtyRepository specialtyRepository,
+                                ValidationHelper validationHelper) {
         this.specialtyRepository = specialtyRepository;
+        this.validationHelper = validationHelper;
     }
 
     @Override
@@ -32,7 +35,8 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Override
     public Specialty saveSpecialty(Specialty specialty) {
-        ValidationHelper.validateNameLength(specialty.getName());
+        validationHelper.validateNameLength(specialty.getName());
+
         return specialtyRepository.save(specialty);
     }
 
@@ -45,7 +49,9 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     public void updateSpecialty(long id, Specialty specialty) throws EntityNotFoundException {
         Specialty existingSpecialty = specialtyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(specialty.getName()));
-        ValidationHelper.validateNameLength(specialty.getName());
+
+        validationHelper.validateNameLength(specialty.getName());
+
         if (existingSpecialty != null) {
             existingSpecialty.setName(specialty.getName());
             specialtyRepository.save(existingSpecialty);

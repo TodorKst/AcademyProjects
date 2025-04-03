@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DoctorRegisteredDto {
+public class DoctorCreationResponseDto {
     private Long id;
     private String name;
     private String username;
