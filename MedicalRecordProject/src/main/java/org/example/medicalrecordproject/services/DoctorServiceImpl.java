@@ -1,7 +1,6 @@
 package org.example.medicalrecordproject.services;
 
-import org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.mappers.RegisterMapper;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
@@ -70,7 +69,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public DoctorCreationResponseDto createDoctor(DoctorCreationDto dto, Timestamp createdAt) {
+    public DoctorResponseDto createDoctor(org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto dto, Timestamp createdAt) {
         Doctor doctor = registerMapper.toDoctor(dto);
 
         doctor.setCreatedAt(createdAt);

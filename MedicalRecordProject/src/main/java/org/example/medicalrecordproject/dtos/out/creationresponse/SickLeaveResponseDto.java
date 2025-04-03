@@ -4,18 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.medicalrecordproject.models.MedicalVisit;
 
-import java.util.List;
-
+import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DoctorCreationResponseDto {
+public class SickLeaveResponseDto {
     private Long id;
-    private String name;
-    private String username;
-    private Boolean isGp;
-    private List<String> specialties;
-    private int patientCount;
+    private Date startDate;
+    private Date endDate;
+    private Date createdAt;
+    private MedicalVisit medicalVisit;
 }

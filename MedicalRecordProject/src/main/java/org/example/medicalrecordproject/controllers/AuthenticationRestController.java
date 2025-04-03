@@ -4,12 +4,11 @@ import jakarta.validation.Valid;
 import org.example.medicalrecordproject.authentication.JwtAuthenticationResponse;
 import org.example.medicalrecordproject.authentication.JwtTokenProvider;
 import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
-import org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto;
 import org.example.medicalrecordproject.dtos.in.LoginDto;
 import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.AdminCreationResponseDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorCreationResponseDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.PatientCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.AdminResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.PatientResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.exceptions.InvalidUserCredentialException;
 import org.example.medicalrecordproject.exceptions.WeakPasswordException;
@@ -73,7 +72,7 @@ public class AuthenticationRestController {
     }
 
     @PostMapping("/register/admin")
-    public AdminCreationResponseDto registerAdmin(@RequestBody @Valid AdminCreationDto dto) {
+    public AdminResponseDto registerAdmin(@RequestBody @Valid AdminCreationDto dto) {
         try {
             return adminService.createAdmin(dto, Timestamp.from(Instant.now()));
         } catch (InvalidUserCredentialException | WeakPasswordException e) {
@@ -83,7 +82,7 @@ public class AuthenticationRestController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register/doctor")
-    public DoctorCreationResponseDto registerDoctor(@RequestBody @Valid DoctorCreationDto dto) {
+    public DoctorResponseDto registerDoctor(@RequestBody @Valid org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto dto) {
         try {
             return doctorService.createDoctor(dto, Timestamp.from(Instant.now()));
         } catch (EntityNotFoundException | InvalidUserCredentialException e) {
@@ -94,7 +93,7 @@ public class AuthenticationRestController {
     //    return dto to avoid recursive calls to doctor then medical visit then doctor then medical visit...
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register/patient")
-    public PatientCreationResponseDto registerPatient(@RequestBody @Valid PatientCreationDto dto) {
+    public PatientResponseDto registerPatient(@RequestBody @Valid PatientCreationDto dto) {
         try {
             return patientService.createPatient(dto, Timestamp.from(Instant.now()));
         } catch (EntityNotFoundException | InvalidUserCredentialException e) {

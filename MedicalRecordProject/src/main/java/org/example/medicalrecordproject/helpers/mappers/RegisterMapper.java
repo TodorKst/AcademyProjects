@@ -1,16 +1,17 @@
 package org.example.medicalrecordproject.helpers.mappers;
 
 import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
-import org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto;
 import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.AdminCreationResponseDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorCreationResponseDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.PatientCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.AdminResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.PatientResponseDto;
 import org.example.medicalrecordproject.models.users.Admin;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.models.users.Patient;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class RegisterMapper {
@@ -28,7 +29,7 @@ public class RegisterMapper {
         return patient;
     }
 
-    public Doctor toDoctor(DoctorCreationDto dto) {
+    public Doctor toDoctor(org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto dto) {
         if (dto == null) return null;
         Doctor doctor = modelMapper.map(dto, Doctor.class);
         doctor.setId(null); // ✅ Force insert
@@ -43,15 +44,21 @@ public class RegisterMapper {
     }
 
 
-    public AdminCreationResponseDto toAdminDto(Admin admin) {
-        return admin == null ? null : modelMapper.map(admin, AdminCreationResponseDto.class);
+    public AdminResponseDto toAdminDto(Admin admin) {
+        return admin == null ? null : modelMapper.map(admin, AdminResponseDto.class);
     }
 
-    public DoctorCreationResponseDto toDoctorDto(Doctor doctor) {
-        return doctor == null ? null : modelMapper.map(doctor, DoctorCreationResponseDto.class);
+    public DoctorResponseDto toDoctorDto(Doctor doctor) {
+        return doctor == null ? null : modelMapper.map(doctor, DoctorResponseDto.class);
     }
 
-    public PatientCreationResponseDto toPatientDto(Patient patient) {
-        return patient == null ? null : modelMapper.map(patient, PatientCreationResponseDto.class);
+    public PatientResponseDto toPatientDto(Patient patient) {
+        return patient == null ? null : modelMapper.map(patient, PatientResponseDto.class);
+    }
+
+    public List<PatientResponseDto> toPatientDtoList(List<Patient> patients) {
+        return patients == null ? null : patients.stream()
+                .map(this::toPatientDto)
+                .toList();
     }
 }

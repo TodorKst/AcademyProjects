@@ -1,7 +1,7 @@
 package org.example.medicalrecordproject.services;
 
 import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.AdminCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.AdminResponseDto;
 import org.example.medicalrecordproject.enums.UserRole;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.mappers.RegisterMapper;
@@ -48,7 +48,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminCreationResponseDto createAdmin(AdminCreationDto dto, Timestamp timestamp) {
+    public AdminResponseDto createAdmin(AdminCreationDto dto, Timestamp timestamp) {
         Admin admin = registerMapper.toAdmin(dto);
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin.setCreatedAt(timestamp);

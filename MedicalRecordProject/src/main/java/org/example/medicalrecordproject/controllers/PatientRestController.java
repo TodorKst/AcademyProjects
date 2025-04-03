@@ -1,7 +1,8 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
-import org.example.medicalrecordproject.dtos.out.PatientOutDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.PatientResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.users.Patient;
@@ -13,6 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -31,13 +34,13 @@ public class PatientRestController {
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
-    public List<Patient> getAllPatients() {
+    public List<PatientResponseDto> getAllPatients() {
         return patientService.getAllPatients();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
-    public Patient getPatientById(@PathVariable long id) {
+    public PatientResponseDto getPatientById(@PathVariable long id) {
         try {
             return patientService.getPatientById(id);
         } catch (EntityNotFoundException e) {
@@ -47,8 +50,8 @@ public class PatientRestController {
 
     @PostMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public Patient createPatient(@RequestBody Patient patient) {
-        return patientService.savePatient(patient);
+    public PatientResponseDto createPatient(@RequestBody PatientCreationDto dto) {
+        return patientService.createPatient(dto, Timestamp.from(Instant.now()));
     }
 
     @DeleteMapping("/{id}")
@@ -79,13 +82,13 @@ public class PatientRestController {
 
     @GetMapping("/by-diagnosis")
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
-    public List<PatientOutDto> getPatientsByDiagnosis(@RequestParam String diagnosis) {
+    public List<PatientResponseDto> getPatientsByDiagnosis(@RequestParam String diagnosis) {
         return patientService.getPatientsByDiagnosis(diagnosis);
     }
 
     @GetMapping("/by-gp")
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
-    public List<PatientOutDto> getPatientsByGp(@RequestParam Long gpId) {
+    public List<PatientResponseDto> getPatientsByGp(@RequestParam Long gpId) {
         return patientService.getPatientsByGp(gpId);
     }
 

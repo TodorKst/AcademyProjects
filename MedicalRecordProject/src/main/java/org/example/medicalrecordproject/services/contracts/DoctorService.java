@@ -1,8 +1,7 @@
 package org.example.medicalrecordproject.services.contracts;
 
-import org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto;
 import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorResponseDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Doctor;
@@ -15,7 +14,7 @@ public interface DoctorService {
 
     Doctor getDoctorById(long id) throws EntityNotFoundException;
 
-    DoctorCreationResponseDto createDoctor(DoctorCreationDto dto, Timestamp createdAt);
+    DoctorResponseDto createDoctor(org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto dto, Timestamp createdAt);
 
     Doctor saveDoctor(Doctor doctor);
 

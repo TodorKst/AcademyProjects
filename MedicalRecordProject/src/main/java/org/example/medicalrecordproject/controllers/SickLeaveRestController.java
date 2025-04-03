@@ -1,7 +1,9 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.in.creation.SickLeaveCreationDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.dtos.out.MonthAndCountOutDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.SickLeaveResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.SickLeave;
 import org.example.medicalrecordproject.services.contracts.SickLeaveService;
@@ -26,12 +28,12 @@ public class SickLeaveRestController {
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
-    public List<SickLeave> getAllSickLeaves() {
+    public List<SickLeaveResponseDto> getAllSickLeaves() {
         return sickLeaveService.getAllSickLeaves();
     }
 
     @GetMapping("/{id}")
-    public SickLeave getSickLeaveById(@PathVariable long id) {
+    public SickLeaveResponseDto getSickLeaveById(@PathVariable long id) {
         try {
             return sickLeaveService.getSickLeaveById(id);
         } catch (EntityNotFoundException e) {
@@ -40,16 +42,16 @@ public class SickLeaveRestController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#sickLeave.medicalVisit.id, authentication.name)")
-    public SickLeave createSickLeave(@RequestBody SickLeave sickLeave) {
-        return sickLeaveService.saveSickLeave(sickLeave);
+    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#sickLeave.medicalVisitId, authentication.name)")
+    public SickLeaveResponseDto createSickLeave(@RequestBody SickLeaveCreationDto sickLeave) {
+        return sickLeaveService.createSickLeave(sickLeave);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name)")
-    public SickLeave updateSickLeave(@PathVariable long id, @RequestBody SickLeave sickLeave) {
+    public SickLeaveResponseDto updateSickLeave(@PathVariable long id, @RequestBody SickLeaveCreationDto dto) {
         try {
-            return sickLeaveService.updateSickLeave(id, sickLeave);
+            return sickLeaveService.updateSickLeave(id, dto);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

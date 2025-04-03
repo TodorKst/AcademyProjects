@@ -1,7 +1,7 @@
 package org.example.medicalrecordproject.services.contracts;
 
 import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.AdminCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.AdminResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.User;
 
@@ -13,7 +13,7 @@ public interface AdminService {
 
     User getAdminById(long id) throws EntityNotFoundException;
 
-    AdminCreationResponseDto createAdmin(AdminCreationDto admin, Timestamp timestamp);
+    AdminResponseDto createAdmin(AdminCreationDto admin, Timestamp timestamp);
 
     User saveAdmin(User admin);
 

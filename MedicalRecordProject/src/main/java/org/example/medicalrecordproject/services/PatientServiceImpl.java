@@ -2,8 +2,7 @@ package org.example.medicalrecordproject.services;
 
 import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
-import org.example.medicalrecordproject.dtos.out.PatientOutDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.PatientCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.PatientResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.mappers.RegisterMapper;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
@@ -45,25 +44,25 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<Patient> getAllPatients() {
-        return patientRepository.findAll();
+    public List<PatientResponseDto> getAllPatients() {
+        return registerMapper.toPatientDtoList(patientRepository.findAll());
     }
 
     @Override
-    public Patient getPatientById(long id) throws EntityNotFoundException {
-        return patientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Patient"));
+    public PatientResponseDto getPatientById(long id) throws EntityNotFoundException {
+        return registerMapper.toPatientDto(patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Patient")));
     }
 
     @Override
-    public Patient savePatient(Patient patient) {
+    public PatientResponseDto savePatient(Patient patient) {
         validationHelper.validatePatientCreationData(patient, patientRepository.existsByUsername(patient.getUsername()));
 
-        return patientRepository.save(patient);
+        return registerMapper.toPatientDto(patientRepository.save(patient));
     }
 
     @Override
-    public PatientCreationResponseDto createPatient(PatientCreationDto patientDto, Timestamp createdAt) {
+    public PatientResponseDto createPatient(PatientCreationDto patientDto, Timestamp createdAt) {
         Patient patient = registerMapper.toPatient(patientDto);
         Doctor gp = doctorService.getDoctorById(patientDto.getGpId());
         patient.setGp(gp);
@@ -106,19 +105,13 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<PatientOutDto> getPatientsByDiagnosis(String diagnosisName) {
-        return patientRepository.findByDiagnosisName(diagnosisName)
-                .stream()
-                .map(p -> new PatientOutDto(p.getId(), p.getName()))
-                .collect(Collectors.toList());
+    public List<PatientResponseDto> getPatientsByDiagnosis(String diagnosisName) {
+        return registerMapper.toPatientDtoList(patientRepository.findByDiagnosisName(diagnosisName));
     }
 
     @Override
-    public List<PatientOutDto> getPatientsByGp(Long gpId) {
-        return patientRepository.findByGpId(gpId)
-                .stream()
-                .map(p -> new PatientOutDto(p.getId(), p.getName()))
-                .collect(Collectors.toList());
+    public List<PatientResponseDto> getPatientsByGp(Long gpId) {
+        return registerMapper.toPatientDtoList(patientRepository.findByGpId(gpId));
     }
 
     @Override

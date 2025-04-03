@@ -2,8 +2,7 @@ package org.example.medicalrecordproject.services.contracts;
 
 import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
-import org.example.medicalrecordproject.dtos.out.PatientOutDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.PatientCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.PatientResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Patient;
 
@@ -11,13 +10,13 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface PatientService {
-    List<Patient> getAllPatients();
+    List<PatientResponseDto> getAllPatients();
 
-    Patient getPatientById(long id) throws EntityNotFoundException;
+    PatientResponseDto getPatientById(long id) throws EntityNotFoundException;
 
-    PatientCreationResponseDto createPatient(PatientCreationDto patientDto, Timestamp createdAt);
+    PatientResponseDto createPatient(PatientCreationDto patientDto, Timestamp createdAt);
 
-    Patient savePatient(Patient patient);
+    PatientResponseDto savePatient(Patient patient);
 
     void deletePatient(long id) throws EntityNotFoundException;
 
@@ -25,9 +24,9 @@ public interface PatientService {
 
     void payInsurance(long id);
 
-    List<PatientOutDto> getPatientsByDiagnosis(String diagnosisName);
+    List<PatientResponseDto> getPatientsByDiagnosis(String diagnosisName);
 
-    List<PatientOutDto> getPatientsByGp(Long gpId);
+    List<PatientResponseDto> getPatientsByGp(Long gpId);
 
     List<GpPatientCountOutDto> countPatientsPerGp();
 }
