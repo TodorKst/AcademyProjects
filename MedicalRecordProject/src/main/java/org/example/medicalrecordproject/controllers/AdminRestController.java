@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admins")
+// allows only users with the ADMIN role to access all methods in this controller
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminRestController {
 
