@@ -9,9 +9,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MedicalVisitService {
-    List<MedicalVisit> getAllMedicalVisits();
+    List<MedicalVisitResponseDto> getAllMedicalVisits();
 
     MedicalVisit getMedicalVisitById(long id) throws EntityNotFoundException;
+
+    MedicalVisitResponseDto getMedicalVisitByIdResponse(long id) throws EntityNotFoundException;
 
     MedicalVisit saveMedicalVisit(MedicalVisit medicalVisit);
 
@@ -19,7 +21,7 @@ public interface MedicalVisitService {
 
     void deleteMedicalVisit(long id);
 
-    MedicalVisitResponseDto updateMedicalVisit(long id, MedicalVisitCreationDto medicalVisit) throws EntityNotFoundException;
+    void updateMedicalVisit(long id, MedicalVisitCreationDto medicalVisit) throws EntityNotFoundException;
 
     List<MedicalVisitResponseDto> getByPatientId(long id);
 

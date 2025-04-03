@@ -2,6 +2,7 @@ package org.example.medicalrecordproject.controllers;
 
 import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
+import org.example.medicalrecordproject.dtos.out.response.MedicalVisitResponseDto;
 import org.example.medicalrecordproject.dtos.out.response.PatientResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.MedicalVisit;
@@ -42,7 +43,7 @@ public class PatientRestController {
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
     public PatientResponseDto getPatientById(@PathVariable long id) {
         try {
-            return patientService.getPatientById(id);
+            return patientService.getPatientByIdResponse(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -76,7 +77,7 @@ public class PatientRestController {
 
     @GetMapping("/{id}/medical-visits")
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN') or hasRole('PATIENT') and @authHelper.isPatientOwner(#id, authentication.name)")
-    public List<MedicalVisit> getMedicalVisitsByPatientId(@PathVariable long id) {
+    public List<MedicalVisitResponseDto> getMedicalVisitsByPatientId(@PathVariable long id) {
         return medicalVisitService.getByPatientId(id);
     }
 
@@ -100,7 +101,7 @@ public class PatientRestController {
 
     @GetMapping("/{id}/visits")
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN') or hasRole('PATIENT') and @authHelper.isPatientOwner(#id, authentication.name)")
-    public List<MedicalVisit> getVisitHistory(@PathVariable Long id) {
+    public List<MedicalVisitResponseDto> getVisitHistory(@PathVariable Long id) {
         return medicalVisitService.getByPatientId(id);
     }
 

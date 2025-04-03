@@ -8,6 +8,7 @@ import org.example.medicalrecordproject.helpers.mappers.RegisterMapper;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.models.users.Admin;
 import org.example.medicalrecordproject.models.users.User;
+import org.example.medicalrecordproject.repositories.AdminRepository;
 import org.example.medicalrecordproject.repositories.UserRepository;
 import org.example.medicalrecordproject.services.contracts.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,31 +21,36 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
     private final RegisterMapper registerMapper;
     private final ValidationHelper validationHelper;
 
     @Autowired
-    public AdminServiceImpl(UserRepository userRepository,
+    public AdminServiceImpl(AdminRepository adminRepository,
                             PasswordEncoder passwordEncoder,
                             RegisterMapper registerMapper,
                             ValidationHelper validationHelper) {
-        this.userRepository = userRepository;
+        this.adminRepository = adminRepository;
         this.passwordEncoder = passwordEncoder;
         this.registerMapper = registerMapper;
         this.validationHelper = validationHelper;
     }
 
     @Override
-    public List<User> getAllAdmins() {
-        return userRepository.findAllByRole(UserRole.ADMIN);
+    public List<AdminResponseDto> getAllAdmins() {
+        return registerMapper.toAdminDtoList(adminRepository.findAll());
     }
 
     @Override
-    public User getAdminById(long id) throws EntityNotFoundException {
-        return userRepository.findByIdAndRole(id, UserRole.ADMIN)
+    public Admin getAdminById(long id) throws EntityNotFoundException {
+        return adminRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Admin with ID " + id + " not found."));
+    }
+
+    @Override
+    public AdminResponseDto getAdminByIdResponse(long id) throws EntityNotFoundException {
+        return registerMapper.toAdminDto(getAdminById(id));
     }
 
     @Override
@@ -53,35 +59,35 @@ public class AdminServiceImpl implements AdminService {
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin.setCreatedAt(timestamp);
 
-        validationHelper.validateUserCreationData(admin, userRepository.existsByUsername(admin.getUsername()));
+        validationHelper.validateUserCreationData(admin, adminRepository.existsByUsername(admin.getUsername()));
 
         saveAdmin(admin);
         return registerMapper.toAdminDto(admin);
     }
 
     @Override
-    public User saveAdmin(User admin) {
-        validationHelper.validateUserCreationData(admin, userRepository.existsByUsername(admin.getUsername()));
+    public Admin saveAdmin(Admin admin) {
+        validationHelper.validateUserCreationData(admin, adminRepository.existsByUsername(admin.getUsername()));
 
         admin.setRole(UserRole.ADMIN);
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
 
-        return userRepository.save(admin);
+        return adminRepository.save(admin);
     }
 
     @Override
     public void deleteAdmin(long id) {
-        userRepository.findByIdAndRole(id, UserRole.ADMIN).ifPresent(userRepository::delete);
+        adminRepository.findById(id).ifPresent(adminRepository::delete);
     }
 
     @Override
     public void updateAdmin(long id, User admin) throws EntityNotFoundException {
-        validationHelper.validateUserCreationData(admin, userRepository.existsByUsername(admin.getUsername()));
+        validationHelper.validateUserCreationData(admin, adminRepository.existsByUsername(admin.getUsername()));
 
-        User existingAdmin = userRepository.findByIdAndRole(id, UserRole.ADMIN)
+        User existingAdmin = adminRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Admin with ID " + id + " not found."));
 
-        validationHelper.validateUsernameChange(admin.getUsername(), existingAdmin.getUsername(), userRepository.existsByUsername(admin.getUsername()));
+        validationHelper.validateUsernameChange(admin.getUsername(), existingAdmin.getUsername(), adminRepository.existsByUsername(admin.getUsername()));
 
         existingAdmin.setName(admin.getName());
         existingAdmin.setUsername(admin.getUsername());

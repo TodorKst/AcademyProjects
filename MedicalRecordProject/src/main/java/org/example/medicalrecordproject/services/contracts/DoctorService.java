@@ -10,9 +10,11 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface DoctorService {
-    List<Doctor> getAllDoctors();
+    List<DoctorResponseDto> getAllDoctors();
 
     Doctor getDoctorById(long id) throws EntityNotFoundException;
+
+    DoctorResponseDto getDoctorByIdResponse(long id) throws EntityNotFoundException;
 
     DoctorResponseDto createDoctor(org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto dto, Timestamp createdAt);
 

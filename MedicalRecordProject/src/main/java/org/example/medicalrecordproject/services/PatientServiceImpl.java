@@ -12,6 +12,7 @@ import org.example.medicalrecordproject.repositories.PatientRepository;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
 import org.example.medicalrecordproject.services.contracts.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,14 +45,19 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<Patient> getAllPatients() {
-        return patientRepository.findAll();
+    public List<PatientResponseDto> getAllPatients() {
+        return registerMapper.toPatientDtoList(patientRepository.findAll());
     }
 
     @Override
     public Patient getPatientById(long id) throws EntityNotFoundException {
         return patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient"));
+    }
+
+    @Override
+    public PatientResponseDto getPatientByIdResponse(long id) throws EntityNotFoundException {
+        return registerMapper.toPatientDto(getPatientById(id));
     }
 
     @Override

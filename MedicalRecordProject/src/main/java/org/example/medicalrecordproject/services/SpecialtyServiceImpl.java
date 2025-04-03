@@ -28,14 +28,19 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     }
 
     @Override
-    public List<Specialty> getAllSpecialties() {
-        return specialtyRepository.findAll();
+    public List<SpecialtyResponseDto> getAllSpecialties() {
+        return entityMapper.toSpecialtyDtoList(specialtyRepository.findAll());
     }
 
     @Override
     public Specialty getSpecialtyById(long id) throws EntityNotFoundException {
         return specialtyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Specialty with id: " + id));
+    }
+
+    @Override
+    public SpecialtyResponseDto getSpecialtyByIdResponse(long id) throws EntityNotFoundException {
+        return entityMapper.toSpecialtyDto(getSpecialtyById(id));
     }
 
     @Override

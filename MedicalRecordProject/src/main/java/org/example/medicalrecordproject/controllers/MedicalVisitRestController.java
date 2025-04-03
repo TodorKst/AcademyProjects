@@ -3,7 +3,6 @@ package org.example.medicalrecordproject.controllers;
 import org.example.medicalrecordproject.dtos.in.creation.MedicalVisitCreationDto;
 import org.example.medicalrecordproject.dtos.out.response.MedicalVisitResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
-import org.example.medicalrecordproject.helpers.mappers.EntityMapper;
 import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +20,10 @@ import java.util.List;
 public class MedicalVisitRestController {
 
     private final MedicalVisitService medicalVisitService;
-    private final EntityMapper entityMapper;
 
     @Autowired
-    public MedicalVisitRestController(MedicalVisitService medicalVisitService, 
-                                      EntityMapper entityMapper) {
+    public MedicalVisitRestController(MedicalVisitService medicalVisitService) {
         this.medicalVisitService = medicalVisitService;
-        this.entityMapper = entityMapper;
     }
 
     //    this may be too much logic for a controller
@@ -49,15 +45,15 @@ public class MedicalVisitRestController {
             return medicalVisitService.getByVisitDateBetween(startDate, endDate);
         }
 
-        return entityMapper.toMedicalVisitDtoList(medicalVisitService.getAllMedicalVisits());
+        return medicalVisitService.getAllMedicalVisits();
     }
 
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR') or @authHelper.isPatientOwner(#id, authentication.name)")
-    public MedicalVisit getMedicalVisitById(@PathVariable long id) {
+    public MedicalVisitResponseDto getMedicalVisitById(@PathVariable long id) {
         try {
-            return medicalVisitService.getMedicalVisitById(id);
+            return medicalVisitService.getMedicalVisitByIdResponse(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -65,8 +61,8 @@ public class MedicalVisitRestController {
 
     @PostMapping()
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#id, authentication.name) or hasRole('ADMIN')")
-    public MedicalVisit saveMedicalVisit(MedicalVisit medicalVisit) {
-        return medicalVisitService.saveMedicalVisit(medicalVisit);
+    public MedicalVisitResponseDto createMedicalVisit(MedicalVisitCreationDto dto) {
+        return medicalVisitService.createMedicalVisit(dto);
     }
 
     @DeleteMapping("/{id}")

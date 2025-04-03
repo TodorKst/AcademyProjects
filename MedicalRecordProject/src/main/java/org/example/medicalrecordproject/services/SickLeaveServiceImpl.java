@@ -41,9 +41,14 @@ public class SickLeaveServiceImpl implements SickLeaveService {
     }
 
     @Override
-    public SickLeaveResponseDto getSickLeaveById(long id) throws EntityNotFoundException {
-        return entityMapper.toSickLeaveDto(sickLeaveRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("SickLeave")));
+    public SickLeave getSickLeaveById(long id) throws EntityNotFoundException {
+        return sickLeaveRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("SickLeave"));
+    }
+
+    @Override
+    public SickLeaveResponseDto getSickLeaveByIdResponse(long id) throws EntityNotFoundException {
+        return entityMapper.toSickLeaveDto(getSickLeaveById(id));
     }
 
     @Override
@@ -66,7 +71,7 @@ public class SickLeaveServiceImpl implements SickLeaveService {
     }
 
     @Override
-    public SickLeaveResponseDto updateSickLeave(long id, SickLeaveCreationDto dto) throws EntityNotFoundException {
+    public void updateSickLeave(long id, SickLeaveCreationDto dto) throws EntityNotFoundException {
         SickLeave sickLeave = entityMapper.toSickLeave(dto);
         SickLeave existingSickLeave = sickLeaveRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SickLeave for: " + sickLeave.getMedicalVisit().getPatient().getName()));
@@ -74,8 +79,6 @@ public class SickLeaveServiceImpl implements SickLeaveService {
         existingSickLeave.setEndDate(sickLeave.getEndDate());
 
         saveSickLeave(existingSickLeave);
-
-        return entityMapper.toSickLeaveDto(existingSickLeave);
     }
 
     @Override

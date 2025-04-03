@@ -34,7 +34,7 @@ public class SpecialtyRestController {
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
     public SpecialtyResponseDto getSpecialtyById(@PathVariable long id) {
         try {
-            return specialtyService.getSpecialtyById(id);
+            return specialtyService.getSpecialtyByIdResponse(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

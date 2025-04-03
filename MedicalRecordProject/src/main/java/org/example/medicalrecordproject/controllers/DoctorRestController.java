@@ -1,9 +1,11 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto;
 import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
+import org.example.medicalrecordproject.dtos.out.response.DoctorResponseDto;
+import org.example.medicalrecordproject.dtos.out.response.MedicalVisitResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
-import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
@@ -13,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -31,15 +35,15 @@ public class DoctorRestController {
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
-    public List<DoctorOutDto> getAllDoctors() {
+    public List<DoctorResponseDto> getAllDoctors() {
         return doctorService.getAllDoctors();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
-    public Doctor getDoctorById(@PathVariable long id) {
+    public DoctorResponseDto getDoctorById(@PathVariable long id) {
         try {
-            return doctorService.getDoctorById(id);
+            return doctorService.getDoctorByIdResponse(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -47,8 +51,8 @@ public class DoctorRestController {
 
     @PostMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public Doctor saveDoctor(@RequestBody Doctor doctor) {
-        return doctorService.saveDoctor(doctor);
+    public DoctorResponseDto createDoctor(@RequestBody DoctorCreationDto dto) {
+        return doctorService.createDoctor(dto, Timestamp.from(Instant.now()));
     }
 
     @DeleteMapping("/{id}")
@@ -73,7 +77,7 @@ public class DoctorRestController {
 
     @GetMapping("/{id}/medical-visits")
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
-    public List<MedicalVisit> getMedicalVisitsByDoctorId(@PathVariable long id) {
+    public List<MedicalVisitResponseDto> getMedicalVisitsByDoctorId(@PathVariable long id) {
         return medicalVisitService.getByDoctorId(id);
     }
 

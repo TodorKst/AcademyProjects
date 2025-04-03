@@ -4,7 +4,6 @@ import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
 import org.example.medicalrecordproject.dtos.out.response.AdminResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Admin;
-import org.example.medicalrecordproject.models.users.User;
 import org.example.medicalrecordproject.services.contracts.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,21 +28,21 @@ public class AdminRestController {
     }
 
     @GetMapping()
-    public List<User> getAllAdmins() {
+    public List<AdminResponseDto> getAllAdmins() {
         return adminService.getAllAdmins();
     }
 
     @GetMapping("/{id}")
-    public User getAdminById(@PathVariable long id) {
+    public AdminResponseDto getAdminById(@PathVariable long id) {
         try {
-            return adminService.getAdminById(id);
+            return adminService.getAdminByIdResponse(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
     @PostMapping()
-    public AdminResponseDto saveAdmin(@RequestBody AdminCreationDto admin) {
+    public AdminResponseDto createAdmin(@RequestBody AdminCreationDto admin) {
         return adminService.createAdmin(admin, Timestamp.from(Instant.now()));
     }
 

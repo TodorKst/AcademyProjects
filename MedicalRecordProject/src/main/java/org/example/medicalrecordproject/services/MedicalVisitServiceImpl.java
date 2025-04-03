@@ -50,14 +50,19 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
     }
 
     @Override
-    public List<MedicalVisit> getAllMedicalVisits() {
-        return medicalVisitRepository.findAll();
+    public List<MedicalVisitResponseDto> getAllMedicalVisits() {
+        return entityMapper.toMedicalVisitDtoList(medicalVisitRepository.findAll());
     }
 
     @Override
     public MedicalVisit getMedicalVisitById(long id) throws EntityNotFoundException {
         return medicalVisitRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("MedicalVisit with id: " + id));
+    }
+
+    @Override
+    public MedicalVisitResponseDto getMedicalVisitByIdResponse(long id) throws EntityNotFoundException {
+        return entityMapper.toMedicalVisitDto(getMedicalVisitById(id));
     }
 
     @Override
@@ -84,7 +89,7 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
     }
 
     @Override
-    public MedicalVisitResponseDto updateMedicalVisit(long id, MedicalVisitCreationDto dto) throws EntityNotFoundException {
+    public void updateMedicalVisit(long id, MedicalVisitCreationDto dto) throws EntityNotFoundException {
         MedicalVisit existingMedicalVisit = medicalVisitRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("MedicalVisit with id: " + id));
 
@@ -97,8 +102,6 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
         existingMedicalVisit.setTreatment(dto.getTreatment());
 
         saveMedicalVisit(existingMedicalVisit);
-
-        return entityMapper.toMedicalVisitDto(existingMedicalVisit);
     }
 
     @Override

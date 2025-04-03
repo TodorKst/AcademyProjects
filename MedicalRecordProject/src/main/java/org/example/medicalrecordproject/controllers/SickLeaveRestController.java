@@ -34,7 +34,7 @@ public class SickLeaveRestController {
     @GetMapping("/{id}")
     public SickLeaveResponseDto getSickLeaveById(@PathVariable long id) {
         try {
-            return sickLeaveService.getSickLeaveById(id);
+            return sickLeaveService.getSickLeaveByIdResponse(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -48,9 +48,9 @@ public class SickLeaveRestController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name)")
-    public SickLeaveResponseDto updateSickLeave(@PathVariable long id, @RequestBody SickLeaveCreationDto dto) {
+    public void updateSickLeave(@PathVariable long id, @RequestBody SickLeaveCreationDto dto) {
         try {
-            return sickLeaveService.updateSickLeave(id, dto);
+            sickLeaveService.updateSickLeave(id, dto);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

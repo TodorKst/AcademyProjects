@@ -61,4 +61,16 @@ public class RegisterMapper {
                 .map(this::toPatientDto)
                 .toList();
     }
+
+    public List<DoctorResponseDto> toDoctorDtoList(List<Doctor> doctors) {
+        return doctors == null ? null : doctors.stream()
+                .map(this::toDoctorDto)
+                .toList();
+    }
+
+    public List<AdminResponseDto> toAdminDtoList(List<Admin> admins) {
+        return admins == null ? null : admins.stream()
+                .map(this::toAdminDto)
+                .toList();
+    }
 }

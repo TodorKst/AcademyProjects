@@ -20,26 +20,23 @@ import java.util.List;
 public class DiagnosisRestController {
 
     private final DiagnosisService diagnosisService;
-    private final EntityMapper entityMapper;
 
     @Autowired
-    public DiagnosisRestController(DiagnosisService diagnosisService,
-                                   EntityMapper entityMapper) {
+    public DiagnosisRestController(DiagnosisService diagnosisService) {
         this.diagnosisService = diagnosisService;
-        this.entityMapper = entityMapper;
     }
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<DiagnosisResponseDto> getAllDiagnoses() {
-        return entityMapper.toDiagnosisDtoList(diagnosisService.getAllDiagnoses());
+        return diagnosisService.getAllDiagnoses();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public DiagnosisResponseDto getDiagnosisById(@PathVariable long id) {
         try {
-            return entityMapper.toDiagnosisDto(diagnosisService.getDiagnosisById(id));
+            return diagnosisService.getDiagnosisByIdResponse(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -48,7 +45,7 @@ public class DiagnosisRestController {
     @PostMapping()
     @PreAuthorize("hasRole('ADMIN')")
     public DiagnosisResponseDto createDiagnosis(@RequestBody DiagnosisCreationDto dto) {
-        return entityMapper.toDiagnosisDto(diagnosisService.createDiagnosis(dto));
+        return diagnosisService.createDiagnosis(dto);
     }
 
     @DeleteMapping("/{id}")

@@ -10,9 +10,11 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface PatientService {
-    List<Patient> getAllPatients();
+    List<PatientResponseDto> getAllPatients();
 
     Patient getPatientById(long id) throws EntityNotFoundException;
+
+    PatientResponseDto getPatientByIdResponse(long id) throws EntityNotFoundException;
 
     PatientResponseDto createPatient(PatientCreationDto patientDto, Timestamp createdAt);
 

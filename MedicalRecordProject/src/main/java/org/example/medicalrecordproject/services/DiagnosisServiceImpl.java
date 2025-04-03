@@ -2,6 +2,7 @@ package org.example.medicalrecordproject.services;
 
 import org.example.medicalrecordproject.dtos.in.creation.DiagnosisCreationDto;
 import org.example.medicalrecordproject.dtos.out.DiagnosisStatOutDto;
+import org.example.medicalrecordproject.dtos.out.response.DiagnosisResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.helpers.mappers.EntityMapper;
@@ -31,14 +32,19 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public List<Diagnosis> getAllDiagnoses() {
-        return diagnosisRepository.findAll();
+    public List<DiagnosisResponseDto> getAllDiagnoses() {
+        return entityMapper.toDiagnosisDtoList(diagnosisRepository.findAll());
     }
 
     @Override
     public Diagnosis getDiagnosisById(long id) throws EntityNotFoundException {
         return diagnosisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Diagnosis"));
+    }
+
+    @Override
+    public DiagnosisResponseDto getDiagnosisByIdResponse(long id) throws EntityNotFoundException {
+        return entityMapper.toDiagnosisDto(getDiagnosisById(id));
     }
 
     @Override
@@ -49,12 +55,12 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public Diagnosis createDiagnosis(DiagnosisCreationDto diagnosis) {
-        Diagnosis newDiagnosis = entityMapper.toDiagnosis(diagnosis);
+    public DiagnosisResponseDto createDiagnosis(DiagnosisCreationDto dto) {
+        Diagnosis newDiagnosis = entityMapper.toDiagnosis(dto);
 
         saveDiagnosis(newDiagnosis);
 
-        return newDiagnosis;
+        return entityMapper.toDiagnosisDto(newDiagnosis);
     }
 
     @Override

@@ -51,14 +51,20 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<Doctor> getAllDoctors() {
-        return doctorRepository.findAll();
+    public List<DoctorResponseDto> getAllDoctors() {
+        List<Doctor> doctors = doctorRepository.findAll();
+        return registerMapper.toDoctorDtoList(doctors);
     }
 
     @Override
     public Doctor getDoctorById(long id) throws EntityNotFoundException {
         return doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor"));
+    }
+
+    @Override
+    public DoctorResponseDto getDoctorByIdResponse(long id) throws EntityNotFoundException {
+        return registerMapper.toDoctorDto(getDoctorById(id));
     }
 
     @Override

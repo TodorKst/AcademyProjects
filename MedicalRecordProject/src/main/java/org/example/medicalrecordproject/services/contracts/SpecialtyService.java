@@ -8,9 +8,11 @@ import org.example.medicalrecordproject.models.Specialty;
 import java.util.List;
 
 public interface SpecialtyService {
-    List<Specialty> getAllSpecialties();
+    List<SpecialtyResponseDto> getAllSpecialties();
 
     Specialty getSpecialtyById(long id) throws EntityNotFoundException;
+
+    SpecialtyResponseDto getSpecialtyByIdResponse(long id) throws EntityNotFoundException;
 
     Specialty saveSpecialty(Specialty specialty);
 

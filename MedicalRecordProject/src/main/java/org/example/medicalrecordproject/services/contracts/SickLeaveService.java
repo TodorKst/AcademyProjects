@@ -12,7 +12,9 @@ import java.util.List;
 public interface SickLeaveService {
     List<SickLeaveResponseDto> getAllSickLeaves();
 
-    SickLeaveResponseDto getSickLeaveById(long id) throws EntityNotFoundException;
+    SickLeave getSickLeaveById(long id) throws EntityNotFoundException;
+
+    SickLeaveResponseDto getSickLeaveByIdResponse(long id) throws EntityNotFoundException;
 
     SickLeave saveSickLeave(SickLeave sickLeave);
 
@@ -20,7 +22,7 @@ public interface SickLeaveService {
 
     void deleteSickLeave(long id);
 
-    SickLeaveResponseDto updateSickLeave(long id, SickLeaveCreationDto sickLeave) throws EntityNotFoundException;
+    void updateSickLeave(long id, SickLeaveCreationDto sickLeave) throws EntityNotFoundException;
 
     MonthAndCountOutDto getMonthWithMostSickLeaves();
 
