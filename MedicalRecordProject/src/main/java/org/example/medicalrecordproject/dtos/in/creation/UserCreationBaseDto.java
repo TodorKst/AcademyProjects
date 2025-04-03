@@ -1,15 +1,17 @@
-package org.example.medicalrecordproject.dtos.in;
+package org.example.medicalrecordproject.dtos.in.creation;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-public class PatientCreationDto {
+@AllArgsConstructor
+public class UserCreationBaseDto {
     @NotBlank
     @Length(min = 3, max = 50)
     private String username;
@@ -19,5 +21,4 @@ public class PatientCreationDto {
     @NotBlank
     @Length(min = 3, max = 100)
     private String name;
-    private Long gpId;
 }

@@ -1,4 +1,4 @@
-package org.example.medicalrecordproject.helpers;
+package org.example.medicalrecordproject.helpers.mappers;
 
 import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
 import org.example.medicalrecordproject.models.Specialty;

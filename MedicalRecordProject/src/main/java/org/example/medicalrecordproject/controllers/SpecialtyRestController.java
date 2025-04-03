@@ -1,5 +1,7 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.in.creation.SpecialtyCreationDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.SpecialtyResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.services.contracts.SpecialtyService;
@@ -24,13 +26,13 @@ public class SpecialtyRestController {
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
-    public List<Specialty> getAllSpecialties() {
+    public List<SpecialtyResponseDto> getAllSpecialties() {
         return specialtyService.getAllSpecialties();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
-    public Specialty getSpecialtyById(@PathVariable long id) {
+    public SpecialtyResponseDto getSpecialtyById(@PathVariable long id) {
         try {
             return specialtyService.getSpecialtyById(id);
         } catch (EntityNotFoundException e) {
@@ -40,8 +42,8 @@ public class SpecialtyRestController {
 
     @PostMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public Specialty createSpeciality(@RequestBody Specialty specialty) {
-        return specialtyService.saveSpecialty(specialty);
+    public SpecialtyResponseDto createSpeciality(@RequestBody SpecialtyCreationDto dto) {
+        return specialtyService.createSpecialty(dto);
     }
 
     @DeleteMapping("/{id}")

@@ -1,16 +1,16 @@
 package org.example.medicalrecordproject.services;
 
-import org.example.medicalrecordproject.dtos.in.DoctorCreationDto;
-import org.example.medicalrecordproject.dtos.out.DoctorCreationResponseDto;
+import org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorCreationResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
-import org.example.medicalrecordproject.helpers.RegisterMapper;
+import org.example.medicalrecordproject.helpers.mappers.RegisterMapper;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.repositories.DoctorRepository;
 import org.example.medicalrecordproject.repositories.MedicalVisitRepository;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
-import org.example.medicalrecordproject.helpers.DoctorMapper;
+import org.example.medicalrecordproject.helpers.mappers.DoctorMapper;
 import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.services.contracts.SpecialtyService;

@@ -1,9 +1,9 @@
 package org.example.medicalrecordproject.services.contracts;
 
-import org.example.medicalrecordproject.dtos.in.PatientCreationDto;
+import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
 import org.example.medicalrecordproject.dtos.out.PatientOutDto;
-import org.example.medicalrecordproject.dtos.out.PatientCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.PatientCreationResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Patient;
 

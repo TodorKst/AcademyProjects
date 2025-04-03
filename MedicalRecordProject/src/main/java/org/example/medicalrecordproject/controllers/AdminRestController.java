@@ -1,7 +1,7 @@
 package org.example.medicalrecordproject.controllers;
 
-import org.example.medicalrecordproject.dtos.in.AdminCreationDto;
-import org.example.medicalrecordproject.dtos.out.AdminCreationResponseDto;
+import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.AdminCreationResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Admin;
 import org.example.medicalrecordproject.models.users.User;

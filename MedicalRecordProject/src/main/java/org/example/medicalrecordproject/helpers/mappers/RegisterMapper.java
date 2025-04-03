@@ -1,11 +1,11 @@
-package org.example.medicalrecordproject.helpers;
+package org.example.medicalrecordproject.helpers.mappers;
 
-import org.example.medicalrecordproject.dtos.in.AdminCreationDto;
-import org.example.medicalrecordproject.dtos.in.DoctorCreationDto;
-import org.example.medicalrecordproject.dtos.in.PatientCreationDto;
-import org.example.medicalrecordproject.dtos.out.AdminCreationResponseDto;
-import org.example.medicalrecordproject.dtos.out.DoctorCreationResponseDto;
-import org.example.medicalrecordproject.dtos.out.PatientCreationResponseDto;
+import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
+import org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto;
+import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.AdminCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.PatientCreationResponseDto;
 import org.example.medicalrecordproject.models.users.Admin;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.models.users.Patient;

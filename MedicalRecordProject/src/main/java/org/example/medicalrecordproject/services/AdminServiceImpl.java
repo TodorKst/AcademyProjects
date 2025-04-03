@@ -1,10 +1,10 @@
 package org.example.medicalrecordproject.services;
 
-import org.example.medicalrecordproject.dtos.in.AdminCreationDto;
-import org.example.medicalrecordproject.dtos.out.AdminCreationResponseDto;
+import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.AdminCreationResponseDto;
 import org.example.medicalrecordproject.enums.UserRole;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
-import org.example.medicalrecordproject.helpers.RegisterMapper;
+import org.example.medicalrecordproject.helpers.mappers.RegisterMapper;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.models.users.Admin;
 import org.example.medicalrecordproject.models.users.User;

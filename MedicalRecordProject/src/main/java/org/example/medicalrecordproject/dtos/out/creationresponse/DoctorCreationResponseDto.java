@@ -1,21 +1,21 @@
-package org.example.medicalrecordproject.dtos.out;
+package org.example.medicalrecordproject.dtos.out.creationresponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientCreationResponseDto {
+public class DoctorCreationResponseDto {
     private Long id;
     private String name;
     private String username;
-    private Date lastInsurancePayment;
-    private Long gpId;
-    private String gpName;
+    private Boolean isGp;
+    private List<String> specialties;
+    private int patientCount;
 }

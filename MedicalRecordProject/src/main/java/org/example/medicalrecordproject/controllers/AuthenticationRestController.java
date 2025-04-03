@@ -3,13 +3,13 @@ package org.example.medicalrecordproject.controllers;
 import jakarta.validation.Valid;
 import org.example.medicalrecordproject.authentication.JwtAuthenticationResponse;
 import org.example.medicalrecordproject.authentication.JwtTokenProvider;
-import org.example.medicalrecordproject.dtos.in.AdminCreationDto;
-import org.example.medicalrecordproject.dtos.in.DoctorCreationDto;
+import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
+import org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto;
 import org.example.medicalrecordproject.dtos.in.LoginDto;
-import org.example.medicalrecordproject.dtos.in.PatientCreationDto;
-import org.example.medicalrecordproject.dtos.out.AdminCreationResponseDto;
-import org.example.medicalrecordproject.dtos.out.DoctorCreationResponseDto;
-import org.example.medicalrecordproject.dtos.out.PatientCreationResponseDto;
+import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.AdminCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorCreationResponseDto;
+import org.example.medicalrecordproject.dtos.out.creationresponse.PatientCreationResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.exceptions.InvalidUserCredentialException;
 import org.example.medicalrecordproject.exceptions.WeakPasswordException;
@@ -19,6 +19,7 @@ import org.example.medicalrecordproject.services.contracts.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -80,6 +81,7 @@ public class AuthenticationRestController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register/doctor")
     public DoctorCreationResponseDto registerDoctor(@RequestBody @Valid DoctorCreationDto dto) {
         try {
@@ -89,7 +91,8 @@ public class AuthenticationRestController {
         }
     }
 
-    //    return dto to avoid recursive calls to doctor then medical visit then doctor then medical visit....
+    //    return dto to avoid recursive calls to doctor then medical visit then doctor then medical visit...
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register/patient")
     public PatientCreationResponseDto registerPatient(@RequestBody @Valid PatientCreationDto dto) {
         try {
