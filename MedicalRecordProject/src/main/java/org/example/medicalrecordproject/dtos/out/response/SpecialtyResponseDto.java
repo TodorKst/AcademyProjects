@@ -1,4 +1,4 @@
-package org.example.medicalrecordproject.dtos.out.creationresponse;
+package org.example.medicalrecordproject.dtos.out.response;
 
 
 import jakarta.validation.constraints.NotBlank;

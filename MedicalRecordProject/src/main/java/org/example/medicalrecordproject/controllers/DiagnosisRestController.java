@@ -1,7 +1,10 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.in.creation.DiagnosisCreationDto;
 import org.example.medicalrecordproject.dtos.out.DiagnosisStatOutDto;
+import org.example.medicalrecordproject.dtos.out.response.DiagnosisResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.helpers.mappers.EntityMapper;
 import org.example.medicalrecordproject.models.Diagnosis;
 import org.example.medicalrecordproject.services.contracts.DiagnosisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +20,26 @@ import java.util.List;
 public class DiagnosisRestController {
 
     private final DiagnosisService diagnosisService;
+    private final EntityMapper entityMapper;
 
     @Autowired
-    public DiagnosisRestController(DiagnosisService diagnosisService) {
+    public DiagnosisRestController(DiagnosisService diagnosisService,
+                                   EntityMapper entityMapper) {
         this.diagnosisService = diagnosisService;
+        this.entityMapper = entityMapper;
     }
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
-    public List<Diagnosis> getAllDiagnoses() {
-        return diagnosisService.getAllDiagnoses();
+    public List<DiagnosisResponseDto> getAllDiagnoses() {
+        return entityMapper.toDiagnosisDtoList(diagnosisService.getAllDiagnoses());
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
-    public Diagnosis getDiagnosisById(@PathVariable long id) {
+    public DiagnosisResponseDto getDiagnosisById(@PathVariable long id) {
         try {
-            return diagnosisService.getDiagnosisById(id);
+            return entityMapper.toDiagnosisDto(diagnosisService.getDiagnosisById(id));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -41,8 +47,8 @@ public class DiagnosisRestController {
 
     @PostMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public Diagnosis createDiagnosis(@RequestBody Diagnosis diagnosis) {
-        return diagnosisService.saveDiagnosis(diagnosis);
+    public DiagnosisResponseDto createDiagnosis(@RequestBody DiagnosisCreationDto dto) {
+        return entityMapper.toDiagnosisDto(diagnosisService.createDiagnosis(dto));
     }
 
     @DeleteMapping("/{id}")

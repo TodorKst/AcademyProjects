@@ -1,7 +1,7 @@
 package org.example.medicalrecordproject.controllers;
 
 import org.example.medicalrecordproject.dtos.in.creation.SpecialtyCreationDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.SpecialtyResponseDto;
+import org.example.medicalrecordproject.dtos.out.response.SpecialtyResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.services.contracts.SpecialtyService;

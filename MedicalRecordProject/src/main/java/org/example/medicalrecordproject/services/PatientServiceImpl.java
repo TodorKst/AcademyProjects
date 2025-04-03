@@ -2,7 +2,7 @@ package org.example.medicalrecordproject.services;
 
 import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.PatientResponseDto;
+import org.example.medicalrecordproject.dtos.out.response.PatientResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.mappers.RegisterMapper;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
@@ -44,14 +44,14 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<PatientResponseDto> getAllPatients() {
-        return registerMapper.toPatientDtoList(patientRepository.findAll());
+    public List<Patient> getAllPatients() {
+        return patientRepository.findAll();
     }
 
     @Override
-    public PatientResponseDto getPatientById(long id) throws EntityNotFoundException {
-        return registerMapper.toPatientDto(patientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Patient")));
+    public Patient getPatientById(long id) throws EntityNotFoundException {
+        return patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Patient"));
     }
 
     @Override

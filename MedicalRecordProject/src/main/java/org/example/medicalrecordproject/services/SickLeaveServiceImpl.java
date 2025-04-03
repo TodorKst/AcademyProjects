@@ -3,7 +3,7 @@ package org.example.medicalrecordproject.services;
 import org.example.medicalrecordproject.dtos.in.creation.SickLeaveCreationDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.dtos.out.MonthAndCountOutDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.SickLeaveResponseDto;
+import org.example.medicalrecordproject.dtos.out.response.SickLeaveResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.helpers.mappers.EntityMapper;

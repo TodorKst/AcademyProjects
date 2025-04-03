@@ -1,6 +1,6 @@
 package org.example.medicalrecordproject.services;
 
-import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorResponseDto;
+import org.example.medicalrecordproject.dtos.out.response.DoctorResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.mappers.RegisterMapper;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
@@ -51,8 +51,8 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorOutDto> getAllDoctors() {
-        return doctorMapper.toDtoList(doctorRepository.findAll());
+    public List<Doctor> getAllDoctors() {
+        return doctorRepository.findAll();
     }
 
     @Override

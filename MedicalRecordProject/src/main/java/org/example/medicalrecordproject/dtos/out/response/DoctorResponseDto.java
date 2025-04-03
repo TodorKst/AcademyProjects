@@ -1,4 +1,4 @@
-package org.example.medicalrecordproject.dtos.out.creationresponse;
+package org.example.medicalrecordproject.dtos.out.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

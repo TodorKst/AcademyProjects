@@ -1,6 +1,9 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.in.creation.MedicalVisitCreationDto;
+import org.example.medicalrecordproject.dtos.out.response.MedicalVisitResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
+import org.example.medicalrecordproject.helpers.mappers.EntityMapper;
 import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +21,19 @@ import java.util.List;
 public class MedicalVisitRestController {
 
     private final MedicalVisitService medicalVisitService;
+    private final EntityMapper entityMapper;
 
     @Autowired
-    public MedicalVisitRestController(MedicalVisitService medicalVisitService) {
+    public MedicalVisitRestController(MedicalVisitService medicalVisitService, 
+                                      EntityMapper entityMapper) {
         this.medicalVisitService = medicalVisitService;
+        this.entityMapper = entityMapper;
     }
 
     //    this may be too much logic for a controller
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
-    public List<MedicalVisit> getMedicalVisits(
+    public List<MedicalVisitResponseDto> getMedicalVisits(
             @RequestParam(required = false) Long patientId,
             @RequestParam(required = false) Long doctorId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
@@ -43,7 +49,7 @@ public class MedicalVisitRestController {
             return medicalVisitService.getByVisitDateBetween(startDate, endDate);
         }
 
-        return medicalVisitService.getAllMedicalVisits();
+        return entityMapper.toMedicalVisitDtoList(medicalVisitService.getAllMedicalVisits());
     }
 
 
@@ -75,7 +81,7 @@ public class MedicalVisitRestController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#id, authentication.name) or hasRole('ADMIN')")
-    public void updateMedicalVisit(@PathVariable long id, @RequestBody MedicalVisit medicalVisit) {
+    public void updateMedicalVisit(@PathVariable long id, @RequestBody MedicalVisitCreationDto medicalVisit) {
         try {
             medicalVisitService.updateMedicalVisit(id, medicalVisit);
         } catch (EntityNotFoundException e) {
@@ -85,7 +91,7 @@ public class MedicalVisitRestController {
 
     @GetMapping("/filter")
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
-    public List<MedicalVisit> getVisitsByDateRange(
+    public List<MedicalVisitResponseDto> getVisitsByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
             @RequestParam(required = false) Long doctorId

@@ -1,8 +1,10 @@
 package org.example.medicalrecordproject.services;
 
+import org.example.medicalrecordproject.dtos.in.creation.DiagnosisCreationDto;
 import org.example.medicalrecordproject.dtos.out.DiagnosisStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
+import org.example.medicalrecordproject.helpers.mappers.EntityMapper;
 import org.example.medicalrecordproject.models.Diagnosis;
 import org.example.medicalrecordproject.repositories.DiagnosisRepository;
 import org.example.medicalrecordproject.services.contracts.DiagnosisService;
@@ -17,12 +19,15 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
     private final DiagnosisRepository diagnosisRepository;
     private final ValidationHelper validationHelper;
+    private final EntityMapper entityMapper;
 
     @Autowired
     public DiagnosisServiceImpl(DiagnosisRepository diagnosisRepository,
-                                ValidationHelper validationHelper) {
+                                ValidationHelper validationHelper,
+                                EntityMapper entityMapper) {
         this.diagnosisRepository = diagnosisRepository;
         this.validationHelper = validationHelper;
+        this.entityMapper = entityMapper;
     }
 
     @Override
@@ -41,6 +46,15 @@ public class DiagnosisServiceImpl implements DiagnosisService {
         validationHelper.checkDiagnosisUniqueness(diagnosisRepository.existsByName(diagnosis.getName()));
 
         return diagnosisRepository.save(diagnosis);
+    }
+
+    @Override
+    public Diagnosis createDiagnosis(DiagnosisCreationDto diagnosis) {
+        Diagnosis newDiagnosis = entityMapper.toDiagnosis(diagnosis);
+
+        saveDiagnosis(newDiagnosis);
+
+        return newDiagnosis;
     }
 
     @Override

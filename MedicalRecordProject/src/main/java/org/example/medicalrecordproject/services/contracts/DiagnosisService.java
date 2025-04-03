@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.services.contracts;
 
+import org.example.medicalrecordproject.dtos.in.creation.DiagnosisCreationDto;
 import org.example.medicalrecordproject.dtos.out.DiagnosisStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.Diagnosis;
@@ -12,6 +13,8 @@ public interface DiagnosisService {
     Diagnosis getDiagnosisById(long id) throws EntityNotFoundException;
 
     Diagnosis saveDiagnosis(Diagnosis diagnosis);
+
+    Diagnosis createDiagnosis(DiagnosisCreationDto diagnosis);
 
     void deleteDiagnosis(long id);
 

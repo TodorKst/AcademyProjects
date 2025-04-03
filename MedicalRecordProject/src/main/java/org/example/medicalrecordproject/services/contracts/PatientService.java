@@ -2,7 +2,7 @@ package org.example.medicalrecordproject.services.contracts;
 
 import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
 import org.example.medicalrecordproject.dtos.out.GpPatientCountOutDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.PatientResponseDto;
+import org.example.medicalrecordproject.dtos.out.response.PatientResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Patient;
 
@@ -10,9 +10,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface PatientService {
-    List<PatientResponseDto> getAllPatients();
+    List<Patient> getAllPatients();
 
-    PatientResponseDto getPatientById(long id) throws EntityNotFoundException;
+    Patient getPatientById(long id) throws EntityNotFoundException;
 
     PatientResponseDto createPatient(PatientCreationDto patientDto, Timestamp createdAt);
 

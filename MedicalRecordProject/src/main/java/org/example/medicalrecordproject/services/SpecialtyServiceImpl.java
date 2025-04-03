@@ -1,7 +1,7 @@
 package org.example.medicalrecordproject.services;
 
 import org.example.medicalrecordproject.dtos.in.creation.SpecialtyCreationDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.SpecialtyResponseDto;
+import org.example.medicalrecordproject.dtos.out.response.SpecialtyResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.helpers.mappers.EntityMapper;
@@ -28,14 +28,14 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     }
 
     @Override
-    public List<SpecialtyResponseDto> getAllSpecialties() {
-        return entityMapper.toSpecialtyDtoList(specialtyRepository.findAll());
+    public List<Specialty> getAllSpecialties() {
+        return specialtyRepository.findAll();
     }
 
     @Override
-    public SpecialtyResponseDto getSpecialtyById(long id) throws EntityNotFoundException {
-        return entityMapper.toSpecialtyDto(specialtyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Specialty")));
+    public Specialty getSpecialtyById(long id) throws EntityNotFoundException {
+        return specialtyRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Specialty with id: " + id));
     }
 
     @Override

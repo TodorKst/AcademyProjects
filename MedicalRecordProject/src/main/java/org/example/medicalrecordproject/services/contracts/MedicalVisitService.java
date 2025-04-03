@@ -1,5 +1,7 @@
 package org.example.medicalrecordproject.services.contracts;
 
+import org.example.medicalrecordproject.dtos.in.creation.MedicalVisitCreationDto;
+import org.example.medicalrecordproject.dtos.out.response.MedicalVisitResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.MedicalVisit;
 
@@ -13,18 +15,20 @@ public interface MedicalVisitService {
 
     MedicalVisit saveMedicalVisit(MedicalVisit medicalVisit);
 
+    public MedicalVisitResponseDto createMedicalVisit(MedicalVisitCreationDto dto);
+
     void deleteMedicalVisit(long id);
 
-    void updateMedicalVisit(long id, MedicalVisit medicalVisit) throws EntityNotFoundException;
+    MedicalVisitResponseDto updateMedicalVisit(long id, MedicalVisitCreationDto medicalVisit) throws EntityNotFoundException;
 
-    List<MedicalVisit> getByPatientId(long id);
+    List<MedicalVisitResponseDto> getByPatientId(long id);
 
-    List<MedicalVisit> getByDoctorId(long id);
+    List<MedicalVisitResponseDto> getByDoctorId(long id);
 
-    List<MedicalVisit> getByVisitDate(String date);
+    List<MedicalVisitResponseDto> getByVisitDate(String date);
 
-    List<MedicalVisit> getByVisitDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<MedicalVisitResponseDto> getByVisitDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    List<MedicalVisit> getByDateRangeAndDoctor(LocalDateTime start, LocalDateTime end, Long doctorId);
+    List<MedicalVisitResponseDto> getByDateRangeAndDoctor(LocalDateTime start, LocalDateTime end, Long doctorId);
 
 }

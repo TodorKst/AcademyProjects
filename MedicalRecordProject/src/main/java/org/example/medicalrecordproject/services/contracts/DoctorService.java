@@ -1,7 +1,7 @@
 package org.example.medicalrecordproject.services.contracts;
 
 import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
-import org.example.medicalrecordproject.dtos.out.creationresponse.DoctorResponseDto;
+import org.example.medicalrecordproject.dtos.out.response.DoctorResponseDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Doctor;
@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface DoctorService {
-    List<DoctorOutDto> getAllDoctors();
+    List<Doctor> getAllDoctors();
 
     Doctor getDoctorById(long id) throws EntityNotFoundException;
 

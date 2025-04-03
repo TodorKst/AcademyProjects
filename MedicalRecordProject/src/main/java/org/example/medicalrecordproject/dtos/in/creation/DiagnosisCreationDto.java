@@ -1,4 +1,4 @@
-package org.example.medicalrecordproject.dtos.out.creationresponse;
+package org.example.medicalrecordproject.dtos.in.creation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminResponseDto {
-    private Long id;
+public class DiagnosisCreationDto {
     private String name;
-    private String username;
-    private String contactInfo;
+    private String description;
 }
