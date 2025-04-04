@@ -2,14 +2,11 @@ package org.example.medicalrecordproject.controllers;
 
 import org.example.medicalrecordproject.dtos.in.creation.SpecialtyCreationDto;
 import org.example.medicalrecordproject.dtos.out.response.SpecialtyResponseDto;
-import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.services.contracts.SpecialtyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class SpecialtyRestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
     public SpecialtyResponseDto getSpecialtyById(@PathVariable long id) {
-            return specialtyService.getSpecialtyByIdResponse(id);
+        return specialtyService.getSpecialtyByIdResponse(id);
     }
 
     @PostMapping()
@@ -45,13 +42,13 @@ public class SpecialtyRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteSpecialty(@PathVariable long id) {
-            specialtyService.deleteSpecialty(id);
+        specialtyService.deleteSpecialty(id);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void updateSpecialty(@PathVariable long id, @RequestBody Specialty specialty) {
-            specialtyService.updateSpecialty(id, specialty);
+        specialtyService.updateSpecialty(id, specialty);
     }
 
 }

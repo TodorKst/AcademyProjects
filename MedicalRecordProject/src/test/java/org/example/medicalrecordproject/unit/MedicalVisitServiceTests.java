@@ -9,19 +9,21 @@ import org.example.medicalrecordproject.repositories.MedicalVisitRepository;
 import org.example.medicalrecordproject.services.MedicalVisitServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class MedicalVisitServiceTests {
@@ -49,7 +51,7 @@ class MedicalVisitServiceTests {
 
         when(mockVisit.getPatient()).thenReturn(mockPatient);
         when(mockVisit.getDoctor()).thenReturn(mockDoctor);
-        when(mockVisit.getDiagnoses()).thenReturn(new HashSet<Diagnosis>());
+        when(mockVisit.getDiagnoses()).thenReturn(new HashSet<>());
         when(mockVisit.getVisitDate()).thenReturn(mockDateTime);
         when(mockVisit.getTreatment()).thenReturn("Sample treatment");
     }

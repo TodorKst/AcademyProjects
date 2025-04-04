@@ -47,7 +47,6 @@ public class EntityMapper {
     }
 
 
-
     public SickLeave toSickLeave(SickLeaveCreationDto dto) {
         if (dto == null) return null;
         return modelMapper.map(dto, SickLeave.class);
@@ -66,7 +65,6 @@ public class EntityMapper {
     }
 
 
-
     public MedicalVisit toMedicalVisit(MedicalVisitCreationDto dto) {
         if (dto == null) return null;
         return modelMapper.map(dto, MedicalVisit.class);
@@ -83,7 +81,6 @@ public class EntityMapper {
                 .map(this::toMedicalVisitDto)
                 .toList();
     }
-
 
 
     public Diagnosis toDiagnosis(DiagnosisCreationDto dto) {

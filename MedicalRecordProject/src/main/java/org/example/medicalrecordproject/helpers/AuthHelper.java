@@ -4,7 +4,6 @@ import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.SickLeave;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.models.users.Patient;
-import org.example.medicalrecordproject.services.contracts.DoctorService;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.example.medicalrecordproject.services.contracts.PatientService;
 import org.example.medicalrecordproject.services.contracts.SickLeaveService;

@@ -41,13 +41,13 @@ This system features robust role-based access control, statistical reporting, Sw
 
 | Entity         | Create | Read | Update | Delete |
 |----------------|--------|------|--------|--------|
-| Doctors        | ✅     | ✅   | ✅     | ✅     |
-| Patients       | ✅     | ✅   | ✅     | ✅     |
-| Diagnoses      | ✅     | ✅   | ✅     | ✅     |
-| Medical Visits | ✅     | ✅   | ✅     | ✅     |
-| Sick Leaves    | ✅     | ✅   | ✅     | ✅     |
-| Specialties    | ✅     | ✅   | ✅     | ✅     |
-| Admins         | ✅     | ✅   | ✅     | ✅     |
+| Doctors        | ✅      | ✅    | ✅      | ✅      |
+| Patients       | ✅      | ✅    | ✅      | ✅      |
+| Diagnoses      | ✅      | ✅    | ✅      | ✅      |
+| Medical Visits | ✅      | ✅    | ✅      | ✅      |
+| Sick Leaves    | ✅      | ✅    | ✅      | ✅      |
+| Specialties    | ✅      | ✅    | ✅      | ✅      |
+| Admins         | ✅      | ✅    | ✅      | ✅      |
 
 ---
 
@@ -67,11 +67,11 @@ This system features robust role-based access control, statistical reporting, Sw
 
 ## 🔐 User Roles and Permissions
 
-| Role        | Permissions                                                                 |
-|-------------|------------------------------------------------------------------------------|
-| **Patient** | View their own medical history                                               |
-| **Doctor**  | View all data, modify only their patients’ medical records                  |
-| **Admin**   | Full access to all system data                                              |
+| Role        | Permissions                                                |
+|-------------|------------------------------------------------------------|
+| **Patient** | View their own medical history                             |
+| **Doctor**  | View all data, modify only their patients’ medical records |
+| **Admin**   | Full access to all system data                             |
 
 Implemented using Spring Security + JWT (stateless session).
 

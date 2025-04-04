@@ -1,8 +1,8 @@
 package org.example.medicalrecordproject.services.contracts;
 
 import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
-import org.example.medicalrecordproject.dtos.out.response.DoctorResponseDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
+import org.example.medicalrecordproject.dtos.out.response.DoctorResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Doctor;
 

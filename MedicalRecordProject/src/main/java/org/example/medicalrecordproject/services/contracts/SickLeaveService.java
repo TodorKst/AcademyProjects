@@ -1,8 +1,8 @@
 package org.example.medicalrecordproject.services.contracts;
 
 import org.example.medicalrecordproject.dtos.in.creation.SickLeaveCreationDto;
-import org.example.medicalrecordproject.dtos.out.MonthAndCountOutDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
+import org.example.medicalrecordproject.dtos.out.MonthAndCountOutDto;
 import org.example.medicalrecordproject.dtos.out.response.SickLeaveResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.SickLeave;

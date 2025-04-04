@@ -3,6 +3,7 @@ package org.example.medicalrecordproject.helpers.mappers;
 import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
 import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
@@ -25,29 +26,26 @@ public class DoctorMapper {
                 map().setPatientCount(source.getPatients() != null ? source.getPatients().size() : 0);
             }
         });
+
+        Converter<Set<Specialty>, List<String>> specialtiesConverter = ctx -> {
+            Set<Specialty> specialties = ctx.getSource();
+            return specialties == null ? List.of() :
+                    specialties.stream()
+                            .map(Specialty::getName)
+                            .collect(Collectors.toList());
+        };
+
+        this.modelMapper.typeMap(Doctor.class, DoctorOutDto.class)
+                .addMappings(mapper -> mapper.using(specialtiesConverter).map(Doctor::getSpecialties, DoctorOutDto::setSpecialties));
     }
 
     public DoctorOutDto toDto(Doctor doctor) {
-        DoctorOutDto dto = new DoctorOutDto();
-        dto.setId(doctor.getId());
-        dto.setName(doctor.getName());
-        dto.setIsGp(doctor.getIsGp()); // manually set
-        dto.setSpecialties(mapSpecialties(doctor.getSpecialties()));
-        dto.setPatientCount(doctor.getPatients() != null ? doctor.getPatients().size() : 0);
-        return dto;
-
+        return modelMapper.map(doctor, DoctorOutDto.class);
     }
 
     public List<DoctorOutDto> toDtoList(List<Doctor> doctors) {
         return doctors.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
-    }
-
-    private List<String> mapSpecialties(Set<Specialty> specialties) {
-        return specialties == null ? List.of() :
-                specialties.stream()
-                        .map(Specialty::getName)
-                        .collect(Collectors.toList());
     }
 }

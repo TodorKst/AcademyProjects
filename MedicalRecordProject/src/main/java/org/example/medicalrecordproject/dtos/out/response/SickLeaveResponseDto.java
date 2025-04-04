@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.example.medicalrecordproject.models.MedicalVisit;
 
 import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor

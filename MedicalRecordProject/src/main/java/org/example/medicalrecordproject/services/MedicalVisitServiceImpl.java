@@ -5,24 +5,19 @@ import org.example.medicalrecordproject.dtos.out.response.MedicalVisitResponseDt
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.helpers.ValidationHelper;
 import org.example.medicalrecordproject.helpers.mappers.EntityMapper;
-import org.example.medicalrecordproject.models.Diagnosis;
 import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.models.users.Patient;
 import org.example.medicalrecordproject.repositories.MedicalVisitRepository;
-import org.example.medicalrecordproject.services.contracts.DiagnosisService;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.example.medicalrecordproject.services.contracts.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class MedicalVisitServiceImpl implements MedicalVisitService {
@@ -32,21 +27,18 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
     private final EntityMapper entityMapper;
     private final DoctorService doctorService;
     private final PatientService patientService;
-    private final DiagnosisService diagnosisService;
 
     @Autowired
     public MedicalVisitServiceImpl(MedicalVisitRepository medicalVisitRepository,
                                    ValidationHelper validationHelper,
                                    EntityMapper entityMapper,
                                    DoctorService doctorService,
-                                   PatientService patientService,
-                                   DiagnosisService diagnosisService) {
+                                   PatientService patientService) {
         this.medicalVisitRepository = medicalVisitRepository;
         this.validationHelper = validationHelper;
         this.entityMapper = entityMapper;
         this.doctorService = doctorService;
         this.patientService = patientService;
-        this.diagnosisService = diagnosisService;
     }
 
     @Override

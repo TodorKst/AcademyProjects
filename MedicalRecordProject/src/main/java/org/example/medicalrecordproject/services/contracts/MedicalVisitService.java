@@ -17,7 +17,7 @@ public interface MedicalVisitService {
 
     MedicalVisit saveMedicalVisit(MedicalVisit medicalVisit);
 
-    public MedicalVisitResponseDto createMedicalVisit(MedicalVisitCreationDto dto);
+    MedicalVisitResponseDto createMedicalVisit(MedicalVisitCreationDto dto);
 
     void deleteMedicalVisit(long id);
 
