@@ -22,7 +22,7 @@ public interface MedicalVisitService {
 
     void deleteMedicalVisit(long id);
 
-    void updateMedicalVisit(long id, MedicalVisitCreationDto medicalVisit) throws EntityNotFoundException;
+    MedicalVisitResponseDto updateMedicalVisit(long id, MedicalVisitCreationDto medicalVisit) throws EntityNotFoundException;
 
     List<MedicalVisitResponseDto> getByPatientId(long id);
 

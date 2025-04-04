@@ -58,8 +58,8 @@ public class DoctorRestController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateDoctor(@PathVariable long id, @RequestBody Doctor doctor) {
-        doctorService.updateDoctor(id, doctor);
+    public DoctorResponseDto updateDoctor(@PathVariable long id, @RequestBody Doctor doctor) {
+        return doctorService.updateDoctor(id, doctor);
     }
 
     @GetMapping("/{id}/medical-visits")

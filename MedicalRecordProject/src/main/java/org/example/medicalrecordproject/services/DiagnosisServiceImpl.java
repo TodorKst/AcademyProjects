@@ -69,7 +69,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public void updateDiagnosis(long id, Diagnosis diagnosis) throws EntityNotFoundException {
+    public DiagnosisResponseDto updateDiagnosis(long id, Diagnosis diagnosis) throws EntityNotFoundException {
         Diagnosis existingDiagnosis = diagnosisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(diagnosis.getName()));
 
@@ -78,7 +78,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
         existingDiagnosis.setName(diagnosis.getName());
         existingDiagnosis.setDescription(diagnosis.getDescription());
-        diagnosisRepository.save(existingDiagnosis);
+        return entityMapper.toDiagnosisDto(diagnosisRepository.save(existingDiagnosis));
     }
 
     @Override

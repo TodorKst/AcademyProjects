@@ -44,8 +44,8 @@ public class SickLeaveRestController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name) or hasRole('ADMIN')")
-    public void updateSickLeave(@PathVariable long id, @RequestBody SickLeaveCreationDto dto) {
-        sickLeaveService.updateSickLeave(id, dto);
+    public SickLeaveResponseDto updateSickLeave(@PathVariable long id, @RequestBody SickLeaveCreationDto dto) {
+        return sickLeaveService.updateSickLeave(id, dto);
     }
 
     @DeleteMapping("/{id}")

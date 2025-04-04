@@ -22,5 +22,5 @@ public interface AdminService {
 
     void deleteAdmin(long id);
 
-    void updateAdmin(long id, User admin) throws EntityNotFoundException;
+    AdminResponseDto updateAdmin(long id, User admin) throws EntityNotFoundException;
 }

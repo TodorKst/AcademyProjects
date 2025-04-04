@@ -66,8 +66,8 @@ public class MedicalVisitRestController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#id, authentication.name) or hasRole('ADMIN')")
-    public void updateMedicalVisit(@PathVariable long id, @RequestBody MedicalVisitCreationDto medicalVisit) {
-        medicalVisitService.updateMedicalVisit(id, medicalVisit);
+    public MedicalVisitResponseDto updateMedicalVisit(@PathVariable long id, @RequestBody MedicalVisitCreationDto medicalVisit) {
+        return medicalVisitService.updateMedicalVisit(id, medicalVisit);
     }
 
     @PostMapping("/{id}/diagnoses")

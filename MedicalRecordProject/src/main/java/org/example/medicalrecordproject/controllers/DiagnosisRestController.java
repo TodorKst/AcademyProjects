@@ -48,8 +48,8 @@ public class DiagnosisRestController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateDiagnosis(@PathVariable long id, @RequestBody Diagnosis diagnosis) {
-        diagnosisService.updateDiagnosis(id, diagnosis);
+    public DiagnosisResponseDto updateDiagnosis(@PathVariable long id, @RequestBody Diagnosis diagnosis) {
+        return diagnosisService.updateDiagnosis(id, diagnosis);
     }
 
     @GetMapping("/stats")

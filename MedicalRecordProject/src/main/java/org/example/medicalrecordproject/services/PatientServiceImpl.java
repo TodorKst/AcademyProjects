@@ -85,7 +85,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void updatePatient(long id, PatientCreationDto dto) throws EntityNotFoundException {
+    public PatientResponseDto updatePatient(long id, PatientCreationDto dto) throws EntityNotFoundException {
         Patient existingPatient = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(dto.getName()));
 
@@ -101,7 +101,7 @@ public class PatientServiceImpl implements PatientService {
 
         validationHelper.validatePatientUpdateData(existingPatient);
 
-        patientRepository.save(existingPatient);
+        return registerMapper.toPatientDto(patientRepository.save(existingPatient));
     }
 
     @Override

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
 
@@ -90,7 +91,7 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
     }
 
     @Override
-    public void updateMedicalVisit(long id, MedicalVisitCreationDto dto) throws EntityNotFoundException {
+    public MedicalVisitResponseDto updateMedicalVisit(long id, MedicalVisitCreationDto dto) throws EntityNotFoundException {
         MedicalVisit existingMedicalVisit = medicalVisitRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("MedicalVisit with id: " + id));
 
@@ -102,7 +103,7 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
         existingMedicalVisit.setPatient(patient);
         existingMedicalVisit.setTreatment(dto.getTreatment());
 
-        saveMedicalVisit(existingMedicalVisit);
+        return entityMapper.toMedicalVisitDto(medicalVisitRepository.save(existingMedicalVisit));
     }
 
     @Override
@@ -117,7 +118,8 @@ public class MedicalVisitServiceImpl implements MedicalVisitService {
 
     @Override
     public List<MedicalVisitResponseDto> getByVisitDate(String date) {
-        LocalDateTime dateTime = LocalDateTime.from(java.time.Instant.parse(date));
+        LocalDateTime dateTime = Instant.parse(date).atZone(ZoneId.systemDefault()).toLocalDateTime();
+
 
         return entityMapper.toMedicalVisitDtoList(medicalVisitRepository.findByVisitDate(dateTime));
     }

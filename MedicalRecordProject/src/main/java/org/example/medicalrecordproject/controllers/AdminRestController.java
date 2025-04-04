@@ -46,8 +46,8 @@ public class AdminRestController {
     }
 
     @PutMapping("/{id}")
-    public void updateAdmin(@PathVariable long id, @RequestBody Admin admin) {
-        adminService.updateAdmin(id, admin);
+    public AdminResponseDto updateAdmin(@PathVariable long id, @RequestBody Admin admin) {
+        return adminService.updateAdmin(id, admin);
     }
 
 

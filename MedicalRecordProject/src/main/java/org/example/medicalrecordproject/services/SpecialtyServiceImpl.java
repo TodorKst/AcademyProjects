@@ -64,7 +64,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     }
 
     @Override
-    public void updateSpecialty(long id, Specialty specialty) throws EntityNotFoundException {
+    public SpecialtyResponseDto updateSpecialty(long id, Specialty specialty) throws EntityNotFoundException {
         Specialty existingSpecialty = specialtyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(specialty.getName()));
 
@@ -72,7 +72,9 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
         if (existingSpecialty != null) {
             existingSpecialty.setName(specialty.getName());
-            specialtyRepository.save(existingSpecialty);
+            return entityMapper.toSpecialtyDto(specialtyRepository.save(existingSpecialty));
+        } else {
+            throw new EntityNotFoundException("Specialty with id: " + id);
         }
     }
 

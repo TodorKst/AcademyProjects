@@ -23,7 +23,7 @@ public interface SickLeaveService {
 
     void deleteSickLeave(long id);
 
-    void updateSickLeave(long id, SickLeaveCreationDto sickLeave) throws EntityNotFoundException;
+    SickLeaveResponseDto updateSickLeave(long id, SickLeaveCreationDto sickLeave) throws EntityNotFoundException;
 
     MonthAndCountOutDto getMonthWithMostSickLeaves();
 

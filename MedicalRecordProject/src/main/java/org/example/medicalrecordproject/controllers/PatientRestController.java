@@ -55,8 +55,8 @@ public class PatientRestController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updatePatient(@PathVariable long id, @RequestBody PatientCreationDto dto) {
-        patientService.updatePatient(id, dto);
+    public PatientResponseDto updatePatient(@PathVariable long id, @RequestBody PatientCreationDto dto) {
+        return patientService.updatePatient(id, dto);
     }
 
     @GetMapping("/{id}/medical-visits")

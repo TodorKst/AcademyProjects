@@ -80,7 +80,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateAdmin(long id, User admin) throws EntityNotFoundException {
+    public AdminResponseDto updateAdmin(long id, User admin) throws EntityNotFoundException {
         validationHelper.validateUserCreationData(admin, adminRepository.existsByUsername(admin.getUsername()));
 
         Admin existingAdmin = adminRepository.findById(id)
@@ -92,6 +92,6 @@ public class AdminServiceImpl implements AdminService {
         existingAdmin.setUsername(admin.getUsername());
         existingAdmin.setPassword(passwordEncoder.encode(admin.getPassword()));
 
-        saveAdmin(existingAdmin);
+        return registerMapper.toAdminDto(adminRepository.save(existingAdmin));
     }
 }

@@ -21,7 +21,7 @@ public interface DiagnosisService {
 
     void deleteDiagnosis(long id);
 
-    void updateDiagnosis(long id, Diagnosis diagnosis) throws EntityNotFoundException;
+    DiagnosisResponseDto updateDiagnosis(long id, Diagnosis diagnosis) throws EntityNotFoundException;
 
     List<DiagnosisStatOutDto> getMostCommonDiagnoses();
 

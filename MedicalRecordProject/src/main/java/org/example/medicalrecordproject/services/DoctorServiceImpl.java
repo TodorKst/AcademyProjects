@@ -101,7 +101,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public void updateDoctor(long id, Doctor doctor) throws EntityNotFoundException {
+    public DoctorResponseDto updateDoctor(long id, Doctor doctor) throws EntityNotFoundException {
         Doctor existingDoctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor"));
 
@@ -114,7 +114,7 @@ public class DoctorServiceImpl implements DoctorService {
         existingDoctor.setPassword(doctor.getPassword());
         existingDoctor.setIsGp(doctor.getIsGp());
 
-        saveDoctor(existingDoctor);
+        return registerMapper.toDoctorDto(doctorRepository.save(existingDoctor));
     }
 
     @Override

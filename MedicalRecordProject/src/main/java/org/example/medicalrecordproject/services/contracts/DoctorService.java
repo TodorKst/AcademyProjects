@@ -22,7 +22,7 @@ public interface DoctorService {
 
     void deleteDoctor(long id);
 
-    void updateDoctor(long id, Doctor doctor) throws EntityNotFoundException;
+    DoctorResponseDto updateDoctor(long id, Doctor doctor) throws EntityNotFoundException;
 
     List<DoctorOutDto> getAllWithSpeciality(String specialty);
 

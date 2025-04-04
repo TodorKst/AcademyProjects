@@ -17,7 +17,7 @@ import java.util.Set;
 @Component
 public final class ValidationHelper {
 
-    private ValidationHelper() {
+    public ValidationHelper() {
     }
 
     public void validateUserCreationData(User user, boolean userExists) {

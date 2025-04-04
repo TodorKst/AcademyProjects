@@ -47,8 +47,8 @@ public class SpecialtyRestController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateSpecialty(@PathVariable long id, @RequestBody Specialty specialty) {
-        specialtyService.updateSpecialty(id, specialty);
+    public SpecialtyResponseDto updateSpecialty(@PathVariable long id, @RequestBody Specialty specialty) {
+        return specialtyService.updateSpecialty(id, specialty);
     }
 
 }
