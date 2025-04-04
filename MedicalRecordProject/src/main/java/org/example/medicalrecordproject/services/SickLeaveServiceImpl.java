@@ -14,6 +14,7 @@ import org.example.medicalrecordproject.services.contracts.SickLeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,8 +60,9 @@ public class SickLeaveServiceImpl implements SickLeaveService {
     }
 
     @Override
-    public SickLeaveResponseDto createSickLeave(SickLeaveCreationDto sickLeave) {
+    public SickLeaveResponseDto createSickLeave(SickLeaveCreationDto sickLeave, Timestamp createdAt) {
         SickLeave sickLeaveEntity = entityMapper.toSickLeave(sickLeave);
+        sickLeaveEntity.setCreatedAt(createdAt);
 
         return entityMapper.toSickLeaveDto(sickLeaveRepository.save(sickLeaveEntity));
     }
@@ -78,7 +80,8 @@ public class SickLeaveServiceImpl implements SickLeaveService {
         existingSickLeave.setStartDate(sickLeave.getStartDate());
         existingSickLeave.setEndDate(sickLeave.getEndDate());
 
-        saveSickLeave(existingSickLeave);
+        validationHelper.validateSickLeaveUpdateData(existingSickLeave);
+        sickLeaveRepository.save(existingSickLeave);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.controllers;
 
+import org.example.medicalrecordproject.dtos.in.creation.DiagnosisCreationDto;
 import org.example.medicalrecordproject.dtos.in.creation.MedicalVisitCreationDto;
 import org.example.medicalrecordproject.dtos.out.response.MedicalVisitResponseDto;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
@@ -22,7 +23,7 @@ public class MedicalVisitRestController {
         this.medicalVisitService = medicalVisitService;
     }
 
-    //    this may be too much logic for a controller
+
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<MedicalVisitResponseDto> getMedicalVisits(
@@ -69,14 +70,10 @@ public class MedicalVisitRestController {
         medicalVisitService.updateMedicalVisit(id, medicalVisit);
     }
 
-    @GetMapping("/filter")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
-    public List<MedicalVisitResponseDto> getVisitsByDateRange(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
-            @RequestParam(required = false) Long doctorId
-    ) {
-        return medicalVisitService.getByDateRangeAndDoctor(start, end, doctorId);
+    @PostMapping("/{id}/diagnoses")
+    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#id, authentication.name) or hasRole('ADMIN')")
+    public MedicalVisitResponseDto addDiagnosis(@PathVariable long id, @RequestBody DiagnosisCreationDto dto) {
+        return medicalVisitService.addDiagnosis(id, dto);
     }
 
 }

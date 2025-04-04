@@ -13,6 +13,7 @@ import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.models.SickLeave;
 import org.example.medicalrecordproject.models.Specialty;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,6 +25,13 @@ public class EntityMapper {
 
     public EntityMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
+
+        this.modelMapper.addMappings(new PropertyMap<SickLeave, SickLeaveResponseDto>() {
+            @Override
+            protected void configure() {
+                map().setMedicalVisitId(source.getMedicalVisit() != null ? source.getMedicalVisit().getId() : null);
+            }
+        });
     }
 
     public Specialty toSpecialty(SpecialtyCreationDto dto) {
@@ -54,8 +62,20 @@ public class EntityMapper {
 
     public SickLeaveResponseDto toSickLeaveDto(SickLeave sickLeave) {
         if (sickLeave == null) return null;
-        return modelMapper.map(sickLeave, SickLeaveResponseDto.class);
+
+        return SickLeaveResponseDto.builder()
+                .id(sickLeave.getId())
+                .startDate(sickLeave.getStartDate())
+                .endDate(sickLeave.getEndDate())
+                .createdAt(sickLeave.getCreatedAt())
+                .medicalVisitId(
+                        sickLeave.getMedicalVisit() != null
+                                ? sickLeave.getMedicalVisit().getId()
+                                : null
+                )
+                .build();
     }
+
 
     public List<SickLeaveResponseDto> toSickLeaveDtoList(List<SickLeave> sickLeaves) {
         if (sickLeaves == null) return null;

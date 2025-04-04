@@ -77,8 +77,8 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     }
 
     @Override
-    public SpecialtyResponseDto getSpecialtyByName(String name) throws EntityNotFoundException {
-        return entityMapper.toSpecialtyDto(specialtyRepository.findByName(name)
-                .orElseThrow(() -> new EntityNotFoundException("Specialty")));
+    public Specialty getSpecialtyByName(String name) throws EntityNotFoundException {
+        return specialtyRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Specialty"));
     }
 }

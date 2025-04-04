@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.services;
 
+import jakarta.transaction.Transactional;
 import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.dtos.out.response.DoctorResponseDto;
@@ -50,15 +51,17 @@ public class DoctorServiceImpl implements DoctorService {
         this.validationHelper = validationHelper;
     }
 
+    @Transactional
     @Override
     public List<DoctorResponseDto> getAllDoctors() {
         List<Doctor> doctors = doctorRepository.findAll();
         return registerMapper.toDoctorDtoList(doctors);
     }
 
+    @Transactional
     @Override
     public Doctor getDoctorById(long id) throws EntityNotFoundException {
-        return doctorRepository.findById(id)
+            return doctorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Doctor"));
     }
 
@@ -116,8 +119,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorOutDto> getAllWithSpeciality(String specialty) {
-        Specialty specialty1 = new Specialty();
-        specialty1.setName(specialty);
+        Specialty specialty1 = specialtyService.getSpecialtyByName(specialty);
 
         List<Doctor> doctors = doctorRepository.findAllBySpecialtiesContains(specialty1);
         return doctorMapper.toDtoList(doctors);

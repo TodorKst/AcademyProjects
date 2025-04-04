@@ -13,5 +13,5 @@ import lombok.Setter;
 public class DoctorStatOutDto {
     private Long doctorId;
     private String doctorName;
-    private Long visitCount;
+    private Long count;
 }

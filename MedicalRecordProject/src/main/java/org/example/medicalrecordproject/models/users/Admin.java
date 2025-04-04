@@ -1,9 +1,6 @@
 package org.example.medicalrecordproject.models.users;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
@@ -14,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@PrimaryKeyJoinColumn(name = "id")
 public class Admin extends User {
 
     @Column(name = "contact_info")

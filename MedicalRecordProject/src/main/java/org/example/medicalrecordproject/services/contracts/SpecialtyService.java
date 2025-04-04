@@ -22,5 +22,5 @@ public interface SpecialtyService {
 
     void updateSpecialty(long id, Specialty specialty) throws EntityNotFoundException;
 
-    SpecialtyResponseDto getSpecialtyByName(String name) throws EntityNotFoundException;
+    Specialty getSpecialtyByName(String name) throws EntityNotFoundException;
 }

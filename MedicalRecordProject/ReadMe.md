@@ -3,6 +3,11 @@
 A Spring Boot application designed to manage and track patients’ medical histories, doctor profiles, diagnoses, visits, and sick leaves.
 This system features robust role-based access control, statistical reporting, Swagger UI with JWT authorization, and full CRUD capabilities.
 
+
+There is a database schema and sample data included in the resources folder.
+
+All user have a password of "password123"
+
 ---
 
 ## 🔍 Features

@@ -86,7 +86,7 @@ public class DoctorRestController {
         return doctorService.countVisitsPerDoctor();
     }
 
-    @GetMapping("/sick-leave-stats")
+    @GetMapping("/most-sickleaves")
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public List<DoctorOutDto> getDoctorsWithMostSickLeaves() {
         return doctorService.getDoctorsWithMostSickLeaves();

@@ -85,18 +85,21 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void updatePatient(long id, Patient patient) throws EntityNotFoundException {
+    public void updatePatient(long id, PatientCreationDto dto) throws EntityNotFoundException {
         Patient existingPatient = patientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(patient.getName()));
+                .orElseThrow(() -> new EntityNotFoundException(dto.getName()));
 
-        validationHelper.validatePatientCreationData(patient, patientRepository.existsByUsername(patient.getUsername()));
-        validationHelper.validateUsernameChange(patient.getUsername(), existingPatient.getUsername(), patientRepository.existsByUsername(patient.getUsername()));
+        Doctor gp = doctorService.getDoctorById(dto.getGpId());
 
-        existingPatient.setName(patient.getName());
-        existingPatient.setUsername(patient.getUsername());
-        existingPatient.setPassword(patient.getPassword());
-        existingPatient.setGp(patient.getGp());
-        existingPatient.setLastInsurancePayment(patient.getLastInsurancePayment());
+
+        validationHelper.validateUsernameChange(dto.getUsername(), existingPatient.getUsername(), patientRepository.existsByUsername(dto.getUsername()));
+
+        existingPatient.setName(dto.getName());
+        existingPatient.setUsername(dto.getUsername());
+        existingPatient.setPassword(passwordEncoder.encode(dto.getPassword()));
+        existingPatient.setGp(gp);
+
+        validationHelper.validatePatientUpdateData(existingPatient);
 
         patientRepository.save(existingPatient);
     }

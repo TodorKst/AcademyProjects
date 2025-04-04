@@ -83,7 +83,7 @@ public class AdminServiceImpl implements AdminService {
     public void updateAdmin(long id, User admin) throws EntityNotFoundException {
         validationHelper.validateUserCreationData(admin, adminRepository.existsByUsername(admin.getUsername()));
 
-        User existingAdmin = adminRepository.findById(id)
+        Admin existingAdmin = adminRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Admin with ID " + id + " not found."));
 
         validationHelper.validateUsernameChange(admin.getUsername(), existingAdmin.getUsername(), adminRepository.existsByUsername(admin.getUsername()));

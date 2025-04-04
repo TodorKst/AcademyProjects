@@ -5,7 +5,6 @@ import org.example.medicalrecordproject.models.Specialty;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,13 +19,7 @@ public class DoctorMapper {
     public DoctorMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-        this.modelMapper.addMappings(new PropertyMap<Doctor, DoctorOutDto>() {
-            @Override
-            protected void configure() {
-                map().setPatientCount(source.getPatients() != null ? source.getPatients().size() : 0);
-            }
-        });
-
+        // Converter for specialties -> List<String>
         Converter<Set<Specialty>, List<String>> specialtiesConverter = ctx -> {
             Set<Specialty> specialties = ctx.getSource();
             return specialties == null ? List.of() :
@@ -35,8 +28,22 @@ public class DoctorMapper {
                             .collect(Collectors.toList());
         };
 
+        // Configure the type map with custom specialty mapping and post converter for patient count
         this.modelMapper.typeMap(Doctor.class, DoctorOutDto.class)
-                .addMappings(mapper -> mapper.using(specialtiesConverter).map(Doctor::getSpecialties, DoctorOutDto::setSpecialties));
+                .addMappings(mapper -> mapper.using(specialtiesConverter)
+                        .map(Doctor::getSpecialties, DoctorOutDto::setSpecialties))
+                .setPostConverter(ctx -> {
+                    Doctor source = ctx.getSource();
+                    DoctorOutDto dest = ctx.getDestination();
+
+                    try {
+                        dest.setPatientCount(source.getPatients() != null ? source.getPatients().size() : 0);
+                    } catch (Exception e) {
+                        dest.setPatientCount(0); // Fallback in case of LazyInitializationException
+                    }
+
+                    return dest;
+                });
     }
 
     public DoctorOutDto toDto(Doctor doctor) {

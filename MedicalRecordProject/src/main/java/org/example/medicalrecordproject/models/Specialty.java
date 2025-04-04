@@ -15,7 +15,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class Specialty extends BaseEntity {
 
     @NotNull(message = "Specialty name cannot be null")

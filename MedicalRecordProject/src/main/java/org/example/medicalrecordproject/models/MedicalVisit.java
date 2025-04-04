@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +13,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"doctor", "patient", "diagnoses"})
+@ToString(exclude = {"doctor", "patient", "diagnoses"})
 @Entity
 @Table(name = "medical_visits", schema = "medical_record")
 @Getter
@@ -35,13 +37,13 @@ public class MedicalVisit extends BaseEntity {
     @NotNull(message = "Patient is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
-    @JsonManagedReference
+    @JsonBackReference
     private Patient patient;
 
     @NotNull(message = "Doctor is required")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
-    @JsonManagedReference
+    @JsonBackReference
     private Doctor doctor;
 
     @ManyToMany

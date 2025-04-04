@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -29,24 +31,25 @@ public class SickLeaveRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
     public SickLeaveResponseDto getSickLeaveById(@PathVariable long id) {
         return sickLeaveService.getSickLeaveByIdResponse(id);
     }
 
     @PostMapping()
-    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#sickLeave.medicalVisitId, authentication.name)")
+    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#sickLeave.medicalVisitId, authentication.name) or hasRole('ADMIN')")
     public SickLeaveResponseDto createSickLeave(@RequestBody SickLeaveCreationDto sickLeave) {
-        return sickLeaveService.createSickLeave(sickLeave);
+        return sickLeaveService.createSickLeave(sickLeave, Timestamp.from(Instant.now()));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name)")
+    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name) or hasRole('ADMIN')")
     public void updateSickLeave(@PathVariable long id, @RequestBody SickLeaveCreationDto dto) {
         sickLeaveService.updateSickLeave(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name)")
+    @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name) or hasRole('ADMIN')")
     public void deleteSickLeave(@PathVariable long id) {
         sickLeaveService.deleteSickLeave(id);
     }

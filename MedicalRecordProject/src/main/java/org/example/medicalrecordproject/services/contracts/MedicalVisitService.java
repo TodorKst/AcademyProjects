@@ -1,5 +1,6 @@
 package org.example.medicalrecordproject.services.contracts;
 
+import org.example.medicalrecordproject.dtos.in.creation.DiagnosisCreationDto;
 import org.example.medicalrecordproject.dtos.in.creation.MedicalVisitCreationDto;
 import org.example.medicalrecordproject.dtos.out.response.MedicalVisitResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
@@ -32,5 +33,7 @@ public interface MedicalVisitService {
     List<MedicalVisitResponseDto> getByVisitDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     List<MedicalVisitResponseDto> getByDateRangeAndDoctor(LocalDateTime start, LocalDateTime end, Long doctorId);
+
+    MedicalVisitResponseDto addDiagnosis(long id, DiagnosisCreationDto dto) throws EntityNotFoundException;
 
 }

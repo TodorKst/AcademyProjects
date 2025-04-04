@@ -7,6 +7,7 @@ import org.example.medicalrecordproject.dtos.out.response.SickLeaveResponseDto;
 import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.SickLeave;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface SickLeaveService {
@@ -18,7 +19,7 @@ public interface SickLeaveService {
 
     SickLeave saveSickLeave(SickLeave sickLeave);
 
-    SickLeaveResponseDto createSickLeave(SickLeaveCreationDto sickLeave);
+    SickLeaveResponseDto createSickLeave(SickLeaveCreationDto sickLeave, Timestamp createdAt);
 
     void deleteSickLeave(long id);
 

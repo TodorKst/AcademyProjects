@@ -12,6 +12,4 @@ public class JwtAuthenticationResponse {
     public JwtAuthenticationResponse(String accessToken) {
         this.accessToken = accessToken;
     }
-
-    // Getters and setters
 }

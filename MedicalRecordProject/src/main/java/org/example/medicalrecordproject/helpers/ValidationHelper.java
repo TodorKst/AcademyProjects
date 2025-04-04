@@ -41,6 +41,13 @@ public final class ValidationHelper {
         validateAssignedGp(patient);
     }
 
+    public void validatePatientUpdateData(Patient patient) {
+        validateNameLength(patient.getName());
+        validateAssignedGp(patient);
+        validateUsernameLength(patient.getUsername());
+        validatePassword(patient.getPassword());
+    }
+
     public void validateMedicalVisitCreationData(MedicalVisit medicalVisit) {
         validateMedicalVisitEntities(medicalVisit);
         validateVisitDate(medicalVisit.getVisitDate());
@@ -52,6 +59,11 @@ public final class ValidationHelper {
         validateSickLeaveDates(sickLeave.getStartDate(), sickLeave.getEndDate());
         validateSickLeaveMedicalVisit(sickLeave.getMedicalVisit());
         validateSickLeaveUniqueness(sickLeaveExists);
+    }
+
+    public void validateSickLeaveUpdateData(SickLeave sickLeave) {
+        validateSickLeaveDates(sickLeave.getStartDate(), sickLeave.getEndDate());
+        validateSickLeaveMedicalVisit(sickLeave.getMedicalVisit());
     }
 
     public void validateAssignedGp(Patient patient) {

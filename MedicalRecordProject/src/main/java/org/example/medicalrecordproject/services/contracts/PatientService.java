@@ -22,7 +22,7 @@ public interface PatientService {
 
     void deletePatient(long id) throws EntityNotFoundException;
 
-    void updatePatient(long id, Patient patient) throws EntityNotFoundException;
+    void updatePatient(long id, PatientCreationDto dto) throws EntityNotFoundException;
 
     void payInsurance(long id);
 

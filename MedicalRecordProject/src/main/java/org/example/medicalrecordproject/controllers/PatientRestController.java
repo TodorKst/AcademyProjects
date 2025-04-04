@@ -55,8 +55,8 @@ public class PatientRestController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updatePatient(@PathVariable long id, @RequestBody Patient patient) {
-        patientService.updatePatient(id, patient);
+    public void updatePatient(@PathVariable long id, @RequestBody PatientCreationDto dto) {
+        patientService.updatePatient(id, dto);
     }
 
     @GetMapping("/{id}/medical-visits")
@@ -81,12 +81,6 @@ public class PatientRestController {
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
     public List<GpPatientCountOutDto> getPatientCountPerGp() {
         return patientService.countPatientsPerGp();
-    }
-
-    @GetMapping("/{id}/visits")
-    @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN') or hasRole('PATIENT') and @authHelper.isPatientOwner(#id, authentication.name)")
-    public List<MedicalVisitResponseDto> getVisitHistory(@PathVariable Long id) {
-        return medicalVisitService.getByPatientId(id);
     }
 
 }
