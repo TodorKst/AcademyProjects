@@ -5,15 +5,12 @@ import org.example.medicalrecordproject.dtos.out.DoctorOutDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.dtos.out.response.DoctorResponseDto;
 import org.example.medicalrecordproject.dtos.out.response.MedicalVisitResponseDto;
-import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Doctor;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -42,11 +39,9 @@ public class DoctorRestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR')")
     public DoctorResponseDto getDoctorById(@PathVariable long id) {
-        try {
-            return doctorService.getDoctorByIdResponse(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+
+        return doctorService.getDoctorByIdResponse(id);
+
     }
 
     @PostMapping()
@@ -58,21 +53,13 @@ public class DoctorRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteDoctor(@PathVariable long id) {
-        try {
-            doctorService.deleteDoctor(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        doctorService.deleteDoctor(id);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void updateDoctor(@PathVariable long id, @RequestBody Doctor doctor) {
-        try {
-            doctorService.updateDoctor(id, doctor);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        doctorService.updateDoctor(id, doctor);
     }
 
     @GetMapping("/{id}/medical-visits")

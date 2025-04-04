@@ -2,14 +2,11 @@ package org.example.medicalrecordproject.controllers;
 
 import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
 import org.example.medicalrecordproject.dtos.out.response.AdminResponseDto;
-import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.models.users.Admin;
 import org.example.medicalrecordproject.services.contracts.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -35,11 +32,7 @@ public class AdminRestController {
 
     @GetMapping("/{id}")
     public AdminResponseDto getAdminById(@PathVariable long id) {
-        try {
-            return adminService.getAdminByIdResponse(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return adminService.getAdminByIdResponse(id);
     }
 
     @PostMapping()
@@ -49,20 +42,12 @@ public class AdminRestController {
 
     @DeleteMapping("/{id}")
     public void deleteAdmin(@PathVariable long id) {
-        try {
-            adminService.deleteAdmin(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        adminService.deleteAdmin(id);
     }
 
     @PutMapping("/{id}")
     public void updateAdmin(@PathVariable long id, @RequestBody Admin admin) {
-        try {
-            adminService.updateAdmin(id, admin);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        adminService.updateAdmin(id, admin);
     }
 
 

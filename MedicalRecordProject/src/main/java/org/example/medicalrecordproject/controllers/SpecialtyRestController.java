@@ -33,11 +33,7 @@ public class SpecialtyRestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
     public SpecialtyResponseDto getSpecialtyById(@PathVariable long id) {
-        try {
             return specialtyService.getSpecialtyByIdResponse(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
     }
 
     @PostMapping()
@@ -49,21 +45,13 @@ public class SpecialtyRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteSpecialty(@PathVariable long id) {
-        try {
             specialtyService.deleteSpecialty(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void updateSpecialty(@PathVariable long id, @RequestBody Specialty specialty) {
-        try {
             specialtyService.updateSpecialty(id, specialty);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
     }
 
 }

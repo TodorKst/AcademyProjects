@@ -1,7 +1,6 @@
 package org.example.medicalrecordproject.authentication;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -48,15 +47,10 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(jwtKey)
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException ex) {
-            System.out.println("❌ JWT validation failed: " + ex.getMessage());
-            return false;
-        }
+        Jwts.parserBuilder()
+                .setSigningKey(jwtKey)
+                .build()
+                .parseClaimsJws(token);
+        return true;
     }
 }

@@ -2,15 +2,11 @@ package org.example.medicalrecordproject.controllers;
 
 import org.example.medicalrecordproject.dtos.in.creation.MedicalVisitCreationDto;
 import org.example.medicalrecordproject.dtos.out.response.MedicalVisitResponseDto;
-import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
-import org.example.medicalrecordproject.models.MedicalVisit;
 import org.example.medicalrecordproject.services.contracts.MedicalVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,11 +48,7 @@ public class MedicalVisitRestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'DOCTOR') or @authHelper.isPatientOwner(#id, authentication.name)")
     public MedicalVisitResponseDto getMedicalVisitById(@PathVariable long id) {
-        try {
-            return medicalVisitService.getMedicalVisitByIdResponse(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return medicalVisitService.getMedicalVisitByIdResponse(id);
     }
 
     @PostMapping()
@@ -68,21 +60,13 @@ public class MedicalVisitRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#id, authentication.name) or hasRole('ADMIN')")
     public void deleteMedicalVisit(@PathVariable long id) {
-        try {
-            medicalVisitService.deleteMedicalVisit(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        medicalVisitService.deleteMedicalVisit(id);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isOwnerOfVisit(#id, authentication.name) or hasRole('ADMIN')")
     public void updateMedicalVisit(@PathVariable long id, @RequestBody MedicalVisitCreationDto medicalVisit) {
-        try {
-            medicalVisitService.updateMedicalVisit(id, medicalVisit);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        medicalVisitService.updateMedicalVisit(id, medicalVisit);
     }
 
     @GetMapping("/filter")

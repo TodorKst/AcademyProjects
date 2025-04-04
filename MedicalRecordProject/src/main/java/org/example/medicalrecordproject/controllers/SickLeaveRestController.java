@@ -4,13 +4,10 @@ import org.example.medicalrecordproject.dtos.in.creation.SickLeaveCreationDto;
 import org.example.medicalrecordproject.dtos.out.DoctorStatOutDto;
 import org.example.medicalrecordproject.dtos.out.MonthAndCountOutDto;
 import org.example.medicalrecordproject.dtos.out.response.SickLeaveResponseDto;
-import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
 import org.example.medicalrecordproject.services.contracts.SickLeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -33,11 +30,7 @@ public class SickLeaveRestController {
 
     @GetMapping("/{id}")
     public SickLeaveResponseDto getSickLeaveById(@PathVariable long id) {
-        try {
-            return sickLeaveService.getSickLeaveByIdResponse(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return sickLeaveService.getSickLeaveByIdResponse(id);
     }
 
     @PostMapping()
@@ -49,21 +42,13 @@ public class SickLeaveRestController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name)")
     public void updateSickLeave(@PathVariable long id, @RequestBody SickLeaveCreationDto dto) {
-        try {
-            sickLeaveService.updateSickLeave(id, dto);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        sickLeaveService.updateSickLeave(id, dto);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('DOCTOR') and @authHelper.isPatientOwnerOfSickLeave(#id, authentication.name)")
     public void deleteSickLeave(@PathVariable long id) {
-        try {
-            sickLeaveService.deleteSickLeave(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        sickLeaveService.deleteSickLeave(id);
     }
 
     @GetMapping("/top-month")

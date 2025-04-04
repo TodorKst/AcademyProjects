@@ -3,20 +3,16 @@ package org.example.medicalrecordproject.controllers;
 import jakarta.validation.Valid;
 import org.example.medicalrecordproject.authentication.JwtAuthenticationResponse;
 import org.example.medicalrecordproject.authentication.JwtTokenProvider;
-import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
 import org.example.medicalrecordproject.dtos.in.LoginDto;
+import org.example.medicalrecordproject.dtos.in.creation.AdminCreationDto;
 import org.example.medicalrecordproject.dtos.in.creation.PatientCreationDto;
 import org.example.medicalrecordproject.dtos.out.response.AdminResponseDto;
 import org.example.medicalrecordproject.dtos.out.response.DoctorResponseDto;
 import org.example.medicalrecordproject.dtos.out.response.PatientResponseDto;
-import org.example.medicalrecordproject.exceptions.EntityNotFoundException;
-import org.example.medicalrecordproject.exceptions.InvalidUserCredentialException;
-import org.example.medicalrecordproject.exceptions.WeakPasswordException;
 import org.example.medicalrecordproject.services.contracts.AdminService;
 import org.example.medicalrecordproject.services.contracts.DoctorService;
 import org.example.medicalrecordproject.services.contracts.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -73,31 +68,19 @@ public class AuthenticationRestController {
 
     @PostMapping("/register/admin")
     public AdminResponseDto registerAdmin(@RequestBody @Valid AdminCreationDto dto) {
-        try {
-            return adminService.createAdmin(dto, Timestamp.from(Instant.now()));
-        } catch (InvalidUserCredentialException | WeakPasswordException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        return adminService.createAdmin(dto, Timestamp.from(Instant.now()));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register/doctor")
     public DoctorResponseDto registerDoctor(@RequestBody @Valid org.example.medicalrecordproject.dtos.in.creation.DoctorCreationDto dto) {
-        try {
-            return doctorService.createDoctor(dto, Timestamp.from(Instant.now()));
-        } catch (EntityNotFoundException | InvalidUserCredentialException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        return doctorService.createDoctor(dto, Timestamp.from(Instant.now()));
     }
 
     //    return dto to avoid recursive calls to doctor then medical visit then doctor then medical visit...
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register/patient")
     public PatientResponseDto registerPatient(@RequestBody @Valid PatientCreationDto dto) {
-        try {
-            return patientService.createPatient(dto, Timestamp.from(Instant.now()));
-        } catch (EntityNotFoundException | InvalidUserCredentialException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        return patientService.createPatient(dto, Timestamp.from(Instant.now()));
     }
 }
